@@ -1,7 +1,7 @@
 ﻿(function () {
   'use strict';
 
-  var mainModule = angular.module("opp-module", ['ui.router', 'opp.core', 'opp.room', 'opp.game']);
+  var mainModule = angular.module("opp-module", ['ui.router', 'ui.bootstrap', 'opp.core', 'opp.room', 'opp.game']);
 
   mainModule.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $stateProvider
@@ -12,6 +12,11 @@
       })
       .state('game', {
         url: '/game',
+        params: {
+          roomName: null,
+          cardsValue: null,
+          release: null
+        },
         templateUrl: 'app/views/game/game.html',
         controller: 'GameCtrl'
       });

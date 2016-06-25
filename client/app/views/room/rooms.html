@@ -1,6 +1,11 @@
 <div>
+    <h2>All Rooms</h2>
+
+    <button type="button" class="btn btn-info" ng-click="OpenCreateRoomModal()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Create room</button>
 
     <div>
+        <div></div>
+
         <div ng-repeat="room in rooms">
             {{room.name}}
         </div>
