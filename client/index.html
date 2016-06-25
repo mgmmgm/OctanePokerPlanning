@@ -1,15 +1,17 @@
 ﻿<!DOCTYPE html>
 
-<html ng-app="MyApp">
+<html ng-app="opp-module">
 <head>
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" type="text/css" href="lib/bootstrap-3.3.6/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="app.css">
+    <link rel="stylesheet" type="text/css" href="app/opp-module.css">
+    <link rel="stylesheet" type="text/css" href="app/views/room/rooms.css">
+    <link rel="stylesheet" type="text/css" href="app/views/game/game.css">
 
     <title>Octane Poker Planning</title>
 </head>
 <body>
-    <div ng-controller="MyController" class="octane-poker-planning">
+    <div ng-controller="OppController" class="octane-poker-planning">
         
 		<header class="header">
 			<img class="logo" src="images/logo.png" />
@@ -17,19 +19,23 @@
 		</header>
 		
 		<div>{{test}}</div>
-		
-		<div>
-			<button type="button" class="btn btn-primary">Primary</button>
-		</div>
+
+        <div ui-view></div>
 		
     </div>
 
     <script src="lib/jquery.js"></script>
     <script src="lib/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script src="lib/angular.min.js"></script>
+    <script src="lib/angular-ui-router.min.js"></script>
     <script src="lib/lodash.js"></script>
 	
-	<script src="app.js"></script>
+	<script src="app/opp-module.js"></script>
+    <script src="app/core/core-module.js"></script>
+    <script src="app/core/services/constants-svc.js"></script>
+    <script src="app/views/room/rooms.js"></script>
+    <script src="app/views/room/services/room-svc.js"></script>
+    <script src="app/views/game/game.js"></script>
 
 
 </body>

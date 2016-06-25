@@ -1,0 +1,16 @@
+{
+  "rooms": [
+    {
+      "name": "room1",
+      "numberOfParticipates": 6
+    },
+    {
+      "name": "room2",
+      "numberOfParticipates": 4
+    },
+    {
+      "name": "room3",
+      "numberOfParticipates": 11
+    }
+  ]
+}
