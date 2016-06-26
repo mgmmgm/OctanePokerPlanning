@@ -25,6 +25,13 @@
       });
     };
 
+    $scope.join = function() {
+      console.log('join to table');
+    };
+
+    $scope.delete = function() {
+      console.log('delete table');
+    };
 
     init();
 

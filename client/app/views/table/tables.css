@@ -33,6 +33,11 @@
     padding: 0px 10px;
 }
 
+.status-cell {
+    display: flex;
+    justify-content: space-between;
+}
+
 .table-name {
     color: #1f92eb;
 }
@@ -43,4 +48,9 @@
 
 .not-active {
     color: red;
+}
+
+.remove-button {
+    color: black;
+    cursor: pointer;
 }
