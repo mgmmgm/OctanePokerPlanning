@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 var TableSchema = new Schema({
    id:{type: String, required: true},
    name: {type: String, required: true},
-   numberOfParticipates: {type: Number},
+   numberOfPlayers: {type: Number},
    status: {type: String},
    active: Boolean
 });

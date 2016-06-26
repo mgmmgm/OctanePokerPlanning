@@ -22,7 +22,7 @@ function addTable(req, res) {
   var obj = {
     id: req.body.id,
     name: req.body.name,
-    numberOfParticipates: req.body.numberOfParticipates,
+    numberOfPlayers: req.body.numberOfPlayers,
     status: req.body.status
   };
 
@@ -32,7 +32,7 @@ function addTable(req, res) {
     if (table !== null) {
 
       table.name = obj.name;
-      table.numberOfParticipates = obj.numberOfParticipates;
+      table.numberOfPlayers = obj.numberOfPlayers;
       table.status = obj.status;
 
       dbHelper.updateTable(table, res).then(function (updated) {

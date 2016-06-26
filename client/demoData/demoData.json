@@ -2,15 +2,18 @@
   "tables": [
     {
       "name": "table1",
-      "numberOfParticipates": 6
+      "numberOfPlayers": 6,
+      "status": "active"
     },
     {
       "name": "table2",
-      "numberOfParticipates": 4
+      "numberOfPlayers": 4,
+      "status": "active"
     },
     {
       "name": "table3",
-      "numberOfParticipates": 11
+      "numberOfPlayers": 11,
+      "status": "not active"
     }
   ]
 }
