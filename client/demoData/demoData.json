@@ -1,15 +1,15 @@
 {
-  "rooms": [
+  "tables": [
     {
-      "name": "room1",
+      "name": "table1",
       "numberOfParticipates": 6
     },
     {
-      "name": "room2",
+      "name": "table2",
       "numberOfParticipates": 4
     },
     {
-      "name": "room3",
+      "name": "table3",
       "numberOfParticipates": 11
     }
   ]

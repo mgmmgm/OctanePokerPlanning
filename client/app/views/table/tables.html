@@ -1,0 +1,14 @@
+<div>
+    <h2>All Tables</h2>
+
+    <button type="button" class="btn btn-info" ng-click="OpenCreateTableModal()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Create table</button>
+
+    <div>
+        <div></div>
+
+        <div ng-repeat="table in tables">
+            {{table.name}}
+        </div>
+    </div>
+
+</div>

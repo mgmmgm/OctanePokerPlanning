@@ -1,3 +1,4 @@
 #Intellij project file
 *.iml
 .idea
+server/node_modules

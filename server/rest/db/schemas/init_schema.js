@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var RoomSchema = new Schema({
+var TableSchema = new Schema({
    id:{type: String, required: true},
    name: {type: String, required: true},
    numberOfParticipates: {type: Number},
@@ -15,8 +15,8 @@ var GameSchema = new Schema({
    active: Boolean
 });
 
-var RoomModel = mongoose.model('roomModel', RoomSchema,'Room' );
+var TableModel = mongoose.model('tableModel', TableSchema,'Table' );
 var GameModel = mongoose.model('gameModel', GameSchema,'Game' );
 
-exports.RoomModel = RoomModel;
+exports.TableModel = TableModel;
 exports.GameModel = GameModel;

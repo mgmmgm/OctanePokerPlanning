@@ -1,19 +1,19 @@
 ﻿(function () {
   'use strict';
 
-  var mainModule = angular.module("opp-module", ['ui.router', 'ui.bootstrap', 'opp.core', 'opp.room', 'opp.game']);
+  var mainModule = angular.module("opp-module", ['ui.router', 'ui.bootstrap', 'opp.core', 'opp.table', 'opp.game']);
 
   mainModule.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $stateProvider
-      .state('rooms', {
-        url: '/rooms',
-        templateUrl: 'app/views/room/rooms.html',
-        controller: 'RoomCtrl'
+      .state('tables', {
+        url: '/tables',
+        templateUrl: 'app/views/table/tables.html',
+        controller: 'TableCtrl'
       })
       .state('game', {
         url: '/game',
         params: {
-          roomName: null,
+          tableName: null,
           cardsValue: null,
           release: null
         },
@@ -21,7 +21,7 @@
         controller: 'GameCtrl'
       });
 
-    $urlRouterProvider.otherwise('/rooms');
+    $urlRouterProvider.otherwise('/tables');
 
   }]);
 

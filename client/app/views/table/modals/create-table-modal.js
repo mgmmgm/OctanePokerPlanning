@@ -1,9 +1,9 @@
 (function() {
   'use strict';
 
-  var roomModule = angular.module('opp.room');
+  var tableModule = angular.module('opp.table');
 
-  roomModule.controller('ModalCreateRoomCtrl', ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
+  tableModule.controller('ModalCreateTableCtrl', ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
 
     function init() {
       initCardsValues();
@@ -42,11 +42,10 @@
 
     $scope.create = function() {
       var data = {
-        roomName: $scope.roomName,
+        tableName: $scope.tableName,
         cardsValue: $scope.selectedCardsValue,
         release: $scope.selectedRelease
       };
-      //console.log('room name: ' + $scope.roomName + ', cards values: ' + $scope.selectedCardsValue + ', release: ' + $scope.selectedRelease);
       console.log(data);
       $uibModalInstance.close(data);
     };
