@@ -10,6 +10,10 @@ express
 mongoose
 body-parser
 
+How to install:
+-------------------
+run 'npm install' where 'package.json' file exist (in 'server' folder)
+
 
 To start:
 -------------------
