@@ -1,5 +1,6 @@
 var tableBl = require('./bl/table_bl');
 var gameBl = require('./bl/game_bl');
+var api = require('./bl/nga_api_bl');
 
 function setup(app) {
 
@@ -10,6 +11,9 @@ function setup(app) {
   	app.get('/rest/game', gameBl.getGames);
   	app.get('/rest/game/:id', gameBl.getGameById);
   	app.post('/rest/game', gameBl.addGame);
+
+	app.get('/rest/connect', api.connect);
+	app.get('/rest/releases', api.getReleases);
 
 }
 exports.setup = setup;
