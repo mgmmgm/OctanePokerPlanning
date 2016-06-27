@@ -1,0 +1,56 @@
+.tables-table {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+.tables-table-header {
+    font-size: large;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.table-row {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid grey;
+}
+
+.tables-table-content .table-row {
+    padding: 15px 0px;
+}
+
+.tables-table-content .table-row:nth-child(odd) {
+    background-color: #f3f3f3;
+}
+
+.tables-table-content .table-row:hover {
+    background-color: lightblue;
+}
+
+.table-row-item {
+    flex: 1 0 0;
+    padding: 0px 10px;
+}
+
+.status-cell {
+    display: flex;
+    justify-content: space-between;
+}
+
+.table-name {
+    color: #1f92eb;
+}
+
+.active {
+    color: green;
+}
+
+.not-active {
+    color: red;
+}
+
+.remove-button {
+    color: black;
+    cursor: pointer;
+}

@@ -7,7 +7,7 @@
 
     $scope.gameName = 'game22';
 
-    $scope.roomName = $state.params.roomName;
+    $scope.tableName = $state.params.tableName;
     $scope.cardsValue = $state.params.cardsValue;
     $scope.release = $state.params.release;
 

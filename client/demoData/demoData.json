@@ -1,16 +1,19 @@
 {
-  "rooms": [
+  "tables": [
     {
-      "name": "room1",
-      "numberOfParticipates": 6
+      "name": "table1",
+      "numberOfPlayers": 6,
+      "status": "active"
     },
     {
-      "name": "room2",
-      "numberOfParticipates": 4
+      "name": "table2",
+      "numberOfPlayers": 4,
+      "status": "active"
     },
     {
-      "name": "room3",
-      "numberOfParticipates": 11
+      "name": "table3",
+      "numberOfPlayers": 11,
+      "status": "not active"
     }
   ]
 }

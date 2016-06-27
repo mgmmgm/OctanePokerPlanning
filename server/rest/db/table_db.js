@@ -1,10 +1,10 @@
 
 var schemas = require('./schemas/init_schema');
 
-function getRoomsFromDB(req,response) {
-   return schemas.RoomModel.find(function(err, items) {
+function getTablesFromDB(req,response) {
+   return schemas.TableModel.find(function(err, items) {
        if (!err) {
-           //console.log("rooms: "+JSON.stringify(items));
+           //console.log("tables: "+JSON.stringify(items));
            return items;
        } else {
            console.log(err);
@@ -13,10 +13,10 @@ function getRoomsFromDB(req,response) {
    });
 }
 
-function getRoomByIdFromDB(id, response) {
-    return schemas.RoomModel.findOne({'id':id}, function(err, item) {
+function getTableByIdFromDB(id, response) {
+    return schemas.TableModel.findOne({'id':id}, function(err, item) {
         if (!err) {
-            //console.log("room: "+JSON.stringify(item));
+            //console.log("table: "+JSON.stringify(item));
             return item;
         } else {
             response.status(500).send({"error":err.message});
@@ -24,8 +24,8 @@ function getRoomByIdFromDB(id, response) {
     });
 }
 
-function addRoomToDB(newRoom, response) {
-	var newDocument = new schemas.RoomModel(newRoom);
+function addTableToDB(newTable, response) {
+	var newDocument = new schemas.TableModel(newTable);
 	return newDocument.save(function (err) {
 		if (!err) {
 			//console.log('added');
@@ -38,8 +38,8 @@ function addRoomToDB(newRoom, response) {
 	});
 }
 
-function updateRoomToDB(roomDocument, response) {
-	return roomDocument.save(function (err) {
+function updateTableToDB(tableDocument, response) {
+	return tablemDocument.save(function (err) {
 		if (!err) {
 			//console.log('updated');
 			return true;
@@ -52,8 +52,8 @@ function updateRoomToDB(roomDocument, response) {
 }
 
 
-exports.getRooms = getRoomsFromDB;
-exports.getRoomById = getRoomByIdFromDB;
-exports.addRoom = addRoomToDB;
-exports.updateRoom = updateRoomToDB;
+exports.getTables = getTablesFromDB;
+exports.getTableById = getTableByIdFromDB;
+exports.addTable = addTableToDB;
+exports.updateTable = updateTableToDB;
 

@@ -1,0 +1,22 @@
+Prerequisites:
+--------------------
+NodeJS
+MongoDB
+
+
+Modules Installation: (npm install)
+-------------------
+express
+mongoose
+body-parser
+
+
+To start:
+-------------------
+node app.js (to up the node server)
+
+
+how to run MongoDB:
+-----------------------
+in folder: C:\Program Files\MongoDB\Server\3.2\bin\
+run the command: mongod --dbpath=C:/Mongo

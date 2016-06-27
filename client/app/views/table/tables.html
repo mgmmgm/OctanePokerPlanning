@@ -1,0 +1,25 @@
+<div>
+    <h2>All Tables</h2>
+
+    <button type="button" class="btn btn-info" ng-click="OpenCreateTableModal()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Create table</button>
+
+    <div class="tables-table">
+        <div class="table-row tables-table-header">
+            <div class="table-row-item">Name</div>
+            <div class="table-row-item"># of players</div>
+            <div class="table-row-item">Status</div>
+        </div>
+        <div class="tables-table-content">
+            <div class="table-row" ng-repeat="table in tables">
+                <div class="table-row-item table-name">{{table.name}}</div>
+                <div class="table-row-item">{{table.numberOfPlayers}}</div>
+                <div class="table-row-item status-cell" ng-class="{'active': table.status === 'active', 'not-active': table.status === 'not active'}">{{table.status}}
+                    <button ng-if="table.status === 'active'" type="button" class="btn btn bg-primary btn-xs" ng-click="join()" title="Join to this table">Join</button>
+                    <span class="glyphicon glyphicon-remove remove-button" aria-hidden="true" ng-click="delete()" title="Delete table"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
