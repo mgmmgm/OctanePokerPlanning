@@ -9,12 +9,31 @@ function getGames(req,res) {
 
 function getGameById(req, res) {
 	var id = req.params.id;
-	dbHelper.getGameById(id, res).then(function(data) {
-		if (data === null) {
-			res.status(500).send('not found');
-		}
-		res.send(data);
-	});
+
+	var ownerPlayer = {
+		name: 'moshe',
+		voteValue: null,
+		isOwner: true
+	};
+
+	var newGameObj = {
+		id: '12345',
+		name: 'Abcdefg',
+		cardsType: 'S',
+		players: [ownerPlayer],
+		linkToGame: 'http://localhost:4000/#/game/12345',
+		releaseId: 1000,
+		releaseName: 'release 1'
+	};
+
+	res.send(newGameObj);
+
+	//dbHelper.getGameById(id, res).then(function(data) {
+	//	if (data === null) {
+	//		res.status(500).send('not found');
+	//	}
+	//	res.send(data);
+	//});
 	
 };
 

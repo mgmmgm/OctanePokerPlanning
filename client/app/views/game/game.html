@@ -3,19 +3,19 @@
     <div class="game-left-side flex">
 
         <div class="game-title">
-            <div class="game-table-name font-size-40px">{{tableName}}</div>
+            <div class="game-table-name font-size-40px">{{gameName}}</div>
             <div class="game-title-filter flex">
                 <div class="game-release">
                     <label>Release:</label>
-                    <div class="inline-block">{{release}}</div>
+                    <div class="inline-block">{{releaseName}}</div>
                 </div>
                 <div class="game-sprint margin-h--20px">
                     <label>Sprint:</label>
-                    <div class="inline-block">{{sprint}}</div>
+                    <div class="inline-block">{{sprintName}}</div>
                 </div>
                 <div class="game-team">
                     <label>Team:</label>
-                    <div class="inline-block">{{team}}</div>
+                    <div class="inline-block">{{teamName}}</div>
                 </div>
             </div>
         </div>
@@ -44,6 +44,13 @@
         </div>
 
         <button ng-click="addPlayer()">Add</button>
+
+        <div class="game-link-container">
+            <div class="font-size-20px margin-v--5px">Invite a team mate to play</div>
+            <div>
+                <input type="text" class="form-control" readonly value="{{linkToGame}}">
+            </div>
+        </div>
 
     </div>
 </div>
