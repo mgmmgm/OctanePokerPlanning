@@ -3,7 +3,7 @@ var cookie = require('cookie');
 
 const OCTANE_SERVER = 'https://hackathon.almoctane.com';
 const SHAREDSPACE_ID = 1001;
-const WORKSPACE_ID = 2022;
+const WORKSPACE_ID = 2027;
 
 var requestor = request.defaults({
 	jar: true,
@@ -39,8 +39,8 @@ function login(requestor, callback) {
 	requestor.post({
 		uri: '/authentication/sign_in',
 		body: {
-			client_id: 'Ido_Raz_no47el37gvq87h6oyj5yle6ly', // put API KEY here
-			client_secret: '$21dd634c6193ae8X' // PUT API SECRET HERE
+			client_id: 'Ido Raz_z2wmdyo6x4vqwbg5595n70lx8', // put API KEY here
+			client_secret: '+414c89b9d5b2dbb6Y' // PUT API SECRET HERE
 			//user: 'hackathon@user',
 			//password: 'Mission-impossible'
 			/**
@@ -136,7 +136,26 @@ function getSprints(req, res) {
 }
 
 function getStories(req, res) {
-	responseRequestor.get('/work_items?query="subtype=\'story\'"', function (error, message, stories) {
+	var queryString = '';
+	console.log('params are '+JSON.stringify(req.params));
+	if (req.params !== undefined) {
+		if (req.params.releaseId !== undefined) {
+			queryString = queryString + 'releaseId='+req.params.releaseId;
+		}
+		if (req.params.sprintId !== undefined) {
+			queryString = queryString + '&sprintId='+req.params.sprintId;
+		}
+		if (req.params.teamId !== undefined) {
+			queryString = queryString + '&teamId='+req.params.teamId;
+		}
+	}
+	if (queryString !== '') {
+		queryString = queryString + '&';
+	}
+	queryString = queryString + 'subtype=\'story\'';
+
+	console.log('query string is '+queryString);
+	responseRequestor.get('/work_items?query="'+queryString+'"', function (error, message, stories) {
 		console.log('STORIES: '+stories.length);
 		if (stories !== undefined && stories.data !== undefined) {
 			var storyList = [];
@@ -157,7 +176,7 @@ function updateStory(req, res) {
 		uri: '/work_items/2449',
 		body : {name:"xxx", id: 2449}
 	}, function (error, reponse) {
-		
+
 	});
 }
 
