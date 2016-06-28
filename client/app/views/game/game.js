@@ -3,7 +3,7 @@
 
   var gameModule = angular.module('opp.game', ['opp.core']);
 
-  gameModule.controller('GameCtrl', ['$scope', '$state', 'gameSvc', 'CONSTS', function($scope, $state, gameSvc, CONSTS) {
+  gameModule.controller('GameCtrl', ['$scope', '$state', 'gameSvc', 'toastSvc', 'CONSTS', function($scope, $state, gameSvc, toastSvc, CONSTS) {
 
     function init() {
       gameSvc.getGameById($state.params.tableId).then(
@@ -55,16 +55,19 @@
           card.isEnable = false;
         }
       })
-    }
+    };
 
     $scope.addPlayer = function() {
+      var newPlayerName = 'new player';
       $scope.players.push({
-        name: 'player 6',
+        name: newPlayerName,
         voteValue: 23,
         isOwner: false
       });
 
-    }
+      toastSvc.showInfoToast("player '" + newPlayerName + "' joined to the game");
+
+    };
 
     init();
 
