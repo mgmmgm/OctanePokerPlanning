@@ -1,0 +1,52 @@
+.player {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.player-image-container {
+    border: 1px solid black;
+    border-radius: 50%;
+    background-color: #eeeeee;
+    flex: 0 0 0;
+}
+
+.player-image-container-owner {
+    border: 2px solid orange;
+}
+
+.player-owner-image {
+    width: 42px;
+    height: 42px;
+    padding: 2px;
+}
+
+.player-image {
+    width: 40px;
+    height: 40px;
+    padding: 4px;
+}
+
+.player-checked-image {
+    width: 20px;
+    height: 20px;
+}
+
+.player-not-checked-image {
+    width: 16px;
+    height: 16px;
+}
+
+.player-checked-image-container {
+    flex: 1 0 0;
+    margin-left: 10px;
+}
+
+.player-name {
+    flex: 4 0 0;
+}
+
+.player-vote-value {
+    flex: 1 0 0;
+}

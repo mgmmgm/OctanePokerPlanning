@@ -34,11 +34,16 @@
     </div>
 
     <div class="game-right-side">
-        <h3>Players</h3>
-        <div>
-            <div ng-repeat="player in players">
-                <div>{{player.name}}</div>
+        <div class="players-container margin--20px">
+            <div class="players-title text-align-center">Players</div>
+            <div class="margin--5px">
+                <div ng-repeat="player in players">
+                    <player-drtv name="{{player.name}}" vote-value="player.voteValue" is-owner="player.isOwner"></player-drtv>
+                </div>
             </div>
         </div>
+
+        <button ng-click="addPlayer()">Add</button>
+
     </div>
 </div>
