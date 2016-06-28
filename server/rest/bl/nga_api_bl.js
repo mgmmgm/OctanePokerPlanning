@@ -139,14 +139,14 @@ function getStories(req, res) {
 	var queryString = '';
 	console.log('params are '+JSON.stringify(req.params));
 	if (req.params !== undefined) {
-		if (req.params.releaseId !== undefined) {
-			queryString = queryString + 'releaseId='+req.params.releaseId;
+		if (req.params.release !== undefined) {
+			queryString = queryString + 'releaseId='+req.params.release.id;
 		}
-		if (req.params.sprintId !== undefined) {
-			queryString = queryString + '&sprintId='+req.params.sprintId;
+		if (req.params.sprint !== undefined) {
+			queryString = queryString + '&sprintId='+req.params.sprint.id;
 		}
-		if (req.params.teamId !== undefined) {
-			queryString = queryString + '&teamId='+req.params.teamId;
+		if (req.params.team !== undefined) {
+			queryString = queryString + '&teamId='+req.params.team.id;
 		}
 	}
 	if (queryString !== '') {

@@ -8,11 +8,12 @@
     $scope.gameName = 'game22';
 
     $scope.tableName = $state.params.tableName;
+    $scope.ownerUserName = $state.params.ownerUserName;
     //$scope.cards = $state.params.cardsValue;
     $scope.cards = CONSTS.CARDS_TYPES.SEQUENTIAL;
     $scope.release = $state.params.release;
-    $scope.sprint = 'sprint 1';
-    $scope.team = 'team1';
+    $scope.sprint = $state.params.sprint;
+    $scope.team = $state.params.team;
     $scope.userstory = "user storyyyyyyyyyyyyyyy";
     $scope.players = [
       {

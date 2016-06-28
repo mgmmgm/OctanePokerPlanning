@@ -15,7 +15,9 @@
         params: {
           tableName: null,
           cardsValue: null,
-          release: null
+          release: null,
+          sprint: null,
+          team: null
         },
         templateUrl: 'app/views/game/game.html',
         controller: 'GameCtrl'
