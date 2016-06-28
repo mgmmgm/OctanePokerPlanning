@@ -20,9 +20,5 @@
       return $http.post(url, newGame);
     };
 
-    this.updateStoryPoint = function(id, sp) {
-      
-    }
-
   }]);
 })();

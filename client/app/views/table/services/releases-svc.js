@@ -10,7 +10,7 @@
     var sprintsUrl = '/sprints';
     var teamsUrl = '/teams';
 
-    this.getReleases = function() {
+    this.getReteamsUrlleases = function() {
       /*if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
         url = '../../../../demoData/demoData.json';
       }*/
@@ -24,18 +24,18 @@
       return $http.get(url + sprintsUrl);
     };
 
-    this.updateStory = function() {
+    this.updateStory = function(storyID, storyPoints) {
       /*if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
        url = '../../../../demoData/demoData.json';
        }*/
-      return $http.get(url + sprintsUrl);
+      return $http.put(url + '/updateSP', {id: storyID, sp: storyPoints});
     };
 
     this.getTeams = function() {
       /*if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
        url = '../../../../demoData/demoData.json';
        }*/
-      return $http.put(url + '/updateSP');
+      return $http.get(url + teamsUrl);
     };
   }]);
 })();

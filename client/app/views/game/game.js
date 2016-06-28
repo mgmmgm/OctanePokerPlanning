@@ -3,7 +3,7 @@
 
   var gameModule = angular.module('opp.game', ['opp.core']);
 
-  gameModule.controller('GameCtrl', ['$scope', '$state', 'gameSvc', 'CONSTS', function($scope, $state, gameSvc, CONSTS) {
+  gameModule.controller('GameCtrl', ['$scope', '$state', 'gameSvc', 'releasesSvc ', 'CONSTS', function($scope, $state, gameSvc, releasesSvc, CONSTS) {
 
     function init() {
       gameSvc.getGameById($state.params.tableId).then(
@@ -60,7 +60,7 @@
     }
 
       $scope.updateStoryPoints = function() {
-          gameSvc.updateStoryPoint(2463, $scope.selectedValue);
+          releasesSvc.updateStory(2463, $scope.selectedValue);
       }
 
     $scope.addPlayer = function() {
