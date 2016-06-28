@@ -18,6 +18,7 @@ app.listen(port, function() {
     console.log("Server is up and listening on port %d", port);
 });
 
+/*
 
 // DB Connection
 var mongo = {
@@ -45,9 +46,9 @@ var generate_mongo_url = function(obj){
 var mongourl = generate_mongo_url(mongo);
 var mongoose = require('mongoose');
 
-/**
+/!**
  * connect to database
- */
+ *!/
 var conn = mongoose.connect(mongourl,function(err) {
     if (err) {
         console.log(err);
@@ -55,3 +56,4 @@ var conn = mongoose.connect(mongourl,function(err) {
     }
     console.log("Connected to " + mongourl + " successfully");
 });
+*/
