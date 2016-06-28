@@ -17,6 +17,7 @@ function setup(app) {
 	app.get('/rest/sprints', api.getSprints);
 	app.get('/rest/teams', api.getTeams);
 	app.get('/rest/stories', api.getStories);
+	app.put('/rest/updateSP', api.updateStory);
 
 
 }
