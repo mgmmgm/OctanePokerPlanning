@@ -11,12 +11,7 @@
         controller: 'TableCtrl'
       })
       .state('game', {
-        url: '/game',
-        params: {
-          tableName: null,
-          cardsValue: null,
-          release: null
-        },
+        url: '/game/:tableId',
         templateUrl: 'app/views/game/game.html',
         controller: 'GameCtrl'
       });
@@ -27,7 +22,7 @@
 
   mainModule.controller('OppController', ['$scope', 'CONSTS', function ($scope, CONSTS) {
 
-    CONSTS.ENV_MODE = CONSTS.ENV_MODE_OPTIONS.DEV; // remove or change it in production
+    CONSTS.ENV_MODE = CONSTS.ENV_MODE_OPTIONS.PRODUCTION; // remove or change it in production
 
     $scope.test = 'main';
 

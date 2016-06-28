@@ -21,7 +21,19 @@
       });
 
       modalInstance.result.then(function (data) {
-        $state.go('game', {tableName: data.tableName, cardsValue: data.cardsValue, release: data.release});
+        var newTable = {
+          name: data.tableName,
+          numberOfPlayers: 1,
+          status: 'active',
+          ownerName: 'moshe'
+        };
+
+        tableSvc.addTable(newTable).then(
+          function(result) {
+            console.log(result.data);
+            $state.go('game', {tableId: result.data.id});
+          }
+        )
       });
     };
 

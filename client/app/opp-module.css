@@ -49,6 +49,11 @@
 }
 
 /********** margin ***********/
+.margin-v--5px {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
 .margin-h--10px {
 	margin-left: 10px;
 	margin-right: 10px;

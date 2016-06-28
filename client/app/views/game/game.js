@@ -3,44 +3,51 @@
 
   var gameModule = angular.module('opp.game', ['opp.core']);
 
-  gameModule.controller('GameCtrl', ['$scope', '$state', 'CONSTS', function($scope, $state, CONSTS) {
+  gameModule.controller('GameCtrl', ['$scope', '$state', 'gameSvc', 'CONSTS', function($scope, $state, gameSvc, CONSTS) {
 
-    $scope.gameName = 'game22';
+    function init() {
+      gameSvc.getGameById($state.params.tableId).then(
+        function(result) {
+          $scope.gameName = result.data.name;
+          $scope.cards = CONSTS.CARDS_TYPES.SEQUENTIAL;
+          $scope.releaseName = result.data.releaseName;
+          $scope.releaseId = result.data.releaseId;
+          $scope.sprintName = 'sprint 1';
+          $scope.teamName = 'team1';
+          $scope.userstory = "user storyyyyyyyyyyyyyyy";
+          $scope.players = result.data.players;
+          $scope.linkToGame = result.data.linkToGame;
+        }
+      )
+    }
 
-    $scope.tableName = $state.params.tableName;
-    //$scope.cards = $state.params.cardsValue;
-    $scope.cards = CONSTS.CARDS_TYPES.SEQUENTIAL;
-    $scope.release = $state.params.release;
-    $scope.sprint = 'sprint 1';
-    $scope.team = 'team1';
-    $scope.userstory = "user storyyyyyyyyyyyyyyy";
-    $scope.players = [
-      {
-        name: 'player 1',
-        voteValue: null,
-        isOwner: false
-      },
-      {
-        name: 'player 2',
-        voteValue: 10,
-        isOwner: true
-      },
-      {
-        name: 'player 3',
-        voteValue: 8,
-        isOwner: false
-      },
-      {
-        name: 'player 4',
-        voteValue: null,
-        isOwner: false
-      },
-      {
-        name: 'player 5',
-        voteValue: 15,
-        isOwner: false
-      }
-    ];
+    //$scope.players = [
+    //  {
+    //    name: 'player 1',
+    //    voteValue: null,
+    //    isOwner: false
+    //  },
+    //  {
+    //    name: 'player 2',
+    //    voteValue: 10,
+    //    isOwner: true
+    //  },
+    //  {
+    //    name: 'player 3',
+    //    voteValue: 8,
+    //    isOwner: false
+    //  },
+    //  {
+    //    name: 'player 4',
+    //    voteValue: null,
+    //    isOwner: false
+    //  },
+    //  {
+    //    name: 'player 5',
+    //    voteValue: 15,
+    //    isOwner: false
+    //  }
+    //];
 
     $scope.disableOtherCards = function(selectedCard) {
       angular.forEach($scope.cards, function(card) {
@@ -57,8 +64,9 @@
         isOwner: false
       });
 
-      $scope.players[3].voteValue = 1;
     }
+
+    init();
 
   }]);
 
