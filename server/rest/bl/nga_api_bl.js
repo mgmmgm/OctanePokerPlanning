@@ -3,7 +3,7 @@ var cookie = require('cookie');
 
 const OCTANE_SERVER = 'https://hackathon.almoctane.com';
 const SHAREDSPACE_ID = 1001;
-const WORKSPACE_ID = 1002;
+const WORKSPACE_ID = 2022;
 
 var requestor = request.defaults({
 	jar: true,
@@ -16,6 +16,8 @@ var requestor = request.defaults({
 var responseRequestor = {};
 
 var releaseList = [];
+var teamList = [];
+var sprintList = [];
 
 function connect(req, res) {
 	login(requestor, function (requestor) {
@@ -37,8 +39,10 @@ function login(requestor, callback) {
 	requestor.post({
 		uri: '/authentication/sign_in',
 		body: {
-			user: 'hackathon@user',
-			password: 'Mission-impossible'
+			client_id: 'Ido_Raz_no47el37gvq87h6oyj5yle6ly', // put API KEY here
+			client_secret: '$21dd634c6193ae8X' // PUT API SECRET HERE
+			//user: 'hackathon@user',
+			//password: 'Mission-impossible'
 			/**
 			 * alternatively you can use API key like this
 			 * client_id: '', // put API KEY here
@@ -84,8 +88,27 @@ function getReleases(req, res) {
 			releases.data.forEach(function (release) {
 				console.log('id: ' + release.id + ' name: ' + release.name);
 				releaseList.push({'id': release.id, 'name': release.name});
-				res.send(releaseList);
 			});
+			res.send(releaseList);
+			
+		} else {
+			res.send(message);
+		}
+	});
+
+}
+
+function getTeams(req, res) {
+
+	responseRequestor.get('/teams', function (error, message, teams) {
+		console.log('ALL TEAMS');
+		if (teams !== undefined && teams.data !== undefined) {
+			teamList = [];
+			teams.data.forEach(function (team) {
+				console.log('id: ' + team.id + ' name: ' + team.name);
+				teamList.push({'id': team.id, 'name': team.name});
+			});
+			res.send(teamList);
 		} else {
 			res.send(message);
 		}
@@ -94,6 +117,54 @@ function getReleases(req, res) {
 }
 
 
+function getSprints(req, res) {
+
+	responseRequestor.get('/sprints', function (error, message, sprints) {
+		console.log('ALL TEAMS');
+		if (sprints !== undefined && sprints.data !== undefined) {
+			sprintList = [];
+			sprints.data.forEach(function (sprint) {
+				console.log('id: ' + sprint.id + ' name: ' + sprint.name);
+				sprintList.push({'id': sprint.id, 'name': sprint.name});
+			});
+			res.send(sprintList);
+		} else {
+			res.send(message);
+		}
+	});
+
+}
+
+function getStories(req, res) {
+	responseRequestor.get('/work_items?query="subtype=\'story\'"', function (error, message, stories) {
+		console.log('STORIES: '+stories.length);
+		if (stories !== undefined && stories.data !== undefined) {
+			var storyList = [];
+			stories.data.forEach(function (story) {
+				console.log('id: ' + story.id + ' name: ' + story.name);
+				storyList.push({'id': story.id, 'name': story.name});
+
+			});
+			res.send(storyList);
+		} else {
+			res.send(message);
+		}
+	});
+}
+
+function updateStory(req, res) {
+	responseRequestor.put({
+		uri: '/work_items/2449',
+		body : {name:"xxx", id: 2449}
+	}, function (error, reponse) {
+		
+	});
+}
+
 
 exports.connect = connect;
 exports.getReleases = getReleases;
+exports.getSprints = getSprints;
+exports.getTeams = getTeams;
+exports.getStories = getStories;
+

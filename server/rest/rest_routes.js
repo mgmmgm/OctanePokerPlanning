@@ -14,6 +14,10 @@ function setup(app) {
 
 	app.get('/rest/connect', api.connect);
 	app.get('/rest/releases', api.getReleases);
+	app.get('/rest/sprints', api.getSprints);
+	app.get('/rest/teams', api.getTeams);
+	app.get('/rest/stories', api.getStories);
+
 
 }
 exports.setup = setup;
