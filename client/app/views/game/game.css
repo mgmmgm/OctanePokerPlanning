@@ -1,0 +1,31 @@
+.game {
+    flex-direction: row;
+}
+
+.game-left-side {
+    flex: 2 0 0;
+    flex-direction: column;
+}
+
+.game-title {
+
+
+}
+
+.game-table-name {
+
+}
+
+.game-title-filter {
+    background-color: #cccccc;
+}
+
+.game-cards-votes-container {
+    /*border: 1px solid black;*/
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.game-right-side {
+    flex: 1 0 0;
+}

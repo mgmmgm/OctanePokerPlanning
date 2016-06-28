@@ -1,12 +1,44 @@
-<div>
-    {{gameName}}
-</div>
-<div>
-    {{tableName}}
-</div>
-<div>
-    {{cardsValue}}
-</div>
-<div>
-    {{release}}
+<div class="game flex">
+
+    <div class="game-left-side flex">
+
+        <div class="game-title">
+            <div class="game-table-name font-size-40px">{{tableName}}</div>
+            <div class="game-title-filter flex">
+                <div class="game-release">
+                    <label>Release:</label>
+                    <div class="inline-block">{{release}}</div>
+                </div>
+                <div class="game-sprint margin-h--20px">
+                    <label>Sprint:</label>
+                    <div class="inline-block">{{sprint}}</div>
+                </div>
+                <div class="game-team">
+                    <label>Team:</label>
+                    <div class="inline-block">{{team}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-sub-title margin-v--20px font-size-20px">
+            {{userstory}}
+        </div>
+        <div class="game-cards-votes-container flex">
+            <div class="margin--10px" ng-repeat="card in cards">
+                <card-drtv value="{{card.value}}" is-selected="card.isSelected" is-enable="card.isEnable" disable-other-cards-fn="disableOtherCards(selectedCard)"></card-drtv>
+            </div>
+        </div>
+        <!--<div class="game-stories-list-container">-->
+            <!--listttttttttt-->
+        <!--</div>-->
+    </div>
+
+    <div class="game-right-side">
+        <h3>Players</h3>
+        <div>
+            <div ng-repeat="player in players">
+                <div>{{player.name}}</div>
+            </div>
+        </div>
+    </div>
 </div>

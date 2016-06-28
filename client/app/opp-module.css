@@ -25,3 +25,60 @@
 	background-color: #eeeeee;
 	height: 30px;
 }
+
+/*************************** global style ***************************/
+/********** display ***********/
+.inline-block {
+	display: inline-block;
+}
+
+.flex {
+	display: flex;
+}
+
+.table-cell {
+	display: table-cell;
+}
+
+.text-align-center {
+	text-align: center;
+}
+
+.vertical-align-middle {
+	vertical-align: middle;
+}
+
+/********** margin ***********/
+.margin-h--10px {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.margin--10px {
+	margin: 10px;
+}
+
+.margin-h--20px {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.margin-v--20px {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+/********** font ***********/
+.font-size-40px {
+	font-size: 40px;
+}
+
+.font-size-20px {
+	font-size: 20px;
+}
+
+/********** general ***********/
+.cursor-pointer {
+	cursor: pointer;
+}
+

@@ -1,0 +1,23 @@
+.card {
+    width: 70px;
+    height: 110px;
+    border: 2px solid #6ea6dc;
+    border-radius: 4px;
+}
+
+.card:hover {
+    background-color: #bfd5ea;
+}
+
+.card-value {
+    font-size: 28px;
+}
+
+.card-selected {
+    background-color: #a6e1ec;
+}
+
+.card-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
