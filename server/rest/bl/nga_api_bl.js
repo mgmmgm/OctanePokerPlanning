@@ -1,5 +1,6 @@
 var request = require('request');
 var cookie = require('cookie');
+var url  = require('url');
 
 const OCTANE_SERVER = 'https://hackathon.almoctane.com';
 const SHAREDSPACE_ID = 1001;
@@ -137,27 +138,28 @@ function getSprints(req, res) {
 
 function getStories(req, res) {
 	var queryString = '';
-	console.log('params are '+JSON.stringify(req.params));
-	if (req.params !== undefined) {
-		if (req.params.release !== undefined) {
-			queryString = queryString + 'releaseId='+req.params.release.id;
+	var url_parts = url.parse(req.url, true);
+	var params = url_parts.query;
+	if (params !== undefined) {
+		if (params['release'] !== undefined) {
+			queryString = queryString + 'release={id='+params['release']+'}';
 		}
-		if (req.params.sprint !== undefined) {
-			queryString = queryString + '&sprintId='+req.params.sprint.id;
+		if (params['sprint'] !== undefined) {
+			queryString = queryString + ';sprint={id=' + params['sprint']+'}';
 		}
-		if (req.params.team !== undefined) {
-			queryString = queryString + '&teamId='+req.params.team.id;
+		if (params['team'] !== undefined) {
+			queryString = queryString + ';team=(id='+params['team']+'}';
 		}
 	}
 	if (queryString !== '') {
-		queryString = queryString + '&';
+		queryString = queryString + ';';
 	}
 	queryString = queryString + 'subtype=\'story\'';
 
 	console.log('query string is '+queryString);
 	responseRequestor.get('/work_items?query="'+queryString+'"', function (error, message, stories) {
-		console.log('STORIES: '+stories.length);
 		if (stories !== undefined && stories.data !== undefined) {
+			console.log('STORIES: '+stories.data.length);
 			var storyList = [];
 			stories.data.forEach(function (story) {
 				console.log('id: ' + story.id + ' name: ' + story.name);
@@ -171,14 +173,26 @@ function getStories(req, res) {
 	});
 }
 
-function updateStory(req, res) {
-	responseRequestor.put({
-		uri: '/work_items/2449',
-		body : {name:"xxx", id: 2449}
-	}, function (error, reponse) {
 
+function updateStory(req, res) {
+	var putStoryExample = {
+		"data":
+			{
+				"id": "2463",
+				"name" : "changed"
+			}
+
+	};
+
+	requestor.put({uri: '/work_items/2463', body: putStoryExample}, function (error, message, stories){
+		console.log(stories);
+		res.send(stories);
+		//stories.data.forEach(function (story) {
+		//	console.log('id: ' + story.id + ' name: ' + story.name);
+		//});
 	});
 }
+
 
 
 exports.connect = connect;
@@ -186,4 +200,5 @@ exports.getReleases = getReleases;
 exports.getSprints = getSprints;
 exports.getTeams = getTeams;
 exports.getStories = getStories;
+exports.updateStory = updateStory;
 
