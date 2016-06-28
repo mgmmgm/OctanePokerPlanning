@@ -175,21 +175,15 @@ function getStories(req, res) {
 
 
 function updateStory(req, res) {
+
+	var body = rest.body;
 	var putStoryExample = {
-		"data":
-			{
-				"id": "2463",
 				"name" : "changed"
-			}
+				};
 
-	};
-
-	requestor.put({uri: '/work_items/2463', body: putStoryExample}, function (error, message, stories){
+	responseRequestor.put({uri: '/work_items/2463', body: putStoryExample}, function (error, message, stories){
 		console.log(stories);
 		res.send(stories);
-		//stories.data.forEach(function (story) {
-		//	console.log('id: ' + story.id + ' name: ' + story.name);
-		//});
 	});
 }
 
