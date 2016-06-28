@@ -68,6 +68,18 @@
 	margin-bottom: 20px;
 }
 
+.margin--5px {
+	margin: 5px;
+}
+
+.margin--20px {
+	margin: 20px;
+}
+
+.padding--4px {
+	padding: 4px;
+}
+
 /********** font ***********/
 .font-size-40px {
 	font-size: 40px;

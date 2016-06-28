@@ -29,3 +29,13 @@
 .game-right-side {
     flex: 1 0 0;
 }
+
+.players-container {
+    margin-top: 100px;
+}
+
+.players-title {
+    font-size: 25px;
+    background-color: lightblue;
+    margin-bottom: 20px;
+}

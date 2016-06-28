@@ -17,24 +17,29 @@
     $scope.players = [
       {
         name: 'player 1',
-        voteValue: null
+        voteValue: null,
+        isOwner: false
       },
       {
         name: 'player 2',
-        voteValue: null
+        voteValue: 10,
+        isOwner: true
       },
       {
         name: 'player 3',
-        voteValue: null
+        voteValue: 8,
+        isOwner: false
       },
       {
         name: 'player 4',
-        voteValue: null
+        voteValue: null,
+        isOwner: false
       },
       {
         name: 'player 5',
-        voteValue: null
-      },
+        voteValue: 15,
+        isOwner: false
+      }
     ];
 
     $scope.disableOtherCards = function(selectedCard) {
@@ -43,6 +48,16 @@
           card.isEnable = false;
         }
       })
+    }
+
+    $scope.addPlayer = function() {
+      $scope.players.push({
+        name: 'player 6',
+        voteValue: 23,
+        isOwner: false
+      });
+
+      $scope.players[3].voteValue = 1;
     }
 
   }]);

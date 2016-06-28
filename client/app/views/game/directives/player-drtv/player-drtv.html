@@ -1,0 +1,12 @@
+<div class="player">
+    <div class="player-image-container" ng-class="{'player-image-container-owner' : isOwner}">
+        <img ng-if="isOwner" class="player-owner-image" src="images/player_owner.png" title="Owner"/>
+        <img ng-if="!isOwner" class="player-image" src="images/player.png" title="Player"/>
+    </div>
+    <div class="player-checked-image-container">
+        <img ng-if="voteValue" class="player-checked-image" src="images/checked.png" title="Already voted"/>
+        <img ng-if="!voteValue" class="player-not-checked-image" src="images/not-checked.png" title="Waiting for voting..."/>
+    </div>
+    <div class="player-name"><span>{{name}}</span></div>
+    <div class="player-vote-value"><span>{{voteValue}}</span></div>
+</div>
