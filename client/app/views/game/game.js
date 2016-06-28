@@ -17,6 +17,7 @@
           $scope.userstory = "user storyyyyyyyyyyyyyyy";
           $scope.players = result.data.players;
           $scope.linkToGame = result.data.linkToGame;
+          $scope.tableId = $state.params.tableId;
         }
       )
     }
@@ -50,12 +51,17 @@
     //];
 
     $scope.disableOtherCards = function(selectedCard) {
+        $scope.selectedValue = selectedCard.value;
       angular.forEach($scope.cards, function(card) {
         if (card.value !== selectedCard.value) {
           card.isEnable = false;
         }
       })
     }
+
+      $scope.updateStoryPoints = function() {
+          gameSvc.updateStoryPoint(2463, $scope.selectedValue);
+      }
 
     $scope.addPlayer = function() {
       $scope.players.push({
