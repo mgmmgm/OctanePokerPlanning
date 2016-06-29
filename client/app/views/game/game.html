@@ -22,7 +22,7 @@
         </div>
 
         <div class="game-sub-title margin-v--20px font-size-20px">
-            {{userstory}}
+            {{selectedUserstory.name}}
         </div>
         <div class="game-cards-votes-container flex">
             <div class="margin--10px" ng-repeat="card in cards">
@@ -53,6 +53,9 @@
         <button ng-click="addPlayer()">Add</button>
 
         <div class="buttons-container text-align-center margin-v--20px">
+            <button type="button" class="btn btn-warning margin-r--50px" ng-click="skipUserstory()">Skip US
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            </button>
             <button type="button" class="btn btn-success" ng-click="finishVoting()">Finish Voting</button>
         </div>
 
