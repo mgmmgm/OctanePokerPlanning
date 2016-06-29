@@ -33,6 +33,7 @@
     ];
 
     function init() {
+      subscribeToEvents();
       tableSvc.getTableById($state.params.tableId).then(
         function(result) {
           $scope.ownerName = result.data.ownerName;
@@ -55,25 +56,20 @@
       )
     }
 
-    socketSvc.on('player:join', function(data) {
-      retrievePlayers();
-    });
+    function subscribeToEvents() {
+      socketSvc.on('player:join', function (data) {
+        refreshPlayers(data.newPlayer)
+      });
+    }
 
-    function retrievePlayers() {
-      tableSvc.getTableById($state.params.tableId).then(
-        function(result) {
-          var oldPlayer = _.pluck($scope.players, "name");
-
-          $scope.players = result.data.players;
-
-          angular.forEach($scope.players, function(player) {
-            if (oldPlayer.indexOf(player.name) === -1) {
-              toastSvc.showInfoToast("player '" + player.name + "' joined to the game");
-            }
-          });
-        }
-      )
-      //console.log("Interval occurred");
+    function refreshPlayers(newPlayerName) {
+      var newPlayer = {
+        name: newPlayerName,
+        voteValue: null,
+        isOwner: false
+      };
+      $scope.players.push(newPlayer);
+      toastSvc.showInfoToast("player '" + newPlayer.name + "' joined to table");
     }
 
     $scope.disableOtherCards = function(selectedCard) {
@@ -130,6 +126,7 @@
     function resetVotes() {
       angular.forEach($scope.cards, function(card) {
         card.isEnable = true;
+        card.isSelected = false;
       });
       angular.forEach($scope.players, function(player) {
         player.voteValue = null;
