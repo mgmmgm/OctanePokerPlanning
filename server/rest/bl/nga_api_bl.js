@@ -162,7 +162,8 @@ function getStories(req, res) {
 			console.log('STORIES: '+stories.data.length);
 			var storyList = [];
 			stories.data.forEach(function (story) {
-				console.log('id: ' + story.id + ' name: ' + story.name);
+				//console.log(JSON.stringify(story));
+				console.log('id: ' + story.id + ' name: ' + story.name + ' sp: '+ story.story_points);
 				storyList.push({'id': story.id, 'name': story.name});
 
 			});
@@ -176,12 +177,18 @@ function getStories(req, res) {
 
 function updateStory(req, res) {
 
-	var body = rest.body;
+	var body = req.body;
+	var id = body.id;
+	var sp = body.sp;
+	var comment = '';
+	console.log ('updating id '+id+' sp '+ sp);
 	var putStoryExample = {
-				"name" : "changed"
+				"name" : "changed",
 				};
 
-	responseRequestor.put({uri: '/work_items/2463', body: putStoryExample}, function (error, message, stories){
+	putStoryExample['story_points'] = ''+sp+'';
+
+	responseRequestor.put({uri: '/work_items/'+id, body: putStoryExample}, function (error, message, stories){
 		console.log(stories);
 		res.send(stories);
 	});

@@ -60,7 +60,7 @@
     }
 
       $scope.updateStoryPoints = function() {
-        //  releasesSvc.updateStory(2463, $scope.selectedValue);
+         gameSvc.updateStory(2463, $scope.selectedValue);
       }
 
     $scope.addPlayer = function() {
