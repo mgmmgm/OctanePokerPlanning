@@ -10,8 +10,7 @@
         value: '@',
         isSelected: '=',
         isEnable: '=',
-        disableOtherCardsFn: '&',
-        addVoteCommentFn: '&'
+        addVoteFn: '&'
       },
       templateUrl: 'app/views/game/directives/card-drtv/card-drtv.html',
       link: function(scope) {
@@ -21,22 +20,24 @@
         scope.selectCard = function() {
           if (scope.isEnable && !scope.isSelected) {
             scope.isSelected = !scope.isSelected;
-            scope.disableOtherCardsFn({selectedCard: this});
-            scope.OpenVoteCommentModal();
+            //scope.disableOtherCardsFn({selectedCard: this});
+            scope.OpenVoteCommentModal(this);
           }
         };
 
 
-        scope.OpenVoteCommentModal = function() {
+        scope.OpenVoteCommentModal = function(selectedCard) {
           var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'app/views/game/modals/vote-comment-modal.html',
-            controller: 'ModalVoteCommentCtrl'
-
+            controller: 'ModalVoteCommentCtrl',
+            backdrop: 'static',
+            keyboard: false
           });
           modalInstance.result.then(function (data) {
+            data.selectedCard = selectedCard;
             console.log(data);
-            scope.addVoteCommentFn({voteComment: data.voteComment});
+            scope.addVoteFn({voteData: data});
           });
         };
       }

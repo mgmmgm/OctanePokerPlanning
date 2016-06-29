@@ -87,8 +87,7 @@
       toastSvc.showInfoToast("player '" + newPlayer.name + "' joined to table");
     }
 
-    $scope.disableOtherCards = function(selectedCard) {
-      $scope.selectedValue = selectedCard.value;
+    function disableOtherCards(selectedCard) {
       angular.forEach($scope.cards, function(card) {
         if (card.value !== selectedCard.value) {
           card.isSelected = false;
@@ -97,16 +96,17 @@
       })
     };
 
-    $scope.addVoteComment = function(voteComment) {
-      var username;
-
+    $scope.addVote = function(voteData) {
+      disableOtherCards(voteData.selectedCard);
       var newVote = {
           tableId: $state.params.tableId,
           storyId: $scope.selectedUserstoryIndex,
           userName: $scope.currentUser,
-          estimation: $scope.selectedValue,
-          comment: voteComment
-        };
+          estimation: voteData.selectedCard.value,
+          comment: voteData.voteComment
+
+        }
+        ;
       voteSvc.addVote(newVote);
     };
 

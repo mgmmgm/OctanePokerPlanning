@@ -47,7 +47,9 @@
       var modalInstance = $uibModal.open({
         animation: true,
         templateUrl: 'app/views/table/modals/join-table-modal.html',
-        controller: 'ModalJoinTableCtrl'
+        controller: 'ModalJoinTableCtrl',
+        backdrop: 'static',
+        keyboard: false
       });
       modalInstance.result.then(function (displayName) {
         var joinData = {
