@@ -3,7 +3,7 @@
 
   var gameModule = angular.module('opp.game', ['opp.core']);
 
-  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', 'gameSvc', 'tableSvc', 'toastSvc', 'CONSTS', function($scope, $state, $uibModal, gameSvc, tableSvc, toastSvc, CONSTS) {
+  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', 'gameSvc', 'tableSvc', 'toastSvc', 'loggedinSvc',  'CONSTS', function($scope, $state, $uibModal, gameSvc, tableSvc, toastSvc, loggedinSvc,  CONSTS) {
 
     var selectedUserstoryIndex = 0;
 
@@ -35,6 +35,9 @@
     function init() {
       tableSvc.getTableById($state.params.tableId).then(
         function(result) {
+          $scope.ownerName = result.data.ownerName;
+          $scope.joinee = loggedinSvc.getUser();
+          $scope.isOwner = ($scope.joinee === $scope.ownerName);
           $scope.gameName = result.data.name;
           $scope.cards = CONSTS.CARDS_TYPES.SEQUENTIAL;
           $scope.releaseName = result.data.release.name;
@@ -60,6 +63,7 @@
           $scope.players = result.data.players;
           $scope.linkToGame = result.data.linkToGame;
           $scope.tableId = $state.params.tableId;
+          $scope.isFinishedVoting = true;
         }
       )
     }
