@@ -3,10 +3,12 @@
 
   var gameModule = angular.module('opp.game');
 
-  gameModule.controller('ModalFinishVotingCtrl', ['$scope', '$uibModalInstance', 'finishVotingData', function($scope, $uibModalInstance, finishVotingData) {
+  gameModule.controller('ModalFinishVotingCtrl', ['$scope', '$uibModalInstance', 'finishVotingData', 'gameSvc' , function($scope, $uibModalInstance, finishVotingData, gameSvc) {
 
     function init() {
       $scope.vote = finishVotingData.vote;
+      $scope.spValue = 0;
+      $scope.commentsValue = '';
       prepareDataForChart();
     }
 
@@ -30,6 +32,7 @@
         value: 8
       };
       console.log(data);
+      gameSvc.updateStory(2463, $scope.spValue, $scope.commentsValue);
       $uibModalInstance.close(data);
     };
 
