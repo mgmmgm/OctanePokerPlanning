@@ -3,7 +3,7 @@
 
   var gameModule = angular.module('opp.game', ['opp.core']);
 
-  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'socketSvc', 'loggedinSvc',  'CONSTS', function($scope, $state, $uibModal, $interval, gameSvc, tableSvc, toastSvc, socketSvc, loggedinSvc,  CONSTS) {
+  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'socketSvc', 'loggedinSvc', 'voteSvc', 'CONSTS', function($scope, $state, $uibModal, $interval, gameSvc, tableSvc, toastSvc, socketSvc, loggedinSvc, voteSvc, CONSTS) {
 
     var selectedUserstoryIndex = 0;
 
@@ -36,8 +36,8 @@
       tableSvc.getTableById($state.params.tableId).then(
         function(result) {
           $scope.ownerName = result.data.ownerName;
-          $scope.joinee = loggedinSvc.getUser();
-          $scope.isOwner = ($scope.joinee === $scope.ownerName);
+          $scope.currentUser = loggedinSvc.getUser();
+          $scope.isOwner = ($scope.currentUser === $scope.ownerName);
           $scope.gameName = result.data.name;
           $scope.cards = CONSTS.CARDS_TYPES.FIBB;
           $scope.releaseName = result.data.release.name;
@@ -56,35 +56,50 @@
       gameSvc.voteStory($state.params.tableId);
     }
 
-    socketSvc.on('player:join', function (data) {
+    socketSvc.on('player:join', function(data) {
       retrievePlayers();
     });
 
     function retrievePlayers() {
       tableSvc.getTableById($state.params.tableId).then(
-          function(result) {
-            var oldPlayer = _.pluck($scope.players ,"name");
+        function(result) {
+          var oldPlayer = _.pluck($scope.players, "name");
 
-            $scope.players = result.data.players;
+          $scope.players = result.data.players;
 
-            angular.forEach($scope.players, function(player) {
-              if (oldPlayer.indexOf(player.name) ===-1) {
-                toastSvc.showInfoToast("player '" + player.name + "' joined to the game");
-              }
-            });
-          }
+          angular.forEach($scope.players, function(player) {
+            if (oldPlayer.indexOf(player.name) === -1) {
+              toastSvc.showInfoToast("player '" + player.name + "' joined to the game");
+            }
+          });
+        }
       )
       //console.log("Interval occurred");
     }
 
     $scope.disableOtherCards = function(selectedCard) {
-        $scope.selectedValue = selectedCard.value;
+      $scope.selectedValue = selectedCard.value;
       angular.forEach($scope.cards, function(card) {
         if (card.value !== selectedCard.value) {
           card.isSelected = false;
           card.isEnable = false;
         }
       })
+    };
+
+    $scope.addVoteComment = function(voteComment) {
+      var username;
+
+      var newVote = {
+          tableId: $state.params.tableId,
+          storyId: $scope.selectedUserstoryIndex,
+          userName: $scope.currentUser,
+          estimation: $scope.selectedValue,
+          comment: voteComment
+
+        }
+        ;
+      voteSvc.addVote(newVote);
     };
 
     $scope.skipUserstory = function() {
@@ -112,22 +127,20 @@
       )
 
 
-      modalInstance.result.then(function (data) {
+      modalInstance.result.then(function(data) {
         console.log(data);
       });
     };
 
     function resetVotes() {
       angular.forEach($scope.cards, function(card) {
-          card.isEnable = true;
-        });
+        card.isEnable = true;
+      });
       angular.forEach($scope.players, function(player) {
         player.voteValue = null;
       });
     }
 
-
-  
 
     init();
 

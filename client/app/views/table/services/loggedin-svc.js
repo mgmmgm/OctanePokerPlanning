@@ -5,16 +5,14 @@
 
   tableModule.service('loggedinSvc', ['$http', function($http) {
 
-    var loggedinuser = '';
+    var preffix = "OctanePokerPlanning:";
 
     this.setUser = function(user) {
-      //loggedinuser = user;
-      localStorage.setItem("logggedIn",user);
+      localStorage.setItem(preffix + "logggedIn",user);
     };
 
     this.getUser = function() {
-      return localStorage.getItem("logggedIn");
-     // return loggedinuser;
+      return localStorage.getItem(preffix + "logggedIn");
     };
 
   }]);
