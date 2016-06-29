@@ -73,12 +73,20 @@
 	margin-bottom: 20px;
 }
 
+.margin-b--20px {
+	margin-bottom: 20px;
+}
+
 .margin--5px {
 	margin: 5px;
 }
 
 .margin--20px {
 	margin: 20px;
+}
+
+.margin-r--50px {
+	margin-right: 50px;
 }
 
 .padding--4px {

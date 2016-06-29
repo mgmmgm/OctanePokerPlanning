@@ -14,7 +14,7 @@
                 <div class="table-row-item table-name">{{table.name}}</div>
                 <div class="table-row-item">{{table.numberOfPlayers}}</div>
                 <div class="table-row-item status-cell" ng-class="{'active': table.status === 'active', 'not-active': table.status === 'not active'}">{{table.status}}
-                    <button ng-if="table.status === 'active'" type="button" class="btn btn bg-primary btn-xs" ng-click="join(table.id)" title="Join to this table">Join</button>
+                    <button ng-if="table.status === 'active'" type="button" class="btn btn bg-primary btn-xs" ng-click="OpenJoinTableModal(table.id)" title="Join to this table">Join</button>
                     <span class="glyphicon glyphicon-remove remove-button" aria-hidden="true" ng-click="delete()" title="Delete table"></span>
                 </div>
             </div>

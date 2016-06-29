@@ -21,5 +21,10 @@
 
     };
 
+    this.joinTable = function(joinData) {
+      return $http.put('/rest/table/join', joinData);
+
+    };
+
   }]);
 })();

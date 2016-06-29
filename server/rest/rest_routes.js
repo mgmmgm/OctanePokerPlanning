@@ -7,6 +7,7 @@ function setup(app) {
     app.get('/rest/table', tableBl.getTables);
 	app.get('/rest/table/:id', tableBl.getTableById);
 	app.post('/rest/table', tableBl.addTable);
+	app.put('/rest/table/join', tableBl.joinTable);
 
   	app.get('/rest/game', gameBl.getGames);
   	app.get('/rest/game/:id', gameBl.getGameById);
