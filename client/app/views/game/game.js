@@ -3,7 +3,7 @@
 
   var gameModule = angular.module('opp.game', ['opp.core']);
 
-  gameModule.controller('GameCtrl', ['$scope', '$state', '$http', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'socketSvc', 'loggedinSvc', 'voteSvc', 'CONSTS', function($scope, $state, $http, $uibModal, $interval, gameSvc, tableSvc, toastSvc, socketSvc, loggedinSvc, voteSvc, CONSTS) {
+  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'socketSvc', 'loggedinSvc', 'voteSvc', 'CONSTS', function($scope, $state, $uibModal, $interval, gameSvc, tableSvc, toastSvc, socketSvc, loggedinSvc, voteSvc, CONSTS) {
 
     var selectedUserstoryIndex = 0;
 
