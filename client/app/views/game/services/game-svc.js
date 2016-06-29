@@ -22,11 +22,11 @@
 
 
 
-    this.updateStory = function(storyID, storyPoints) {
+    this.updateStory = function(storyID, storyPoints, comments) {
       /*if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
        url = '../../../../demoData/demoData.json';
        }*/
-      return $http.put('/rest/updateSP', {id: storyID, sp: storyPoints});
+      return $http.put('/rest/updateSP', {id: storyID, sp: storyPoints, comments: comments});
     }
 
   }]);
