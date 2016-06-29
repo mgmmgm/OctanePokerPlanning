@@ -47,38 +47,16 @@ function addTable(req, res) {
     sprint: req.body.sprint,
     team: req.body.team
   };
-
-
-  // todo: need to save this 2 new objects to db
-
-  tablesMap[newTableObj.id] = newTableObj;
-
-  res.send(newTableObj);
-
-  //// try to find this object in DB - if exist update, if not add new
-  //dbHelper.getTableById(newTableObj.id, res).then(function (table) {
-  //  console.log(table);
-  //  if (table !== null) {
-  //
-  //    table.name = newTableObj.name;
-  //    table.numberOfPlayers = newTableObj.numberOfPlayers;
-  //    table.status = newTableObj.status;
-  //
-  //    dbHelper.updateTable(table, res).then(function (updated) {
-  //      if (updated) {
-  //        res.send('updated successfully');
-  //      }
-  //    });
-  //  } else {
-  //    // create new entity (document)
-  //    dbHelper.addTable(newTableObj, res).then(function (added) {
-  //      if (added) {
-  //        res.send('added successfully');
-  //      }
-  //    });
-  //  }
-  //});
-
+  var getStoriesPromise = ngaBridge.innerGetStories(req.body.release.id, req.body.sprint.id, req.body.team.id);
+  getStoriesPromise.then(function(storyList) {
+    console.log('************');
+    console.log(storyList);
+    console.log('~~~~~~~~~~~~~~~~~');
+    console.log(newTableObj);
+    newTableObj.userStories = storyList;
+    tablesMap[newTableObj.id] = newTableObj;
+    res.send(newTableObj);
+  });
 
 };
 
@@ -104,4 +82,3 @@ exports.getTables = getTables;
 exports.getTableById = getTableById;
 exports.addTable = addTable;
 exports.joinTable = joinTable;
-exports.tablesMap = tablesMap;

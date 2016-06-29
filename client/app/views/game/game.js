@@ -41,20 +41,7 @@
           $scope.releaseId = result.data.release.id;
           $scope.sprintName = result.data.sprint.name;
           $scope.teamName = result.data.team.name;
-          $scope.userstories = [
-            {
-              id: '1',
-              name: 'user story 11111'
-            },
-            {
-              id: '2',
-              name: 'user story 22'
-            },
-            {
-              id: '3',
-              name: 'user story 3333'
-            }
-          ];
+          $scope.userstories = result.data.userStories;
 
           $scope.selectedUserstory = $scope.userstories[selectedUserstoryIndex];
           $scope.players = result.data.players;
