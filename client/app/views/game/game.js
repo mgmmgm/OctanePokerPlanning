@@ -36,8 +36,8 @@
       tableSvc.getTableById($state.params.tableId).then(
         function(result) {
           $scope.ownerName = result.data.ownerName;
-          $scope.joinee = loggedinSvc.getUser();
-          $scope.isOwner = ($scope.joinee === $scope.ownerName);
+          $scope.currentUser = loggedinSvc.getUser();
+          $scope.isOwner = ($scope.currentUser === $scope.ownerName);
           $scope.gameName = result.data.name;
           $scope.cards = CONSTS.CARDS_TYPES.FIBB;
           $scope.releaseName = result.data.release.name;
