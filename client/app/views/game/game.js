@@ -45,6 +45,7 @@
         modalInstance.result.then(function(data) {
           console.log(data);
           loggedinSvc.setUser(data.username);
+          $scope.currentUser = data.username;
         });
       }
 
