@@ -33,6 +33,20 @@
     ];
 
     function init() {
+      if(!loggedinSvc.getUser())
+      {
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'app/views/game/modals/login-modal.html',
+          controller: 'loginCtrl'
+        });
+
+        modalInstance.result.then(function(data) {
+          console.log(data);
+          loggedinSvc.setUser(data.username);
+        });
+      }
+
       tableSvc.getTableById($state.params.tableId).then(
         function(result) {
           $scope.ownerName = result.data.ownerName;
@@ -87,17 +101,13 @@
     };
 
     $scope.addVoteComment = function(voteComment) {
-      var username;
-
       var newVote = {
           tableId: $state.params.tableId,
           storyId: $scope.selectedUserstoryIndex,
           userName: $scope.currentUser,
           estimation: $scope.selectedValue,
           comment: voteComment
-
-        }
-        ;
+        };
       voteSvc.addVote(newVote);
     };
 
