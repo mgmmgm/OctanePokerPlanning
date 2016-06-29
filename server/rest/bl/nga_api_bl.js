@@ -119,8 +119,16 @@ function getTeams(req, res) {
 
 
 function getSprints(req, res) {
-
-	responseRequestor.get('/sprints', function (error, message, sprints) {
+	var queryString = '/sprints';
+	var url_parts = url.parse(req.url, true);
+	var params = url_parts.query;
+	if (params !== undefined) {
+		if (params['release'] !== undefined) {
+			queryString = queryString + '?query="release={id='+params['release']+'}"';
+		}
+	}
+	console.log('query string is '+queryString);
+	responseRequestor.get(queryString, function (error, message, sprints) {
 		console.log('ALL TEAMS');
 		if (sprints !== undefined && sprints.data !== undefined) {
 			sprintList = [];
