@@ -49,15 +49,11 @@
           displayName: displayName.displayName
         }
         tableSvc.joinTable(joinData).then(function(data) {
-            $scope.tables.push(data);
+            $scope.tables[data.id] = data;
+            $state.go('game', {tableId: tableId});
           }
         );
-
-
-
       });
-
-      $state.go('game', {tableId: tableId});
     };
 
     $scope.delete = function() {

@@ -95,6 +95,7 @@ function joinTable(req, res) {
   };
 
   tableData.players.push(ownerPlayer);
+  tableData.numberOfPlayers = tableData.numberOfPlayers + 1;
   res.send(tableData);
 };
 
