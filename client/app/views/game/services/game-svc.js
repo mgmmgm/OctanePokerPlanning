@@ -20,8 +20,6 @@
       return $http.post(url, newGame);
     };
 
-
-
     this.updateStory = function(storyID, storyPoints, comments) {
       /*if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
        url = '../../../../demoData/demoData.json';
