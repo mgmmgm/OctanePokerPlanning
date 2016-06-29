@@ -33,6 +33,22 @@
     ];
 
     function init() {
+      subscribeToEvents();
+      if(!loggedinSvc.getUser())
+      {
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'app/views/game/modals/login-modal.html',
+          controller: 'loginCtrl'
+        });
+
+        modalInstance.result.then(function(data) {
+          console.log(data);
+          loggedinSvc.setUser(data.username);
+          $scope.currentUser = data.username;
+        });
+      }
+
       tableSvc.getTableById($state.params.tableId).then(
         function(result) {
           $scope.ownerName = result.data.ownerName;
@@ -56,29 +72,23 @@
       gameSvc.voteStory($state.params.tableId);
     }
 
-    socketSvc.on('player:join', function(data) {
-      retrievePlayers();
-    });
-
-    function retrievePlayers() {
-      tableSvc.getTableById($state.params.tableId).then(
-        function(result) {
-          var oldPlayer = _.pluck($scope.players, "name");
-
-          $scope.players = result.data.players;
-
-          angular.forEach($scope.players, function(player) {
-            if (oldPlayer.indexOf(player.name) === -1) {
-              toastSvc.showInfoToast("player '" + player.name + "' joined to the game");
-            }
-          });
-        }
-      )
-      //console.log("Interval occurred");
+    function subscribeToEvents() {
+      socketSvc.on('player:join', function (data) {
+        refreshPlayers(data.newPlayer)
+      });
     }
 
-    $scope.disableOtherCards = function(selectedCard) {
-      $scope.selectedValue = selectedCard.value;
+    function refreshPlayers(newPlayerName) {
+      var newPlayer = {
+        name: newPlayerName,
+        voteValue: null,
+        isOwner: false
+      };
+      $scope.players.push(newPlayer);
+      toastSvc.showInfoToast("player '" + newPlayer.name + "' joined to table");
+    }
+
+    function disableOtherCards(selectedCard) {
       angular.forEach($scope.cards, function(card) {
         if (card.value !== selectedCard.value) {
           card.isSelected = false;
@@ -87,15 +97,14 @@
       })
     };
 
-    $scope.addVoteComment = function(voteComment) {
-      var username;
-
+    $scope.addVote = function(voteData) {
+      disableOtherCards(voteData.selectedCard);
       var newVote = {
           tableId: $state.params.tableId,
           storyId: $scope.selectedUserstoryIndex,
           userName: $scope.currentUser,
-          estimation: $scope.selectedValue,
-          comment: voteComment
+          estimation: voteData.selectedCard.value,
+          comment: voteData.voteComment
 
         }
         ;
@@ -135,6 +144,7 @@
     function resetVotes() {
       angular.forEach($scope.cards, function(card) {
         card.isEnable = true;
+        card.isSelected = false;
       });
       angular.forEach($scope.players, function(player) {
         player.voteValue = null;

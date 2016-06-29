@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <h3 class="modal-title">Join to the table</h3>
+</div>
+<div class="modal-body">
+    <form name="myForm">
+        <div>
+            <input type="text" ng-model="loginUsername" style="margin: 5px" class="form-control" required placeholder="Enter user name">
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-success" type="button" ng-disabled="myForm.$invalid" ng-click="login()">Join</button>
+        </div>
+    </form>
+</div>
