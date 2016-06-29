@@ -10,7 +10,7 @@
     var sprintsUrl = '/sprints';
     var teamsUrl = '/teams';
 
-    this.getReteamsUrlleases = function() {
+    this.getReleases = function() {
       /*if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
         url = '../../../../demoData/demoData.json';
       }*/
