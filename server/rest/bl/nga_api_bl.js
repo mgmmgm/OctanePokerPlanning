@@ -151,13 +151,13 @@ function innerGetStories(releaseId, sprintId, teamId) {
 	var promise = new Promise(function(resolve, reject) {
 		var queryString = '';
 
-		if (releaseId !== undefined) {
+		if (releaseId !== undefined && releaseId !== '-1') {
 			queryString = queryString + 'release={id=' + releaseId + '}';
 		}
-		if (sprintId !== undefined) {
+		if (sprintId !== undefined && sprintId !== '-1') {
 			queryString = queryString + ';sprint={id=' + sprintId + '}';
 		}
-		if (teamId !== undefined) {
+		if (teamId !== undefined && teamId !== '-1') {
 			queryString = queryString + ';team={id=' + teamId + '}';
 		}
 		if (queryString !== '') {
@@ -183,40 +183,6 @@ function innerGetStories(releaseId, sprintId, teamId) {
 		
 	});
 	return promise;
-
-	
-	var queryString = '';
-
-	if (releaseId !== undefined) {
-		queryString = queryString + 'release={id=' + releaseId + '}';
-	}
-	if (sprintId !== undefined) {
-		queryString = queryString + ';sprint={id=' + sprintId + '}';
-	}
-	if (teamId !== undefined) {
-		queryString = queryString + ';team={id=' + teamId + '}';
-	}
-	if (queryString !== '') {
-		queryString = queryString + ';';
-	}
-	queryString = queryString + 'subtype=\'story\'';
-
-	console.log('query string is '+queryString);
-	responseRequestor.get('/work_items?query="'+queryString+'"', function (error, message, stories) {
-		console.log(stories);
-		if (stories !== undefined && stories.data !== undefined) {
-			console.log('STORIES: '+stories.data.length);
-			var storyList = [];
-			stories.data.forEach(function (story) {
-				//console.log(JSON.stringify(story));
-				console.log('id: ' + story.id + ' name: ' + story.name + ' sp: '+ story.story_points);
-				storyList.push({'id': story.id, 'name': story.name});
-
-			});
-			tableData.userstories = storyList;
-			return tableData;
-		}
-	});
 }
 
 

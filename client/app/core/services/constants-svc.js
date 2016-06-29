@@ -91,6 +91,58 @@
               isSelected: false,
               isEnable: true
             }
+          ],
+          FIBB: [
+            {
+              value: '1',
+              isSelected: false,
+              isEnable: true
+            },
+            {
+              value: '2',
+              isSelected: false,
+              isEnable: true
+            },
+            {
+              value: '3',
+              isSelected: false,
+              isEnable: true
+            },
+            {
+              value: '5',
+              isSelected: false,
+              isEnable: true
+            },
+            {
+              value: '8',
+              isSelected: false,
+              isEnable: true
+            },
+            {
+              value: '13',
+              isSelected: false,
+              isEnable: true
+            },
+            {
+              value: '20',
+              isSelected: false,
+              isEnable: true
+            },
+            {
+              value: '40',
+              isSelected: false,
+              isEnable: true
+            },
+            {
+              value: '100',
+              isSelected: false,
+              isEnable: true
+            },
+            {
+              value: '?',
+              isSelected: false,
+              isEnable: true
+            }
           ]
 
         }

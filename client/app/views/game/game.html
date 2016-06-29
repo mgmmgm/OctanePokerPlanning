@@ -25,7 +25,7 @@
         </div>
 
         <div class="game-sub-title margin-v--20px font-size-20px">
-            {{selectedUserstory.name}}
+            [{{selectedUserstoryIndex + 1}}/{{userstories.length}}] {{selectedUserstory.name}}
         </div>
         <div class="game-cards-votes-container flex">
             <div class="margin--10px" ng-repeat="card in cards">

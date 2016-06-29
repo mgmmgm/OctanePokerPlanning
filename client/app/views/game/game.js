@@ -3,7 +3,7 @@
 
   var gameModule = angular.module('opp.game', ['opp.core']);
 
-  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'loggedinSvc', 'CONSTS', 'voteSvc', function($scope, $state, $uibModal, $interval, gameSvc, tableSvc, toastSvc, loggedinSvc, CONSTS, voteSvc) {
+  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'socketSvc', 'loggedinSvc',  'CONSTS', function($scope, $state, $uibModal, $interval, gameSvc, tableSvc, toastSvc, socketSvc, loggedinSvc,  CONSTS) {
 
     var selectedUserstoryIndex = 0;
 
@@ -39,13 +39,13 @@
           $scope.joinee = loggedinSvc.getUser();
           $scope.isOwner = ($scope.joinee === $scope.ownerName);
           $scope.gameName = result.data.name;
-          $scope.cards = CONSTS.CARDS_TYPES.SEQUENTIAL;
+          $scope.cards = CONSTS.CARDS_TYPES.FIBB;
           $scope.releaseName = result.data.release.name;
           $scope.releaseId = result.data.release.id;
           $scope.sprintName = result.data.sprint.name;
           $scope.teamName = result.data.team.name;
           $scope.userstories = result.data.userStories;
-
+          $scope.selectedUserstoryIndex = selectedUserstoryIndex;
           $scope.selectedUserstory = $scope.userstories[selectedUserstoryIndex];
           $scope.players = result.data.players;
           $scope.linkToGame = result.data.linkToGame;
@@ -53,8 +53,11 @@
           $scope.isFinishedVoting = true;
         }
       )
-      $interval(retrievePlayers, 5000);
     }
+
+    socketSvc.on('player:join', function (data) {
+      retrievePlayers();
+    });
 
     function retrievePlayers() {
       tableSvc.getTableById($state.params.tableId).then(
@@ -81,19 +84,6 @@
           card.isEnable = false;
         }
       })
-    };
-
-    $scope.addVoteComment = function(voteComment) {
-
-      var newVote = {
-        tableId: $state.params.tableId,
-        storyId: $scope.selectedUserstory.id,
-        userName: $state.params.userName,
-        estimation: scope.value,
-        comment: voteComment
-
-      };
-      voteSvc.addVote(newVote);
     };
 
     $scope.skipUserstory = function() {
