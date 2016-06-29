@@ -21,6 +21,7 @@ var responseRequestor = {};
 var releaseList = [];
 var teamList = [];
 var sprintList = [];
+var hackathon_uid = 2003;
 
 function connect(req, res) {
 	login(requestor, function (requestor) {
@@ -124,8 +125,16 @@ function getTeams(req, res) {
 
 
 function getSprints(req, res) {
-
-	responseRequestor.get('/sprints', function (error, message, sprints) {
+	var queryString = '/sprints';
+	var url_parts = url.parse(req.url, true);
+	var params = url_parts.query;
+	if (params !== undefined) {
+		if (params['release'] !== undefined) {
+			queryString = queryString + '?query="release={id='+params['release']+'}"';
+		}
+	}
+	console.log('query string is '+queryString);
+	responseRequestor.get(queryString, function (error, message, sprints) {
 		console.log('ALL TEAMS');
 		if (sprints !== undefined && sprints.data !== undefined) {
 			sprintList = [];
@@ -220,17 +229,42 @@ function updateStory(req, res) {
 	var body = req.body;
 	var id = body.id;
 	var sp = body.sp;
-	var comment = '';
+	var comment = body.comments;
 	console.log ('updating id '+id+' sp '+ sp);
 	var putStoryExample = {
 				"name" : "changed",
 				};
 
-	putStoryExample['story_points'] = ''+sp+'';
+	putStoryExample['story_points'] = parseInt(sp);
 
 	responseRequestor.put({uri: '/work_items/'+id, body: putStoryExample}, function (error, message, stories){
-		console.log(stories);
+		//console.log(stories);
 		res.send(stories);
+	});
+
+
+	var postCommentExample = {
+		"data":
+			[
+				{
+					"author": {
+						"id": hackathon_uid,
+						"type": "workspace_user"
+					},
+					"owner_work_item": {
+						"id" : id,
+						"type": "work_item"
+					},
+					'text': comment
+				}
+			]
+	}
+	responseRequestor.post({uri: '/comments', body: postCommentExample}, function (error, message, comments) {
+		console.log('comment added');
+		console.log(message);
+		/*defects.data.forEach(function (defect) {
+			console.log('id: ' + defect.id + ' name: ' + defect.name);
+		});*/
 	});
 }
 

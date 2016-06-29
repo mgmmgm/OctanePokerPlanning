@@ -4,16 +4,38 @@
 <div class="modal-body">
 
     <div class="margin-b--20px font-size-20px">
-        <span>{{userstoryName}}</span>
+        <span>{{vote.userstory.name}}</span>
     </div>
     <div>
-        <bar-chart-drtv></bar-chart-drtv>
+        <bar-chart-drtv data="voteDataForChart"></bar-chart-drtv>
+    </div>
+
+    <div>
+        <label>Lowest value:</label>
+        <span>{{vote.lowestValue}}</span>
+    </div>
+    <div>
+        <label>Highest value:</label>
+        <span>{{vote.highestValue}}</span>
+    </div>
+    <div>
+        <label>Average value:</label>
+        <span>{{vote.averageValue}}</span>
+    </div>
+
+    <div class="flex align-items-center margin-v--20px">
+        <label>SP value:</label>
+        <input type="text" ng-model="spValue" class="form-control width--70px margin-h--10px"/>
+    </div>
+
+    <div>
+        <textarea class="form-control" ng-model="commentsValue" rows="3" placeholder="Add comment" required></textarea>
     </div>
 
 
 </div>
 <div class="modal-footer">
-    <button class="btn btn-success" type="button" ng-click="continue()">Continue to next story
+    <button class="btn btn-success" type="button" ng-click="saveAndContinue()">Save & Continue to next story
         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
     </button>
 </div>
