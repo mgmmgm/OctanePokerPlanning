@@ -42,7 +42,7 @@
             <div class="players-title text-align-center">Players</div>
             <div class="margin--5px">
                 <div ng-repeat="player in players">
-                    <player-drtv name="{{player.name}}" vote-value="player.voteValue" is-owner="player.isOwner"></player-drtv>
+                    <player-drtv name="{{player.name}}" vote-value="player.voteValue" is-owner="player.isOwner" comment="player.comment" everyone-finish-vote="player.everyoneFinishVote" need-to-show="player.needToShow"></player-drtv>
                 </div>
             </div>
         </div>

@@ -8,5 +8,8 @@
         <img ng-if="!voteValue" class="player-not-checked-image" src="images/not-checked.png" title="Waiting for voting..."/>
     </div>
     <div class="player-name"><span>{{name}}</span></div>
-    <div class="player-vote-value"><span>{{voteValue}}</span></div>
+    <div ng-show="needToShow || everyoneFinishVote" class="player-vote-value"><span>{{voteValue}}</span></div>
+    <div ng-show="needToShow || everyoneFinishVote" class="player-comment">
+        <img ng-if="comment" class="player-comment-image" src="images/comment.png" title="{{comment}}"/>
+    </div>
 </div>

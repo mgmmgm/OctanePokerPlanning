@@ -50,3 +50,12 @@
 .player-vote-value {
     flex: 1 0 0;
 }
+
+.player-comment {
+    flex: 1 0 0;
+}
+
+.player-comment-image {
+    width: 20px;
+    height: 20px;
+}

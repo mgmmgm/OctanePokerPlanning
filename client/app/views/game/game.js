@@ -5,7 +5,6 @@
 
   gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'socketSvc', 'loggedinSvc', 'voteSvc', 'CONSTS', function($scope, $state, $uibModal, $interval, gameSvc, tableSvc, toastSvc, socketSvc, loggedinSvc, voteSvc, CONSTS) {
 
-    var selectedUserstoryIndex = 0;
 
     // this array save all the final result
     var votes = [
@@ -65,31 +64,77 @@
           $scope.sprintName = result.data.sprint.name;
           $scope.teamName = result.data.team.name;
           $scope.userstories = result.data.userStories;
-          $scope.selectedUserstoryIndex = selectedUserstoryIndex;
-          $scope.selectedUserstory = $scope.userstories[selectedUserstoryIndex];
+          $scope.selectedUserstoryIndex = 0;
+          $scope.selectedUserstory = $scope.userstories[$scope.selectedUserstoryIndex];
           $scope.players = result.data.players;
           $scope.linkToGame = result.data.linkToGame;
           $scope.tableId = $state.params.tableId;
-          $scope.isFinishedVoting = true;
+          $scope.isFinishedVoting = false;
+          if ($scope.isOwner) {
+            angular.forEach($scope.players, function(player) {
+                player.needToShow = true;
+            })
+          } else {
+            angular.forEach($scope.players, function(player) {
+              if (player.name === $scope.currentUser) {
+                player.needToShow = true;
+              }
+            })
+          }
         }
       )
       gameSvc.voteStory($state.params.tableId);
     }
 
     function subscribeToEvents() {
-      socketSvc.on('player:join', function (data) {
+      socketSvc.on('player:joined', function (data) {
         refreshPlayers(data.newPlayer)
+      });
+      socketSvc.on('player:voted', function (data) {
+        console.log(data.vote);
+        angular.forEach($scope.players, function(player) {
+          if (player.name === data.vote.userName) {
+            player.voteValue = data.vote.estimation;
+            player.comment = data.vote.comment;
+            toastSvc.showInfoToast("player '" + player.name + "' voted");
+          }
+        });
+        if ($scope.isOwner) {
+          checkIfRoundEnded();
+        }
+      });
+      socketSvc.on('vote:everyoneFinishVoted', function (data) {
+        toastSvc.showInfoToast("Every players are voted!");
+        angular.forEach($scope.players, function(player) {
+          player.everyoneFinishVote = true;
+        });
+      });
+      socketSvc.on('userstory:goToNextUserstory', function (data) {
+        $scope.skipUserstory();
       });
     }
 
+    function checkIfRoundEnded() {
+      if (isEveryoneVoted()) {
+        socketSvc.emit('vote:finishVoting', {});
+        $scope.isFinishedVoting = true;
+      }
+    }
+    function isEveryoneVoted() {
+      return _.all($scope.players, function(player) {
+        return player.voteValue;
+      })
+    }
     function refreshPlayers(newPlayerName) {
       var newPlayer = {
         name: newPlayerName,
         voteValue: null,
-        isOwner: false
+        comment: '',
+        isOwner: false,
+        everyoneFinishVote: false
       };
       $scope.players.push(newPlayer);
-      toastSvc.showInfoToast("player '" + newPlayer.name + "' joined to table");
+      toastSvc.showInfoToast("player '" + newPlayer.name + "' has joined to table");
     }
 
     function disableOtherCards(selectedCard) {
@@ -102,7 +147,7 @@
     };
 
     $scope.addVote = function(voteData) {
-      disableOtherCards(voteData.selectedCard);
+
       var newVote = {
           tableId: $state.params.tableId,
           storyId: $scope.selectedUserstoryIndex,
@@ -110,14 +155,30 @@
           estimation: voteData.selectedCard.value,
           comment: voteData.voteComment
 
-        }
-        ;
-      voteSvc.addVote(newVote);
+        };
+      voteSvc.addVote(newVote).then(
+        function(result) {
+          disableOtherCards(voteData.selectedCard);
+          var currentPlayer =_.find($scope.players, function(player) {
+            return player.name === newVote.userName;
+          });
+          if (currentPlayer) {
+            currentPlayer.voteValue = newVote.estimation;
+            currentPlayer.comment = newVote.comment;
+            socketSvc.emit('player:playerVote', {
+              vote: newVote
+            });
+            if ($scope.isOwner) {
+              checkIfRoundEnded();
+            }
+          }
+        })
+
     };
 
     $scope.skipUserstory = function() {
-      selectedUserstoryIndex++;
-      $scope.selectedUserstory = $scope.userstories[selectedUserstoryIndex];
+      $scope.selectedUserstoryIndex++;
+      $scope.selectedUserstory = $scope.userstories[$scope.selectedUserstoryIndex];
       resetVotes();
     };
 
@@ -140,22 +201,29 @@
               
             }
           });
+
+          modalInstance.result.then(function(data) {
+            console.log(data);
+            socketSvc.emit('userstory:goToNext', {});
+            $scope.skipUserstory();
+          });
         }
       )
 
 
-      modalInstance.result.then(function(data) {
-        console.log(data);
-      });
+
     };
 
     function resetVotes() {
+      $scope.isFinishedVoting = false;
       angular.forEach($scope.cards, function(card) {
         card.isEnable = true;
         card.isSelected = false;
       });
       angular.forEach($scope.players, function(player) {
         player.voteValue = null;
+        player.comment = '';
+        player.everyoneFinishVote = false;
       });
     }
 

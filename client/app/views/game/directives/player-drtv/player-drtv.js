@@ -10,9 +10,13 @@
       scope: {
         name: '@',
         voteValue: '=',
-        isOwner: '='
+        isOwner: '=',
+        comment: '=',
+        needToShow: '=',
+        everyoneFinishVote: '='
       },
-      link: function(scope) {
+      link: function(scope, element) {
+
 
       }
     }

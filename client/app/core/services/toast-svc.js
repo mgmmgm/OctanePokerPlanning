@@ -7,7 +7,7 @@
 
     // toast configuration
     toastr.options.positionClass = 'toast-bottom-right';
-    toastr.options.timeOut = 3000;
+    toastr.options.timeOut = 5000;
     toastr.extendedTimeOut = 2000;
 
     this.showSuccessToast = function(str) {
