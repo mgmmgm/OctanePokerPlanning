@@ -73,6 +73,7 @@
           $scope.isFinishedVoting = true;
         }
       )
+      gameSvc.voteStory($state.params.tableId);
     }
 
     function subscribeToEvents() {
@@ -91,8 +92,7 @@
       toastSvc.showInfoToast("player '" + newPlayer.name + "' joined to table");
     }
 
-    $scope.disableOtherCards = function(selectedCard) {
-      $scope.selectedValue = selectedCard.value;
+    function disableOtherCards(selectedCard) {
       angular.forEach($scope.cards, function(card) {
         if (card.value !== selectedCard.value) {
           card.isSelected = false;
@@ -101,16 +101,17 @@
       })
     };
 
-    $scope.addVoteComment = function(voteComment) {
-      var username;
-
+    $scope.addVote = function(voteData) {
+      disableOtherCards(voteData.selectedCard);
       var newVote = {
           tableId: $state.params.tableId,
           storyId: $scope.selectedUserstoryIndex,
           userName: $scope.currentUser,
-          estimation: $scope.selectedValue,
-          comment: voteComment
-        };
+          estimation: voteData.selectedCard.value,
+          comment: voteData.voteComment
+
+        }
+        ;
       voteSvc.addVote(newVote);
     };
 
@@ -122,18 +123,22 @@
 
     $scope.finishVoting = function() {
       console.log($scope.players);
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: 'app/views/game/modals/finish-voting-modal.html',
-        controller: 'ModalFinishVotingCtrl',
-        resolve: {
-          finishVotingData: function() {
-            return {
-              vote: votes[selectedUserstoryIndex]
+      tableSvc.getTableById($state.params.tableId).then(
+        function(result) {
+
+          var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'app/views/game/modals/finish-voting-modal.html',
+            controller: 'ModalFinishVotingCtrl',
+            resolve: {
+              finishVotingData: function() {
+                return result.data.storyVotes[$scope.selectedUserstoryIndex];
+              }
             }
-          }
+          });
         }
-      });
+      )
+
 
       modalInstance.result.then(function(data) {
         console.log(data);
