@@ -1,5 +1,6 @@
 var dbHelper = require('../db/table_db');
 var Guid = require('guid');
+var ngaBridge = require('./nga_api_bl');
 
 var tablesMap = {};
 
@@ -17,12 +18,11 @@ function getTables(req, res) {
 
 function getTableById(req, res) {
   var id = req.params.id;
-  dbHelper.getTableById(id, res).then(function (data) {
-    if (data === null) {
-      res.status(500).send('not found');
-    }
-    res.send(data);
-  });
+  var data = tablesMap[id];
+  if (data === null) {
+    res.status(500).send('not found');
+  }
+  res.send(data);
 
 };
 
@@ -43,8 +43,9 @@ function addTable(req, res) {
     linkToGame: 'http://' + req.headers.host + '/#/game/' + guid.value,
     cardsType: req.body.cardsType,
     players: [ownerPlayer],
-    releaseId: req.body.releaseId,
-    releaseName: req.body.releaseName
+    release: req.body.release,
+    sprint: req.body.sprint,
+    team: req.body.team
   };
 
 
@@ -103,3 +104,4 @@ exports.getTables = getTables;
 exports.getTableById = getTableById;
 exports.addTable = addTable;
 exports.joinTable = joinTable;
+exports.tablesMap = tablesMap;

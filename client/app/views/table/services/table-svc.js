@@ -5,24 +5,34 @@
 
   tableModule.service('tableSvc', ['$http', 'CONSTS', function($http, CONSTS) {
 
-    var url = '/rest/table';
+    var baseUrl = '/rest/table';
+    var url;
 
 
     this.getTables = function() {
       if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
         url = '../../../../demoData/demoData.json';
       }
+      return $http.get(baseUrl);
+    };
+
+    this.getTableById = function(id) {
+      if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
+        url = '../../../../demoData/demoData.json';
+      }
+      url = baseUrl + '/' + id;
       return $http.get(url);
     };
 
     // add or update if already exist
     this.addTable = function(newTable) {
-      return $http.post(url, newTable);
+      return $http.post(baseUrl, newTable);
 
     };
 
     this.joinTable = function(joinData) {
-      return $http.put('/rest/table/join', joinData);
+      url = baseUrl + '/join';
+      return $http.put(url, joinData);
 
     };
 
