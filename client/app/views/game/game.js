@@ -3,7 +3,7 @@
 
   var gameModule = angular.module('opp.game', ['opp.core']);
 
-  gameModule.controller('GameCtrl', ['$scope', '$state', 'gameSvc',  'CONSTS', function($scope, $state, gameSvc,  CONSTS) {
+  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', 'gameSvc', 'toastSvc', 'CONSTS', function($scope, $state, $uibModal, gameSvc, toastSvc, CONSTS) {
 
     function init() {
       gameSvc.getGameById($state.params.tableId).then(
@@ -57,20 +57,45 @@
           card.isEnable = false;
         }
       })
-    }
+    };
 
       $scope.updateStoryPoints = function() {
          gameSvc.updateStory(2463, $scope.selectedValue);
-      }
+      };
+
+
+    $scope.finishVoting = function() {
+      console.log($scope.players);
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/views/game/modals/finish-voting-modal.html',
+        controller: 'ModalFinishVotingCtrl',
+        resolve: {
+          finishVotingData: function() {
+            return {
+              userstoryName: $scope.userstory
+            }
+          }
+        }
+      });
+
+      modalInstance.result.then(function (data) {
+        console.log(data);
+      });
+    };
+
 
     $scope.addPlayer = function() {
+      var newPlayerName = 'new player';
       $scope.players.push({
         name: 'player 6',
         voteValue: 23,
         isOwner: false
       });
 
-    }
+      toastSvc.showInfoToast("player '" + newPlayerName + "' joined to the game");
+
+    };
 
     init();
 
