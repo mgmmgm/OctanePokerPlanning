@@ -74,10 +74,6 @@
       })
     };
 
-      $scope.updateStoryPoints = function() {
-         gameSvc.updateStory(2463, $scope.selectedValue, 'comments');
-      };
-
     $scope.skipUserstory = function() {
       selectedUserstoryIndex++;
       $scope.selectedUserstory = $scope.userstories[selectedUserstoryIndex];
