@@ -39,13 +39,13 @@
           $scope.joinee = loggedinSvc.getUser();
           $scope.isOwner = ($scope.joinee === $scope.ownerName);
           $scope.gameName = result.data.name;
-          $scope.cards = CONSTS.CARDS_TYPES.SEQUENTIAL;
+          $scope.cards = CONSTS.CARDS_TYPES.FIBB;
           $scope.releaseName = result.data.release.name;
           $scope.releaseId = result.data.release.id;
           $scope.sprintName = result.data.sprint.name;
           $scope.teamName = result.data.team.name;
           $scope.userstories = result.data.userStories;
-
+          $scope.selectedUserstoryIndex = selectedUserstoryIndex;
           $scope.selectedUserstory = $scope.userstories[selectedUserstoryIndex];
           $scope.players = result.data.players;
           $scope.linkToGame = result.data.linkToGame;
