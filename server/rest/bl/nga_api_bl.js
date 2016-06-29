@@ -186,7 +186,7 @@ function updateStory(req, res) {
 				"name" : "changed",
 				};
 
-	putStoryExample['story_points'] = ''+sp+'';
+	putStoryExample['story_points'] = parseInt(sp);
 
 	responseRequestor.put({uri: '/work_items/'+id, body: putStoryExample}, function (error, message, stories){
 		console.log(stories);
