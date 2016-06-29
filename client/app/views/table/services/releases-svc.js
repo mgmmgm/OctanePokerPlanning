@@ -5,32 +5,26 @@
 
   tableModule.service('releasesSvc', ['$http', 'CONSTS', function($http, CONSTS) {
 
-    var url = '/rest';
-    var releasesUrl = '/releases';
-    var sprintsUrl = '/sprints';
-    var teamsUrl = '/teams';
+    var releasesUrl = '/rest/releases';
+    var sprintsUrl = '/rest/sprints';
+    var teamsUrl = '/rest/teams';
 
     this.getReleases = function() {
-      /*if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
-        url = '../../../../demoData/demoData.json';
-      }*/
-      return $http.get(url + releasesUrl);
+      return $http.get(releasesUrl);
     };
 
-    this.getSprints = function() {
-      /*if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
-       url = '../../../../demoData/demoData.json';
-       }*/
-      return $http.get(url + sprintsUrl);
+    this.getSprints = function(releaseId) {
+      if (releaseId === "") {
+        return $http.get(sprintsUrl);
+      }
+      else {
+        return $http.get(sprintsUrl + '?release=' + releaseId);
+      }
     };
 
-  
 
     this.getTeams = function() {
-      /*if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
-       url = '../../../../demoData/demoData.json';
-       }*/
-      return $http.get(url + teamsUrl);
+        return $http.get(teamsUrl);
     };
   }]);
 })();
