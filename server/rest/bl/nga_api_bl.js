@@ -162,7 +162,8 @@ function getStories(req, res) {
 			console.log('STORIES: '+stories.data.length);
 			var storyList = [];
 			stories.data.forEach(function (story) {
-				console.log('id: ' + story.id + ' name: ' + story.name);
+				//console.log(JSON.stringify(story));
+				console.log('id: ' + story.id + ' name: ' + story.name + ' sp: '+ story.story_points);
 				storyList.push({'id': story.id, 'name': story.name});
 
 			});
@@ -175,21 +176,21 @@ function getStories(req, res) {
 
 
 function updateStory(req, res) {
+
+	var body = req.body;
+	var id = body.id;
+	var sp = body.sp;
+	var comment = '';
+	console.log ('updating id '+id+' sp '+ sp);
 	var putStoryExample = {
-		"data":
-			{
-				"id": "2463",
-				"name" : "changed"
-			}
+				"name" : "changed",
+				};
 
-	};
+	putStoryExample['story_points'] = ''+sp+'';
 
-	requestor.put({uri: '/work_items/2463', body: putStoryExample}, function (error, message, stories){
+	responseRequestor.put({uri: '/work_items/'+id, body: putStoryExample}, function (error, message, stories){
 		console.log(stories);
 		res.send(stories);
-		//stories.data.forEach(function (story) {
-		//	console.log('id: ' + story.id + ' name: ' + story.name);
-		//});
 	});
 }
 

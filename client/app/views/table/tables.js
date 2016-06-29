@@ -37,8 +37,8 @@
       });
     };
 
-    $scope.join = function() {
-      console.log('join to table');
+    $scope.join = function(tableId) {
+      $state.go('game', {tableId: tableId});
     };
 
     $scope.delete = function() {

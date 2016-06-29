@@ -1,11 +1,18 @@
 var dbHelper = require('../db/table_db');
 var Guid = require('guid');
 
+var listOfTables = [];
+
 function getTables(req, res) {
-  dbHelper.getTables(req, res).then(function (data) {
-    res.send(data);
-    //res.send('aaaaaaa');
-  });
+  /*dbHelper.getTables(req, res).then(function (data) {
+   res.send(data);
+
+
+  });*/
+  console.log('tables '+JSON.stringify(listOfTables));
+  var data = {};
+  data['tables'] = listOfTables;
+  res.send(data);
 };
 
 function getTableById(req, res) {
@@ -48,6 +55,8 @@ function addTable(req, res) {
   };
 
   // todo: need to save this 2 new objects to db
+
+  listOfTables.push(newTableObj);
 
   res.send(newTableObj);
 

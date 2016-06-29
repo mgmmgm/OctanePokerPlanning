@@ -24,6 +24,8 @@
       return $http.get(url + sprintsUrl);
     };
 
+  
+
     this.getTeams = function() {
       /*if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
        url = '../../../../demoData/demoData.json';

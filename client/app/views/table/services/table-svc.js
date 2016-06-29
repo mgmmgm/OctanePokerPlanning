@@ -7,6 +7,7 @@
 
     var url = '/rest/table';
 
+
     this.getTables = function() {
       if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
         url = '../../../../demoData/demoData.json';
@@ -17,6 +18,7 @@
     // add or update if already exist
     this.addTable = function(newTable) {
       return $http.post(url, newTable);
+
     };
 
   }]);
