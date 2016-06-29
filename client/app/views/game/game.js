@@ -88,16 +88,11 @@
 
     $scope.addVoteComment = function(voteComment) {
       var username;
-      if ($scope.isOwner) {
-        username = $scope.ownerName;
-      }
-      else {
-        username = $scope.joinee;
-      }
+
       var newVote = {
           tableId: $state.params.tableId,
           storyId: $scope.selectedUserstoryIndex,
-          userName: username,
+          userName: $scope.currentUser,
           estimation: $scope.selectedValue,
           comment: voteComment
 
