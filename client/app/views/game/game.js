@@ -3,7 +3,7 @@
 
   var gameModule = angular.module('opp.game', ['opp.core']);
 
-  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', 'gameSvc', 'tableSvc', 'toastSvc', 'CONSTS', function($scope, $state, $uibModal, gameSvc, tableSvc, toastSvc, CONSTS) {
+  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'loggedinSvc',  'CONSTS', function($scope, $state, $uibModal, $interval, gameSvc, tableSvc, toastSvc, loggedinSvc,  CONSTS) {
 
     var selectedUserstoryIndex = 0;
 
@@ -35,6 +35,9 @@
     function init() {
       tableSvc.getTableById($state.params.tableId).then(
         function(result) {
+          $scope.ownerName = result.data.ownerName;
+          $scope.joinee = loggedinSvc.getUser();
+          $scope.isOwner = ($scope.joinee === $scope.ownerName);
           $scope.gameName = result.data.name;
           $scope.cards = CONSTS.CARDS_TYPES.SEQUENTIAL;
           $scope.releaseName = result.data.release.name;
@@ -47,8 +50,27 @@
           $scope.players = result.data.players;
           $scope.linkToGame = result.data.linkToGame;
           $scope.tableId = $state.params.tableId;
+          $scope.isFinishedVoting = true;
         }
       )
+      $interval(retrievePlayers, 5000);
+    }
+
+    function retrievePlayers() {
+      tableSvc.getTableById($state.params.tableId).then(
+          function(result) {
+            var oldPlayer = _.pluck($scope.players ,"name");
+
+            $scope.players = result.data.players;
+
+            angular.forEach($scope.players, function(player) {
+              if (oldPlayer.indexOf(player.name) ===-1) {
+                toastSvc.showInfoToast("player '" + player.name + "' joined to the game");
+              }
+            });
+          }
+      )
+      //console.log("Interval occurred");
     }
 
     $scope.disableOtherCards = function(selectedCard) {
@@ -97,17 +119,7 @@
     }
 
 
-    $scope.addPlayer = function() {
-      var newPlayerName = 'new player';
-      $scope.players.push({
-        name: 'player 6',
-        voteValue: 23,
-        isOwner: false
-      });
-
-      toastSvc.showInfoToast("player '" + newPlayerName + "' joined to the game");
-
-    };
+  
 
     init();
 

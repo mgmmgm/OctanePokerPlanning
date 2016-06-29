@@ -3,7 +3,7 @@
 
   var tableModule = angular.module('opp.table', []);
 
-  tableModule.controller('TableCtrl', ['$scope', '$state', '$uibModal', 'tableSvc', function($scope, $state, $uibModal, tableSvc) {
+  tableModule.controller('TableCtrl', ['$scope', '$state', '$uibModal', 'tableSvc', 'loggedinSvc',  function($scope, $state, $uibModal, tableSvc, loggedinSvc) {
 
     function init() {
       tableSvc.getTables().then(
@@ -36,6 +36,7 @@
         tableSvc.addTable(newTable).then(
           function(result) {
             console.log(result.data);
+            loggedinSvc.setUser(newTable.ownerName);
             $state.go('game', {tableId: result.data.id});
           }
         )
@@ -55,6 +56,7 @@
         }
         tableSvc.joinTable(joinData).then(function(data) {
             $scope.tables[data.id] = data;
+            loggedinSvc.setUser(joinData.displayName);
             $state.go('game', {tableId: tableId});
           }
         );

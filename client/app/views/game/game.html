@@ -13,9 +13,13 @@
                     <label>Sprint:</label>
                     <div class="inline-block">{{sprintName}}</div>
                 </div>
-                <div class="game-team">
+                <div class="game-team margin-h--20px">
                     <label>Team:</label>
                     <div class="inline-block">{{teamName}}</div>
+                </div>
+                <div class="game-sprint">
+                    <label>User:</label>
+                    <div class="inline-block">{{joinee}}<span ng-if="isOwner"> (Table Owner)</span></div>
                 </div>
             </div>
         </div>
@@ -43,13 +47,12 @@
             </div>
         </div>
 
-        <button ng-click="addPlayer()">Add</button>
 
         <div class="buttons-container text-align-center margin-v--20px">
-            <button type="button" class="btn btn-warning margin-r--50px" ng-click="skipUserstory()">Skip US
+            <button ng-if="isOwner" type="button" class="btn btn-warning margin-r--50px" ng-click="skipUserstory()">Skip US
                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
             </button>
-            <button type="button" class="btn btn-success" ng-click="finishVoting()">Finish Voting</button>
+            <button ng-if="isOwner && isFinishedVoting" type="button" class="btn btn-success" ng-click="finishVoting()">Finish Voting</button>
         </div>
 
         <div class="game-link-container">
