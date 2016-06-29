@@ -7,6 +7,31 @@
 
     var selectedUserstoryIndex = 0;
 
+    // this array save all the final result
+    var votes = [
+      {
+        userstory: {
+          id: '1',
+          name: 'some user story'
+        },
+        playersVotes: [
+          {
+            name: 'player name',
+            value: 7
+          },
+          {
+            name: 'player name 2',
+            value: 3
+          }
+        ],
+        lowestValue: 2,
+        highestValue: 11,
+        averageValue: 5,
+        comment: '',
+        chosenSpValue: 10
+      }
+    ];
+
     function init() {
       gameSvc.getGameById($state.params.tableId).then(
         function(result) {
@@ -68,7 +93,7 @@
         resolve: {
           finishVotingData: function() {
             return {
-              userstoryName: $scope.userstory
+              vote: votes[selectedUserstoryIndex]
             }
           }
         }
