@@ -18,7 +18,7 @@
         data.push(
           {
             name: playerVote.userName,
-            value: angular.isNumber(playerVote.estimation) ? playerVote.estimation : 0
+            value: playerVote.estimation === '?' ? 0 : +playerVote.estimation
           }
         )
       });

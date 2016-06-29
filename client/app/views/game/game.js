@@ -119,7 +119,7 @@
             controller: 'ModalFinishVotingCtrl',
             resolve: {
               finishVotingData: function() {
-                return result.data.storyVotes[123];
+                return result.data.storyVotes[$scope.selectedUserstoryIndex];
               }
             }
           });
