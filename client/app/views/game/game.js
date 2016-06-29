@@ -3,7 +3,7 @@
 
   var gameModule = angular.module('opp.game', ['opp.core']);
 
-  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'loggedinSvc',  'CONSTS', function($scope, $state, $uibModal, $interval, gameSvc, tableSvc, toastSvc, loggedinSvc,  CONSTS) {
+  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'socketSvc', 'loggedinSvc',  'CONSTS', function($scope, $state, $uibModal, $interval, gameSvc, tableSvc, toastSvc, socketSvc, loggedinSvc,  CONSTS) {
 
     var selectedUserstoryIndex = 0;
 
@@ -53,8 +53,11 @@
           $scope.isFinishedVoting = true;
         }
       )
-      $interval(retrievePlayers, 5000);
     }
+
+    socketSvc.on('player:join', function (data) {
+      retrievePlayers();
+    });
 
     function retrievePlayers() {
       tableSvc.getTableById($state.params.tableId).then(

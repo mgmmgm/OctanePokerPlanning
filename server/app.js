@@ -1,8 +1,11 @@
 var express = require('express');
+var http = require('http');
 var routes = require('./rest/rest_routes');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var socket = require('./rest/bl/socket_bl.js');
 
 var app = express();
+var server = http.createServer(app);
 var port = process.env.PORT || 4000;
 
 // Configuration
@@ -10,11 +13,28 @@ app.use(express.static('../client'));		// set the static files location /client/
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
-})); 
+}));
 
+// Hook Socket.io into Express
+var io = require('socket.io').listen(server);
+io.sockets.on('connection', socket);
+
+//io.sockets.on('connection', function (socket) {
+//  console.log('Someone connected to me, hooray!');
+//
+//  // sending a message back to the client
+//  socket.emit('connected', { message: 'Thanks for connecting!' });
+//
+//  // listening for messages from the client
+//  socket.on('message', function(message) {
+//    console.log(message);
+//  });
+//});
+
+//app.io = io;
 routes.setup(app);
 
-app.listen(port, function() {
+server.listen(port, function() {
     console.log("Server is up and listening on port %d", port);
 });
 
