@@ -166,7 +166,7 @@ function innerGetStories(releaseId, sprintId, teamId) {
 		queryString = queryString + 'subtype=\'story\'';
 
 		console.log('query string is '+queryString);
-		responseRequestor.get('/work_items?query="'+queryString+'"', function (error, message, stories) {
+		responseRequestor.get('/work_items?query="'+queryString+'"&fields=id,name', function (error, message, stories) {
 			console.log(stories);
 			if (stories !== undefined && stories.data !== undefined) {
 				console.log('STORIES: '+stories.data.length);
