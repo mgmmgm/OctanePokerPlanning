@@ -132,8 +132,12 @@
             controller: 'ModalFinishVotingCtrl',
             resolve: {
               finishVotingData: function() {
-                return result.data.storyVotes[$scope.selectedUserstoryIndex];
+                return { 
+                  votes: result.data.storyVotes[$scope.selectedUserstoryIndex], 
+                  storyId: $scope.selectedUserstory.id 
+                };
               }
+              
             }
           });
         }

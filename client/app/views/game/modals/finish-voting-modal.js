@@ -6,7 +6,8 @@
   gameModule.controller('ModalFinishVotingCtrl', ['$scope', '$uibModalInstance', 'finishVotingData', 'gameSvc' , function($scope, $uibModalInstance, finishVotingData, gameSvc) {
 
     function init() {
-      $scope.vote = finishVotingData;
+      $scope.vote = finishVotingData.votes;
+      $scope.userStoryId = finishVotingData.storyId;
       $scope.spValue = 0;
       $scope.commentsValue = '';
       prepareDataForChart();
@@ -28,11 +29,12 @@
 
     $scope.saveAndContinue = function() {
       var data = {
-        comment: 'this is a comment',
-        value: 8
+        storyId: $scope.userStoryId,
+        comment: $scope.spValue,
+        value:  $scope.commentsValue
       };
       console.log(data);
-      gameSvc.updateStory(2463, $scope.spValue, $scope.commentsValue);
+      gameSvc.updateStory($scope.userStoryId, $scope.spValue, $scope.commentsValue);
       $uibModalInstance.close(data);
     };
 
