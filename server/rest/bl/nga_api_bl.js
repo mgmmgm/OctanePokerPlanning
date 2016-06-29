@@ -1,3 +1,5 @@
+var tableBl = require('./table_bl');
+
 var request = require('request');
 var cookie = require('cookie');
 var url  = require('url');
@@ -145,6 +147,41 @@ function getSprints(req, res) {
 
 }
 
+function innerGetStories(releaseId, sprintId, teamId) {
+	var queryString = '';
+	var url_parts = url.parse(req.url, true);
+	var params = url_parts.query;
+
+	if (releaseId !== undefined) {
+		queryString = queryString + 'release={id='+params['release']+'}';
+	}
+	if (sprintId !== undefined) {
+		queryString = queryString + ';sprint={id=' + params['sprint']+'}';
+	}
+	if (teamId !== undefined) {
+		queryString = queryString + ';team=(id='+params['team']+'}';
+	}
+	if (queryString !== '') {
+		queryString = queryString + ';';
+	}
+	queryString = queryString + 'subtype=\'story\'';
+
+	console.log('query string is '+queryString);
+	return responseRequestor.get('/work_items?query="'+queryString+'"', function (error, message, stories) {
+		if (stories !== undefined && stories.data !== undefined) {
+			console.log('STORIES: '+stories.data.length);
+			var storyList = [];
+			stories.data.forEach(function (story) {
+				//console.log(JSON.stringify(story));
+				console.log('id: ' + story.id + ' name: ' + story.name + ' sp: '+ story.story_points);
+				storyList.push({'id': story.id, 'name': story.name});
+
+			});
+			return storyList;
+		}
+	});
+}
+
 function getStories(req, res) {
 	var queryString = '';
 	var url_parts = url.parse(req.url, true);
@@ -236,4 +273,5 @@ exports.getSprints = getSprints;
 exports.getTeams = getTeams;
 exports.getStories = getStories;
 exports.updateStory = updateStory;
+exports.innerGetStories = innerGetStories;
 

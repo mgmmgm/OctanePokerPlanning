@@ -3,7 +3,7 @@
 
   var gameModule = angular.module('opp.game', ['opp.core']);
 
-  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', 'gameSvc', 'toastSvc', 'CONSTS', function($scope, $state, $uibModal, gameSvc, toastSvc, CONSTS) {
+  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', 'gameSvc', 'tableSvc', 'toastSvc', 'CONSTS', function($scope, $state, $uibModal, gameSvc, tableSvc, toastSvc, CONSTS) {
 
     var selectedUserstoryIndex = 0;
 
@@ -33,14 +33,14 @@
     ];
 
     function init() {
-      gameSvc.getGameById($state.params.tableId).then(
+      tableSvc.getTableById($state.params.tableId).then(
         function(result) {
           $scope.gameName = result.data.name;
           $scope.cards = CONSTS.CARDS_TYPES.SEQUENTIAL;
-          $scope.releaseName = result.data.releaseName;
-          $scope.releaseId = result.data.releaseId;
-          $scope.sprintName = 'sprint 1';
-          $scope.teamName = 'team1';
+          $scope.releaseName = result.data.release.name;
+          $scope.releaseId = result.data.release.id;
+          $scope.sprintName = result.data.sprint.name;
+          $scope.teamName = result.data.team.name;
           $scope.userstories = [
             {
               id: '1',

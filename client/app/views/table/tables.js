@@ -21,11 +21,16 @@
       });
 
       modalInstance.result.then(function (data) {
+
         var newTable = {
           name: data.tableName,
           numberOfPlayers: 1,
           status: 'active',
-          ownerName: 'moshe'
+          ownerName: data.ownerUserName,
+          cardsValue: data.cardsValue,
+          release: data.release,
+          sprint: data.sprint,
+          team: data.team
         };
 
         tableSvc.addTable(newTable).then(
