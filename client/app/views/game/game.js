@@ -3,7 +3,7 @@
 
   var gameModule = angular.module('opp.game', ['opp.core']);
 
-  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', 'gameSvc', 'tableSvc', 'toastSvc', 'loggedinSvc',  'CONSTS', function($scope, $state, $uibModal, gameSvc, tableSvc, toastSvc, loggedinSvc,  CONSTS) {
+  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'loggedinSvc',  'CONSTS', function($scope, $state, $uibModal, $interval, gameSvc, tableSvc, toastSvc, loggedinSvc,  CONSTS) {
 
     var selectedUserstoryIndex = 0;
 
@@ -53,6 +53,24 @@
           $scope.isFinishedVoting = true;
         }
       )
+      $interval(retrievePlayers, 5000);
+    }
+
+    function retrievePlayers() {
+      tableSvc.getTableById($state.params.tableId).then(
+          function(result) {
+            var oldPlayer = _.pluck($scope.players ,"name");
+
+            $scope.players = result.data.players;
+
+            angular.forEach($scope.players, function(player) {
+              if (oldPlayer.indexOf(player.name) ===-1) {
+                toastSvc.showInfoToast("player '" + player.name + "' joined to the game");
+              }
+            });
+          }
+      )
+      //console.log("Interval occurred");
     }
 
     $scope.disableOtherCards = function(selectedCard) {
