@@ -37,7 +37,26 @@
       });
     };
 
-    $scope.join = function(tableId) {
+    $scope.OpenJoinTableModal = function(tableId) {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/views/table/modals/join-table-modal.html',
+        controller: 'ModalJoinTableCtrl'
+      });
+      modalInstance.result.then(function (displayName) {
+        var joinData = {
+          id: tableId,
+          displayName: displayName.displayName
+        }
+        tableSvc.joinTable(joinData).then(function(data) {
+            $scope.tables.push(data);
+          }
+        );
+
+
+
+      });
+
       $state.go('game', {tableId: tableId});
     };
 

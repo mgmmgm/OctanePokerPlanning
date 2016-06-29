@@ -1,7 +1,7 @@
 var dbHelper = require('../db/table_db');
 var Guid = require('guid');
 
-var listOfTables = [];
+var tablesMap = {};
 
 function getTables(req, res) {
   /*dbHelper.getTables(req, res).then(function (data) {
@@ -9,9 +9,9 @@ function getTables(req, res) {
 
 
   });*/
-  console.log('tables '+JSON.stringify(listOfTables));
+  console.log('tables '+JSON.stringify(tablesMap));
   var data = {};
-  data['tables'] = listOfTables;
+  data['tables'] = tablesMap;
   res.send(data);
 };
 
@@ -29,34 +29,28 @@ function getTableById(req, res) {
 function addTable(req, res) {
   var guid = Guid.create();
 
+  var ownerPlayer = {
+    name: req.body.ownerName,
+    isOwner: true
+  };
+
   var newTableObj = {
     id: guid.value,
     name: req.body.name,
     numberOfPlayers: req.body.numberOfPlayers,
     status: req.body.status,
     ownerName: req.body.ownerName,
-    linkToGame: 'http://' + req.headers.host + '/#/game/' + guid.value
-  };
-
-  var ownerPlayer = {
-    name: req.body.ownerName,
-    voteValue: null,
-    isOwner: true
-  };
-
-  var newGameObj = {
-    id: guid.value,
-    name: req.body.name,
+    linkToGame: 'http://' + req.headers.host + '/#/game/' + guid.value,
     cardsType: req.body.cardsType,
     players: [ownerPlayer],
-    linkToGame: 'http://' + req.headers.host + '/#/game/' + guid.value,
     releaseId: req.body.releaseId,
     releaseName: req.body.releaseName
   };
 
+
   // todo: need to save this 2 new objects to db
 
-  listOfTables.push(newTableObj);
+  tablesMap[newTableObj.id] = newTableObj;
 
   res.send(newTableObj);
 
@@ -87,6 +81,24 @@ function addTable(req, res) {
 
 };
 
+function joinTable(req, res) {
+  var tableId = req.body.id;
+  var displayNAme = req.body.displayName;
+  tableData = tablesMap[tableId];
+  if (tableData === null) {
+    res.status(500).send('not found');
+  }
+
+  var ownerPlayer = {
+    name: displayNAme,
+    isOwner: false
+  };
+
+  tableData.players.push(ownerPlayer);
+  res.send(tableData);
+};
+
 exports.getTables = getTables;
 exports.getTableById = getTableById;
 exports.addTable = addTable;
+exports.joinTable = joinTable;
