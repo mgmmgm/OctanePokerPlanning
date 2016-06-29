@@ -24,7 +24,7 @@
 
       $scope.selectedCardsValue = $scope.cardsValues[0];
 
-      $scope.setChoice = function(data){
+      $scope.setChoice = function(data) {
         $scope.selectedCardsValue = data;
       };
     }
@@ -34,50 +34,63 @@
     }
 
     function initReleases() {
+      $scope.setRelease = function(data) {
+        $scope.selectedRelease = data;
+        $scope.filterSprints();
+      };
+
       releasesSvc.getReleases().then(
         function(result) {
           $scope.releases = result.data;
-          if($scope.releases.length > 0)
-            $scope.selectedRelease = $scope.releases[0];
+          if ($scope.releases.length > 0) {
+            $scope.setRelease($scope.releases[0]);
+          }
         }
       );
 
-      $scope.setRelease = function(data){
-        $scope.selectedRelease = data;
-      };
     }
 
     function initSprints() {
-      releasesSvc.getSprints().then(
-        function(result) {
-          $scope.sprints = result.data;
-          if($scope.sprints.length > 0)
-            $scope.selectedSprint = $scope.sprints[0];
-        }
-      );
-
-      $scope.setSprint = function(data){
+      $scope.setSprint = function(data) {
         $scope.selectedSprint = data;
       };
+
+      $scope.filterSprints = function() {
+        releasesSvc.getSprints($scope.selectedRelease.id).then(
+          //  releasesSvc.getSprints("").then(
+          function(result) {
+            $scope.sprints = result.data;
+            $scope.sprints.unshift({id: "-1", name: "All"});
+            if ($scope.sprints.length > 0) {
+              $scope.setSprint($scope.sprints[0]);
+            }
+          }
+        );
+      };
+
     }
 
     function initTeams() {
+
+      $scope.setTeam = function(data) {
+        $scope.selectedTeam = data;
+      };
       releasesSvc.getTeams().then(
         function(result) {
           $scope.teams = result.data;
-          if($scope.teams.length > 0)
-            $scope.selectedTeam = $scope.teams[0];
+          $scope.teams.unshift({id: "-1", name: "All"});
+          if ($scope.teams.length > 0) {
+            $scope.setTeam($scope.teams[0]);
+          }
         }
       );
 
-      $scope.setTeam = function(data){
-        $scope.selectedTeam = data;
-      };
     }
 
     $scope.create = function() {
-      if(!$scope.tableName || !$scope.ownerUserName)
+      if (!$scope.tableName || !$scope.ownerUserName) {
         return;
+      }
       var data = {
         tableName: $scope.tableName,
         ownerUserName: $scope.ownerUserName,
