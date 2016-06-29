@@ -3,7 +3,7 @@
 
   var gameModule = angular.module('opp.game', ['opp.core']);
 
-  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'socketSvc', 'loggedinSvc', 'voteSvc', 'CONSTS', function($scope, $state, $uibModal, $interval, gameSvc, tableSvc, toastSvc, socketSvc, loggedinSvc, voteSvc, CONSTS) {
+  gameModule.controller('GameCtrl', ['$scope', '$state', '$http', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'socketSvc', 'loggedinSvc', 'voteSvc', 'CONSTS', function($scope, $state, $http, $uibModal, $interval, gameSvc, tableSvc, toastSvc, socketSvc, loggedinSvc, voteSvc, CONSTS) {
 
     var selectedUserstoryIndex = 0;
 
@@ -51,6 +51,10 @@
 
       tableSvc.getTableById($state.params.tableId).then(
         function(result) {
+          if(result.data=="")
+          {
+            $state.go('tables');
+          }
           $scope.ownerName = result.data.ownerName;
           $scope.currentUser = loggedinSvc.getUser();
           $scope.isOwner = ($scope.currentUser === $scope.ownerName);
