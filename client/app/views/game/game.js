@@ -119,17 +119,7 @@
     }
 
 
-    $scope.addPlayer = function() {
-      var newPlayerName = 'new player';
-      $scope.players.push({
-        name: 'player 6',
-        voteValue: 23,
-        isOwner: false
-      });
-
-      toastSvc.showInfoToast("player '" + newPlayerName + "' joined to the game");
-
-    };
+  
 
     init();
 

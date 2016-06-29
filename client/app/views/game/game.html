@@ -19,7 +19,7 @@
                 </div>
                 <div class="game-sprint">
                     <label>User:</label>
-                    <div class="inline-block">{{joinee}}</div>
+                    <div class="inline-block">{{joinee}}<span ng-if="isOwner"> (Table Owner)</span></div>
                 </div>
             </div>
         </div>
@@ -47,7 +47,6 @@
             </div>
         </div>
 
-        <button ng-if="isOwner" ng-click="addPlayer()">Add</button>
 
         <div class="buttons-container text-align-center margin-v--20px">
             <button ng-if="isOwner" type="button" class="btn btn-warning margin-r--50px" ng-click="skipUserstory()">Skip US
