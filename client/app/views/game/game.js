@@ -3,7 +3,7 @@
 
   var gameModule = angular.module('opp.game', ['opp.core']);
 
-  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'loggedinSvc',  'CONSTS', function($scope, $state, $uibModal, $interval, gameSvc, tableSvc, toastSvc, loggedinSvc,  CONSTS) {
+  gameModule.controller('GameCtrl', ['$scope', '$state', '$uibModal', '$interval', 'gameSvc', 'tableSvc', 'toastSvc', 'loggedinSvc', 'CONSTS', 'voteSvc', function($scope, $state, $uibModal, $interval, gameSvc, tableSvc, toastSvc, loggedinSvc, CONSTS, voteSvc) {
 
     var selectedUserstoryIndex = 0;
 
@@ -81,6 +81,19 @@
           card.isEnable = false;
         }
       })
+    };
+
+    $scope.addVoteComment = function(voteComment) {
+
+      var newVote = {
+        tableId: $state.params.tableId,
+        storyId: $scope.selectedUserstory.id,
+        userName: $state.params.userName,
+        estimation: scope.value,
+        comment: voteComment
+
+      };
+      voteSvc.addVote(newVote);
     };
 
     $scope.skipUserstory = function() {

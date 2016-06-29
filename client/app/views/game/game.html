@@ -29,7 +29,7 @@
         </div>
         <div class="game-cards-votes-container flex">
             <div class="margin--10px" ng-repeat="card in cards">
-                <card-drtv value="{{card.value}}" is-selected="card.isSelected" is-enable="card.isEnable" disable-other-cards-fn="disableOtherCards(selectedCard)"></card-drtv>
+                <card-drtv value="{{card.value}}" is-selected="card.isSelected" is-enable="card.isEnable" add-vote-comment-fn="addVoteComment(voteComment)" disable-other-cards-fn="disableOtherCards(selectedCard)"></card-drtv>
             </div>
         </div>
         <!--<div class="game-stories-list-container">-->
