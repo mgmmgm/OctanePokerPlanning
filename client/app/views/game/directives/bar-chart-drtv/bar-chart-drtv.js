@@ -12,16 +12,11 @@
       },
       link: function(scope, element) {
 
-        var data = [
-          { name: 'aaaaa', value: 2 },
-          { name: 'bbbbbb', value: 21 },
-          { name: 'cc', value: 12 },
-          { name: 'ddd', value: 8 }
-        ];
+        var data = scope.data;
 
         var margin = {top: 20, right: 20, bottom: 20, left: 20},
           width = 500 - margin.left - margin.right,
-          height = 400 - margin.top - margin.bottom;
+          height = 300 - margin.top - margin.bottom;
 
         var colors = d3.scale.category20();
 
