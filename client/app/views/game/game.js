@@ -53,6 +53,7 @@
           $scope.isFinishedVoting = true;
         }
       )
+      gameSvc.voteStory($state.params.tableId);
     }
 
     socketSvc.on('player:join', function (data) {
@@ -94,18 +95,22 @@
 
     $scope.finishVoting = function() {
       console.log($scope.players);
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: 'app/views/game/modals/finish-voting-modal.html',
-        controller: 'ModalFinishVotingCtrl',
-        resolve: {
-          finishVotingData: function() {
-            return {
-              vote: votes[selectedUserstoryIndex]
+      tableSvc.getTableById($state.params.tableId).then(
+        function(result) {
+
+          var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'app/views/game/modals/finish-voting-modal.html',
+            controller: 'ModalFinishVotingCtrl',
+            resolve: {
+              finishVotingData: function() {
+                return result.data.storyVotes[123];
+              }
             }
-          }
+          });
         }
-      });
+      )
+
 
       modalInstance.result.then(function (data) {
         console.log(data);

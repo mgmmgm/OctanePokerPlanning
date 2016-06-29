@@ -20,6 +20,16 @@
       return $http.post(url, newGame);
     };
 
+    this.voteStory = function(gameId) {
+      var myurl = url + 'vote';
+      if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
+        url = '../../../../demoData/demoData.json';
+      }
+      //$http.post('/rest/game/vote', {tableId: gameId, storyId: '123', userName: 'momo1', estimation: '34', comment: 'comment'});
+      //return $http.post('/rest/game/vote', {tableId: gameId, storyId: '123', userName: 'momo', estimation: '31', comment: 'comment'});
+    };
+
+
     this.updateStory = function(storyID, storyPoints, comments) {
       /*if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
        url = '../../../../demoData/demoData.json';

@@ -6,7 +6,7 @@
   gameModule.controller('ModalFinishVotingCtrl', ['$scope', '$uibModalInstance', 'finishVotingData', 'gameSvc' , function($scope, $uibModalInstance, finishVotingData, gameSvc) {
 
     function init() {
-      $scope.vote = finishVotingData.vote;
+      $scope.vote = finishVotingData;
       $scope.spValue = 0;
       $scope.commentsValue = '';
       prepareDataForChart();
@@ -14,11 +14,11 @@
 
     function prepareDataForChart() {
       var data = [];
-      angular.forEach($scope.vote.playersVotes, function(playerVote) {
+      angular.forEach($scope.vote, function(playerVote) {
         data.push(
           {
-            name: playerVote.name,
-            value: angular.isNumber(playerVote.value) ? playerVote.value : 0
+            name: playerVote.userName,
+            value: angular.isNumber(playerVote.estimation) ? playerVote.estimation : 0
           }
         )
       });
