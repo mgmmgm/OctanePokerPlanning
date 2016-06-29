@@ -1,73 +1,27 @@
-var dbHelper = require('../db/game_db');
+var tableBl = require('./table_bl');
 
-function getGames(req,res) {
-    dbHelper.getGames(req,res).then(function(data) {
-		res.send(data);
-		//res.send('aaaaaaa');
-	});
-};
+function voteUserStory(req,res) {
+	var tableId = req.body.tableId;
+	var storyId = req.body.storyId;
+	var userName = req.body.userName;
+	var estimation = req.body.estimation;
+	var comment = req.body.comment;
 
-function getGameById(req, res) {
-	var id = req.params.id;
-
-	var ownerPlayer = {
-		name: 'moshe',
-		voteValue: null,
-		isOwner: true
-	};
-
-	var newGameObj = {
-		id: '12345',
-		name: 'Abcdefg',
-		cardsType: 'S',
-		players: [ownerPlayer],
-		linkToGame: 'http://localhost:4000/#/game/12345',
-		releaseId: 1000,
-		releaseName: 'release 1'
-	};
-
-	res.send(newGameObj);
-
-	//dbHelper.getGameById(id, res).then(function(data) {
-	//	if (data === null) {
-	//		res.status(500).send('not found');
-	//	}
-	//	res.send(data);
-	//});
-	
-};
-
-function addGame(req, res) {
-	var obj = {
-		id: req.body.id,
-	  	name: req.body.name
-	};
-
-	// try to find this object in DB - if exist update, if not add new
-	dbHelper.getGameById(obj.id, res).then(function(game) {
-		console.log(game);
-		if (game !== null) {
-
-			game.name = obj.name;
-
-			dbHelper.updateGame(game, res).then(function(updated) {
-				if (updated) {
-					res.send('updated successfully');
-				}
-			});
-		} else {
-			// create new entity (document)
-			dbHelper.addGame(obj, res).then(function(added) {
-				if (added) {
-					res.send('added successfully');
-				}
-			});
-		}
-	});
-
+	var tableData = tableBl.tablesMap[tableId];
+	var storyVotes = tableData.storyVotes[storyId];
+	if (storyVotes === undefined)
+		storyVotes = [];
+	var vote = {
+		userName: userName,
+		estimation: estimation,
+		comment: comment
+	}
+	storyVotes.push(vote);
+	tableData.storyVotes[storyId] = storyVotes;
+	tableBl.tablesMap[tableId] = tableData;
+	res.send(tableData);
 
 };
 
-exports.getGames = getGames;
-exports.getGameById = getGameById;
-exports.addGame = addGame;
+
+exports.voteUserStory = voteUserStory;

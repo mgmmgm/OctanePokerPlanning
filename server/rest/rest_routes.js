@@ -9,15 +9,12 @@ function setup(app) {
 	app.post('/rest/table', tableBl.addTable);
 	app.put('/rest/table/join', tableBl.joinTable);
 
-  	app.get('/rest/game', gameBl.getGames);
-  	app.get('/rest/game/:id', gameBl.getGameById);
-  	app.post('/rest/game', gameBl.addGame);
+  app.post('/rest/game/vote', gameBl.voteUserStory);
 
 	app.get('/rest/connect', api.connect);
 	app.get('/rest/releases', api.getReleases);
 	app.get('/rest/sprints', api.getSprints);
 	app.get('/rest/teams', api.getTeams);
-	app.get('/rest/stories', api.getStories);
 	app.put('/rest/updateSP', api.updateStory);
 
 

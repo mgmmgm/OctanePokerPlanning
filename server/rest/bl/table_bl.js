@@ -10,7 +10,7 @@ function getTables(req, res) {
 
 
   });*/
-  console.log('tables '+JSON.stringify(tablesMap));
+  //console.log('tables '+JSON.stringify(tablesMap));
   var data = {};
   data['tables'] = tablesMap;
   res.send(data);
@@ -45,14 +45,11 @@ function addTable(req, res) {
     players: [ownerPlayer],
     release: req.body.release,
     sprint: req.body.sprint,
-    team: req.body.team
+    team: req.body.team,
+    storyVotes: {}
   };
   var getStoriesPromise = ngaBridge.innerGetStories(req.body.release.id, req.body.sprint.id, req.body.team.id);
   getStoriesPromise.then(function(storyList) {
-    console.log('************');
-    console.log(storyList);
-    console.log('~~~~~~~~~~~~~~~~~');
-    console.log(newTableObj);
     newTableObj.userStories = storyList;
     tablesMap[newTableObj.id] = newTableObj;
     res.send(newTableObj);
@@ -82,3 +79,4 @@ exports.getTables = getTables;
 exports.getTableById = getTableById;
 exports.addTable = addTable;
 exports.joinTable = joinTable;
+exports.tablesMap = tablesMap;
