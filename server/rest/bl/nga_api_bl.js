@@ -85,9 +85,6 @@ function login(requestor, callback) {
 
 function getReleases(req, res) {
 
-	console.log('~~~~~~~~~~~~~~~~')
-	console.log(tableBl.tablesMap)
-
 	responseRequestor.get('/releases', function (error, message, releases) {
 		console.log('ALL RELEASES');
 		if (releases !== undefined && releases.data !== undefined) {
