@@ -193,9 +193,7 @@ function updateStory(req, res) {
 	var sp = body.sp;
 	var comment = body.comments;
 	console.log ('updating id '+id+' sp '+ sp);
-	var putStoryExample = {
-				"name" : "changed",
-				};
+	var putStoryExample = {};
 
 	putStoryExample['story_points'] = parseInt(sp);
 

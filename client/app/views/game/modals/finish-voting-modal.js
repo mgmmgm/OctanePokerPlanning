@@ -22,8 +22,10 @@
             value: playerVote.estimation === '?' ? 0 : +playerVote.estimation
           }
         )
-      });
 
+        var currComment =  playerVote.userName + ': ' + playerVote.comment + '\n';
+        $scope.commentsValue = $scope.commentsValue + currComment;
+      });
       $scope.voteDataForChart = data;
     }
 
