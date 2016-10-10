@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <h3 class="modal-title">Summary</h3>
+</div>
+<div class="modal-body">
+
+    <img class="cursor-pointer absolute right--18px" src="../../../../images/exportToPDF.png" ng-click="exportToPDF()" title="Export to PDF">
+
+    <div class="tables-table">
+        <div class="table-row tables-table-header">
+            <div class="table-row-summary-item">#</div>
+            <div class="table-row-summary-item">ID</div>
+            <div class="table-row-summary-item table-summary-name">Name</div>
+            <div class="table-row-summary-item">SP</div>
+            <div class="table-row-summary-item table-summary-comment">Comment</div>
+        </div>
+        <div id="summaryTableContent" class="tables-table-content">
+            <div class="table-row" ng-repeat="summaryVote in summaryObj" ng-class="{'table-row-finish': summaryVote.finish, 'table-row-current': $index == selectedWorkItemIndex}">
+                <div class="table-row-summary-item">{{summaryVote.index}}</div>
+                <div class="table-row-summary-item">{{summaryVote.id}}</div>
+                <div class="table-row-summary-item table-summary-name">{{summaryVote.name}}</div>
+                <div class="table-row-summary-item">{{summaryVote.sp}}</div>
+                <div class="table-row-summary-item table-summary-comment">{{summaryVote.comment}}</div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-info" type="button" ng-click="back()">Back
+    </button>
+</div>
