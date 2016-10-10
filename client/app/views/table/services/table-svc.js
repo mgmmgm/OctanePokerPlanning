@@ -9,11 +9,12 @@
     var url;
 
 
-    this.getTables = function() {
+    this.getTables = function(user) {
       if (CONSTS.ENV_MODE === CONSTS.ENV_MODE_OPTIONS.DEV) {
         url = '../../../../demoData/demoData.json';
       }
-      return $http.get(baseUrl);
+      url = baseUrl + 's/' + user;
+      return $http.get(url);
     };
 
     this.getTableById = function(id) {
@@ -36,5 +37,11 @@
 
     };
 
+    // delete table if already exist
+    this.deleteTable = function(tableId) {
+      url = baseUrl + '/delete' + '/' + tableId;
+      return $http.delete(url);
+
+    };
   }]);
 })();

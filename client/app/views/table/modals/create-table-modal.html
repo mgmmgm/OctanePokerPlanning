@@ -4,30 +4,48 @@
 <div class="modal-body">
   <form name="myForm">
     <div>
-        <input type="text" ng-model="tableName" style="margin: 5px" class="form-control" required placeholder="Enter table name">
+        Hello <b>{{ownerUserName}}</b> please create a table
+        <input type="text" ng-model="tableName" style="margin: 5px" class="form-control" autofocus required placeholder="Enter table name">
     </div>
     <div>
-        <input type="text" ng-model="ownerUserName" style="margin: 5px" class="form-control" required placeholder="Enter owner user name">
+
+        <!-- <input type="text" ng-model="ownerUserName" style="margin: 5px" class="form-control" required placeholder="Enter owner user name"> -->
     </div>
-    <div>
-        <h4>Cards type:</h4>
-    </div>
-    <div>
+    <div style="display: flex">
+        <div>
+            <h4>Cards type:</h4>
+        </div>
         <div class="btn-group" uib-dropdown>
             <button type="button"
                     class="btn btn-primary" uib-dropdown-toggle>
-                {{selectedCardsValue}} <span class="caret"></span>
+                {{selectedCardsType}} <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-                <li role="menuitem" ng-repeat="choice in cardsValues">
+                <li role="menuitem" ng-repeat="choice in cardsTypes">
                     <a ng-click="setChoice(choice)">{{choice}}</a>
                 </li>
             </ul>
         </div>
+        <div style="margin-left: 25px">
+            <h4>Items Type:</h4>
+        </div>
+        <div class="btn-group" uib-dropdown>
+            <button type="button"
+                    class="btn btn-primary" uib-dropdown-toggle>
+                {{selectedItemsTypeMany}} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                <li role="menuitem">
+                    <a ng-click="setItemTypeToStories()">Stories</a>
+                </li>
+                <li role="menuitem">
+                    <a ng-click="setItemTypeToFeatures()">Features</a>
+                </li>
+            </ul>
+        </div>
     </div>
-
     <div>
-        <h4>Take user stories from:</h4>
+        <h4>Take {{selectedItemsTypeMany}} from:</h4>
     </div>
     <div class="form-group">
         <label>Release:</label>

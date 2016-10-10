@@ -6,18 +6,50 @@
   tableModule.controller('TableCtrl', ['$scope', '$state', '$uibModal', 'tableSvc', 'socketSvc', 'loggedinSvc',  function($scope, $state, $uibModal, tableSvc, socketSvc, loggedinSvc) {
 
     function init() {
-      tableSvc.getTables().then(
-        function(result) {
-          $scope.tables = result.data.tables;
-        }
-      );
+      $scope.connected = false;
+      var currentUser = loggedinSvc.getUser();
+      if(currentUser) {
+        $scope.hasUser = true;
+        tableSvc.getTables(currentUser).then(
+          function(result) {
+            $scope.tables = result.data.tables;
+          }
+        );
+      } else {
+        $scope.hasUser = false;
+        $scope.tables = [];
+      }
     }
+
+
+    $scope.connectToOctane = function() {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/views/table/modals/connect-octane-modal.html',
+        controller: 'ModalOctaneConnectCtrl',
+        backdrop: 'static'
+      });
+
+      modalInstance.result.then(function (data) {
+        $scope.connected = data;
+      });
+    }
+    
 
     $scope.OpenCreateTableModal = function() {
       var modalInstance = $uibModal.open({
         animation: true,
         templateUrl: 'app/views/table/modals/create-table-modal.html',
-        controller: 'ModalCreateTableCtrl'
+        controller: 'ModalCreateTableCtrl',
+        resolve: {
+          userData: function() {
+            return {
+              username: $scope.connected,
+
+            };
+          }
+
+        }
       });
 
       modalInstance.result.then(function (data) {
@@ -27,7 +59,8 @@
           numberOfPlayers: 1,
           status: 'active',
           ownerName: data.ownerUserName,
-          cardsValue: data.cardsValue,
+          cardsType: data.cardsType,
+          itemsType: data.itemsType,
           release: data.release,
           sprint: data.sprint,
           team: data.team
@@ -68,8 +101,15 @@
       });
     };
 
-    $scope.delete = function() {
+    $scope.delete = function(tableId) {
       console.log('delete table');
+      tableSvc.deleteTable(tableId).then(function(data) {
+        tableSvc.getTables().then(
+          function(result) {
+            $scope.tables = result.data.tables;
+          }
+        );
+      });
     };
 
     init();

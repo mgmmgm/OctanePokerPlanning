@@ -3,32 +3,53 @@
 
   var tableModule = angular.module('opp.table');
 
-  tableModule.controller('ModalCreateTableCtrl', ['$scope', '$uibModalInstance', 'releasesSvc', 'connectSvc', function($scope, $uibModalInstance, releasesSvc, connectSvc) {
+  tableModule.controller('ModalCreateTableCtrl', ['$scope', '$uibModalInstance', 'releasesSvc', 'userData', 'connectSvc', 'CONSTS', function($scope, $uibModalInstance, releasesSvc, userData, connectSvc, CONSTS) {
 
     function init() {
-      connect().then(function() {
+      //connect().then(function() {
+        initOwnerUserName();
         initCardsValues();
+        initItemsType();
         initReleases();
         initSprints();
         initTeams();
-      });
+      //});
 
     }
+    function initOwnerUserName() {
+      $scope.ownerUserName = userData.username;
+    }
+
 
     function initCardsValues() {
-      $scope.cardsValues = [
+      $scope.cardsTypes = CONSTS.CARDS_TYPES;
+       /* [
         'Scrum',
         'Fibonacci',
-        'T-shirt'
+        'T-shirt',
+        'sequential'
       ];
-
-      $scope.selectedCardsValue = $scope.cardsValues[0];
+*/
+      $scope.selectedCardsType = CONSTS.CARDS_TYPES.SCRUM;
 
       $scope.setChoice = function(data) {
-        $scope.selectedCardsValue = data;
+        $scope.selectedCardsType = data;
       };
     }
 
+    function initItemsType() {
+      $scope.selectedItemsType = "Story";
+      $scope.selectedItemsTypeMany = "Stories";
+
+      $scope.setItemTypeToStories = function() {
+        $scope.selectedItemsType = "Story";
+        $scope.selectedItemsTypeMany = "Stories";
+      };
+      $scope.setItemTypeToFeatures = function() {
+        $scope.selectedItemsType = "Feature";
+        $scope.selectedItemsTypeMany = "Features";
+      };
+    }
     function connect() {
       return connectSvc.connect();
     }
@@ -94,7 +115,8 @@
       var data = {
         tableName: $scope.tableName,
         ownerUserName: $scope.ownerUserName,
-        cardsValue: $scope.selectedCardsValue,
+        cardsType: $scope.selectedCardsType,
+        itemsType: $scope.selectedItemsType,
         release: $scope.selectedRelease,
         sprint: $scope.selectedSprint,
         team: $scope.selectedTeam

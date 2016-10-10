@@ -6,8 +6,9 @@
   tableModule.controller('ModalVoteCommentCtrl', ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
 
     $scope.vote = function() {
-      if(!$scope.voteComment)
-        return;
+      if (!$scope.voteComment) {
+        $scope.voteComment = '';
+      }
       var data = {
         voteComment: $scope.voteComment
       };

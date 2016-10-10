@@ -11,14 +11,25 @@ function getTables(req, res) {
 
   });*/
   //console.log('tables '+JSON.stringify(tablesMap));
+  var username = req.params.user;
   var data = {};
-  data['tables'] = tablesMap;
+  var userTables = [];
+  for (var tableId in tablesMap) {
+    if (tablesMap.hasOwnProperty(tableId)) {
+      var table = tablesMap[tableId];
+      if (table.ownerName === username) {
+        userTables.push(table);
+      }
+    }
+  }
+  data['tables'] = userTables;
   res.send(data);
 };
 
 function getTableById(req, res) {
   var id = req.params.id;
   var data = tablesMap[id];
+  console.log(data);
   if (data === null) {
     res.status(500).send('not found');
   }
@@ -43,17 +54,24 @@ function addTable(req, res) {
     linkToGame: 'http://' + req.headers.host + '/#/game/' + guid.value,
     cardsType: req.body.cardsType,
     players: [ownerPlayer],
+    itemsType: req.body.itemsType,
     release: req.body.release,
     sprint: req.body.sprint,
     team: req.body.team,
-    storyVotes: {}
+    workItemVotes: {},
+    selectedWorkItemIndex: 0,
+    creationTime: new Date()
   };
-  var getStoriesPromise = ngaBridge.innerGetStories(req.body.release.id, req.body.sprint.id, req.body.team.id);
-  getStoriesPromise.then(function(storyList) {
-    newTableObj.userStories = storyList;
+  newTableObj.workItemVotes.summary = {};
+  var getWorkItemsPromise = ngaBridge.innerGetWorkItems(req.body.itemsType, req.body.release.id, req.body.sprint.id, req.body.team.id);
+  getWorkItemsPromise.then(function(workItemsList) {
+    newTableObj.workItems = workItemsList;
     tablesMap[newTableObj.id] = newTableObj;
+    ngaBridge.setTablePerSession(newTableObj.id);
     res.send(newTableObj);
   });
+
+
 
 };
 
@@ -75,8 +93,20 @@ function joinTable(req, res) {
   res.send(tableData);
 };
 
+function deleteTable(req, res) {
+  var tableId = req.params.id;
+  var tableData = tablesMap[tableId];
+  if (tableData === null) {
+    res.status(500).send('not found');
+  }
+  delete tablesMap[tableId];
+  ngaBridge.deleteTableSession(tableId);
+  res.send(tableId);
+};
+
 exports.getTables = getTables;
 exports.getTableById = getTableById;
 exports.addTable = addTable;
 exports.joinTable = joinTable;
+exports.deleteTable = deleteTable;
 exports.tablesMap = tablesMap;

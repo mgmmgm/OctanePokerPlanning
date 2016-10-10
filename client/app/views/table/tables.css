@@ -28,9 +28,30 @@
     background-color: lightblue;
 }
 
+.tables-table-content .table-row.table-row-finish {
+    background-color: #b2f2b0;
+}
+
+.tables-table-content .table-row.table-row-current {
+    background-color: #b7d0fd;
+}
+
 .table-row-item {
     flex: 1 0 0;
     padding: 0px 10px;
+}
+
+.table-row-summary-item {
+    padding: 0px 10px;
+    flex: 0 0 50px;
+}
+
+.table-summary-name {
+    flex: 1;
+}
+
+.table-summary-comment {
+    flex: 1;
 }
 
 .status-cell {

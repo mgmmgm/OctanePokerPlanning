@@ -23,9 +23,9 @@ module.exports = function (socket) {
     socket.broadcast.emit('vote:everyoneFinishVoted', data);
   });
 
-  socket.on('userstory:goToNext', function (data) {
-    // notify other clients to move to next userstory
-    socket.broadcast.emit('userstory:goToNextUserstory', data);
+  socket.on('workitem:goToNext', function (data) {
+    // notify other clients to move to next workitem
+    socket.broadcast.emit('workitem:goToNextWorkitem', data);
   });
 
 };

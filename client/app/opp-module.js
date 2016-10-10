@@ -22,7 +22,7 @@
 
   mainModule.controller('OppController', ['$scope', 'CONSTS', function ($scope, CONSTS) {
 
-    CONSTS.ENV_MODE = CONSTS.ENV_MODE_OPTIONS.PRODUCTION; // remove or change it in production
+    CONSTS.ENV_MODE = CONSTS.ENV_MODE_OPTIONS.DEBUG; // remove or change it in production
 
     $scope.test = 'main';
 

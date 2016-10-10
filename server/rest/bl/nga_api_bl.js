@@ -1,16 +1,21 @@
 var promise = require('es6-promise');
 
 var request = require('request');
+//require('request-debug')(request);
+
 var cookie = require('cookie');
 var url  = require('url');
+var extend  = require('extend')
 
-const OCTANE_SERVER = 'https://hackathon.almoctane.com';
-const SHAREDSPACE_ID = 1001;
-const WORKSPACE_ID = 2027;
+var OCTANE_SERVER = '';
+//const SHAREDSPACE_ID = 1001;
+//const WORKSPACE_ID = 2027;
+
+var sessionMap = {};
+
 
 var requestor = request.defaults({
 	jar: true,
-	baseUrl: OCTANE_SERVER,
 	json: true,
 	// if running from within HPE you will need to set a proxy.  Change according to nearest proxy
 	proxy: 'http://web-proxy.il.hpecorp.net:8080'
@@ -21,13 +26,25 @@ var responseRequestor = {};
 var releaseList = [];
 var teamList = [];
 var sprintList = [];
-var hackathon_uid = 2003;
 
 function connect(req, res) {
-	login(requestor, function (requestor) {
+
+	var apiKey = req.body.key;
+	var serverURL = req.body.url;
+	var apiSecret = req.body.secret;
+
+
+	login(requestor, apiKey, apiSecret, serverURL, function (requestor) {
+
 		responseRequestor = requestor;
 		res.send('ok');
 	});
+}
+
+function connectWorkspaces(req, res) {
+	responseRequestor.userId = req.params.userId;
+	responseRequestor.workSpaceURL  = 'shared_spaces/' + responseRequestor.sharedSpace + '/workspaces/'+ req.params.workSpaceId;
+	res.send('ok');
 }
 
 /**
@@ -36,15 +53,15 @@ function connect(req, res) {
  * @param callback The callback that will be called once login is successful
  * @returns {*}
  */
-function login(requestor, callback) {
-
+function login(requestor, apiKey, apiSecret, serverURL, callback) {
+	OCTANE_SERVER = serverURL;
 	var HPSSO_COOKIE_CSRF = null;
 
 	requestor.post({
-		uri: '/authentication/sign_in',
+		uri: serverURL+'/authentication/sign_in',
 		body: {
-			client_id: 'Ido Raz_z2wmdyo6x4vqwbg5595n70lx8', // put API KEY here
-			client_secret: '+414c89b9d5b2dbb6Y' // PUT API SECRET HERE
+			client_id: apiKey,//'Ido Raz_z2wmdyo6x4vqwbg5595n70lx8', // put API KEY here
+			client_secret: apiSecret // PUT API SECRET HERE
 			//user: 'hackathon@user',
 			//password: 'Mission-impossible'
 			/**
@@ -54,7 +71,9 @@ function login(requestor, callback) {
 			 */
 		}
 	}, function (error, response) {
+
 		if (error) {
+			console.log('error - return from post');
 			console.error(error);
 			// do something with error...
 			return;
@@ -72,7 +91,7 @@ function login(requestor, callback) {
 		}
 
 		requestor = requestor.defaults({
-			baseUrl: (OCTANE_SERVER + '/api/shared_spaces/' + SHAREDSPACE_ID + '/workspaces/' + WORKSPACE_ID),
+			baseUrl: (serverURL + '/api/'),// + SHAREDSPACE_ID + '/workspaces/' + WORKSPACE_ID),
 			headers: {
 				'HPSSO_HEADER_CSRF': HPSSO_COOKIE_CSRF,
 				'HPSSO-HEADER-CSRF': HPSSO_COOKIE_CSRF
@@ -83,14 +102,47 @@ function login(requestor, callback) {
 }
 
 
+/*function getSharedSpaces(req, res) {
+	responseRequestor.get('shared_spaces', function (error, message, sharedSpaces) {
+		console.log('shared space '+JSON.stringify(sharedSpaces));
+		sharedSpaceList = [];
+		sharedSpaces.data.forEach(function (sharedSpace) {
+			console.log('id: ' + sharedSpace.id + ' name: ' + sharedSpace.name);
+			sharedSpaceList.push({'id': sharedSpace.id, 'name': sharedSpace.name});
+		});
+		res.send(sharedSpaceList);
+	});
+}*/
+
+function getWorkspaces(req, res) {
+	responseRequestor.get('shared_spaces', function (error, message, sharedSpaces) {
+		console.log('shared space '+JSON.stringify(sharedSpaces));
+		if (sharedSpaces.data === undefined) {
+			responseRequestor.sharedSpace = 1001;
+		} else {
+			responseRequestor.sharedSpace = sharedSpaces.data[0].id;
+		}
+
+		responseRequestor.get('shared_spaces/' + responseRequestor.sharedSpace + '/workspaces/', function (error, message, workSpaces) {
+			workSpaceList = [];
+			workSpaces.data.forEach(function (workSpace) {
+				console.log('id: ' + workSpace.id + ' name: ' + workSpace.name);
+				workSpaceList.push({'id': workSpace.id, 'name': workSpace.name});
+			});
+			res.send(workSpaceList);
+		});
+	})
+}
+
+
 function getReleases(req, res) {
 
-	responseRequestor.get('/releases', function (error, message, releases) {
-		console.log('ALL RELEASES');
+	responseRequestor.get(responseRequestor.workSpaceURL+'/releases', function (error, message, releases) {
+		console.log(JSON.stringify(releases));
 		if (releases !== undefined && releases.data !== undefined) {
 			releaseList = [];
 			releases.data.forEach(function (release) {
-				console.log('id: ' + release.id + ' name: ' + release.name);
+				//console.log('id: ' + release.id + ' name: ' + release.name);
 				releaseList.push({'id': release.id, 'name': release.name});
 			});
 			res.send(releaseList);
@@ -104,12 +156,11 @@ function getReleases(req, res) {
 
 function getTeams(req, res) {
 
-	responseRequestor.get('/teams', function (error, message, teams) {
-		console.log('ALL TEAMS');
+	responseRequestor.get(responseRequestor.workSpaceURL+'/teams', function (error, message, teams) {
 		if (teams !== undefined && teams.data !== undefined) {
 			teamList = [];
 			teams.data.forEach(function (team) {
-				console.log('id: ' + team.id + ' name: ' + team.name);
+				//console.log('id: ' + team.id + ' name: ' + team.name);
 				teamList.push({'id': team.id, 'name': team.name});
 			});
 			res.send(teamList);
@@ -131,12 +182,11 @@ function getSprints(req, res) {
 		}
 	}
 	console.log('query string is '+queryString);
-	responseRequestor.get(queryString, function (error, message, sprints) {
-		console.log('ALL TEAMS');
+	responseRequestor.get(responseRequestor.workSpaceURL+queryString, function (error, message, sprints) {
 		if (sprints !== undefined && sprints.data !== undefined) {
 			sprintList = [];
 			sprints.data.forEach(function (sprint) {
-				console.log('id: ' + sprint.id + ' name: ' + sprint.name);
+				//console.log('id: ' + sprint.id + ' name: ' + sprint.name);
 				sprintList.push({'id': sprint.id, 'name': sprint.name});
 			});
 			res.send(sprintList);
@@ -147,7 +197,7 @@ function getSprints(req, res) {
 
 }
 
-function innerGetStories(releaseId, sprintId, teamId) {
+function innerGetWorkItems(itemsType, releaseId, sprintId, teamId) {
 	var promise = new Promise(function(resolve, reject) {
 		var queryString = '';
 
@@ -163,21 +213,25 @@ function innerGetStories(releaseId, sprintId, teamId) {
 		if (queryString !== '') {
 			queryString = queryString + ';';
 		}
-		queryString = queryString + 'subtype=\'story\'';
+		if (itemsType === 'Story') {
+			queryString = queryString + 'subtype=\'story\'';
+		} else if (itemsType === 'Feature') {
+			queryString = queryString + 'subtype=\'feature\'';
+		}
 
 		console.log('query string is '+queryString);
-		responseRequestor.get('/work_items?query="'+queryString+'"&fields=id,name', function (error, message, stories) {
-			console.log(stories);
-			if (stories !== undefined && stories.data !== undefined) {
-				console.log('STORIES: '+stories.data.length);
-				var storyList = [];
-				stories.data.forEach(function (story) {
+		responseRequestor.get(responseRequestor.workSpaceURL+'/work_items?query="'+queryString+'"&fields=id,name,description', function (error, message, workItems) {
+			console.log(workItems);
+			if (workItems !== undefined && workItems.data !== undefined) {
+				console.log('WORK_ITEMS: '+workItems.data.length);
+				var workItemsList = [];
+				workItems.data.forEach(function (workItem) {
 					//console.log(JSON.stringify(story));
-					console.log('id: ' + story.id + ' name: ' + story.name + ' sp: '+ story.story_points);
-					storyList.push({'id': story.id, 'name': story.name});
+				//	console.log('id: ' + workItem.id + ' name: ' + workItem.name + ' sp: '+ workItem.story_points);
+					workItemsList.push({'id': workItem.id, 'name': workItem.name, 'type':itemsType, 'description': (workItem.description) ? String(workItem.description).replace(/<[^>]+>/gm, '') : "" });
 
 				});
-				resolve(storyList);
+				resolve(workItemsList);
 			}
 		});
 		
@@ -186,21 +240,56 @@ function innerGetStories(releaseId, sprintId, teamId) {
 }
 
 
-function updateStory(req, res) {
+function setTablePerSession(tableId) {
+	sessionMap[tableId] = extend(responseRequestor, { status: 'copied' });;
+}
 
+function deleteTableSession(tableId) {
+	if (sessionMap[tableId] !== undefined) {
+		delete sessionMap[tableId];
+		console.log('table ' + tableId + ' deleted');
+	}
+}
+
+function getUser(req, res) {
+	var workspaceID = req.params.workspaceID;
+	console.log('shared_spaces/' + responseRequestor.sharedSpace + '/workspaces/'+workspaceID+'/workspace_users');
+	responseRequestor.get('shared_spaces/' + responseRequestor.sharedSpace + '/workspaces/' + workspaceID + '/workspace_users', function (error, message, users) {
+		console.log(JSON.stringify(users));
+		console.log(message);
+		var userList = [];
+		if (users.data !== undefined) {
+			users.data.forEach(function (user) {
+				userList.push({'id': user.id, 'name': user.full_name});
+			});
+		}
+		res.send(userList);
+	});
+}
+
+function updateWorkItem(req, res) {
 	var body = req.body;
 	var id = body.id;
 	var sp = body.sp;
-	var comment = body.comments;
+	var comment = body.comment;
+	var tableId = body.tableId;
 	console.log ('updating id '+id+' sp '+ sp);
 	var putStoryExample = {};
 
+	var sessionRequestor = sessionMap[tableId];
+	if (sessionRequestor === undefined) {
+		console.log('could not find open session for this tableId');
+		res.send('could not find open session for this game');
+		return;
+	}
+
 	putStoryExample['story_points'] = parseInt(sp);
 
-	responseRequestor.put({uri: '/work_items/'+id, body: putStoryExample}, function (error, message, stories){
-		//console.log(stories);
-		res.send(stories);
+	sessionRequestor.put({uri: sessionRequestor.workSpaceURL+'/work_items/'+id, body: putStoryExample}, function (error, message, workItems){
+		res.send(workItems);
 	});
+
+
 
 
 	var postCommentExample = {
@@ -208,7 +297,7 @@ function updateStory(req, res) {
 			[
 				{
 					"author": {
-						"id": hackathon_uid,
+						"id": sessionRequestor.userId,
 						"type": "workspace_user"
 					},
 					"owner_work_item": {
@@ -219,22 +308,24 @@ function updateStory(req, res) {
 				}
 			]
 	}
-	responseRequestor.post({uri: '/comments', body: postCommentExample}, function (error, message, comments) {
+	sessionRequestor.post({uri: sessionRequestor.workSpaceURL+'/comments', body: postCommentExample}, function (error, message, comments) {
+		console.log('error is '+error+' message: '+message);
 		console.log('comment added');
-		console.log(message);
-		/*defects.data.forEach(function (defect) {
-			console.log('id: ' + defect.id + ' name: ' + defect.name);
-		});*/
 	});
 }
 
 
 
 exports.connect = connect;
+exports.connectWorkspaces = connectWorkspaces;
+exports.getWorkspaces = getWorkspaces;
+exports.getUser = getUser;
 exports.getReleases = getReleases;
 exports.getSprints = getSprints;
 exports.getTeams = getTeams;
-exports.updateStory = updateStory;
-exports.innerGetStories = innerGetStories;
+exports.updateWorkItem = updateWorkItem;
+exports.setTablePerSession = setTablePerSession;
+exports.deleteTableSession = deleteTableSession;
+exports.innerGetWorkItems = innerGetWorkItems;
 exports.requestor = requestor;
 

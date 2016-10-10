@@ -24,9 +24,12 @@
             </div>
         </div>
 
-        <div class="game-sub-title margin-v--20px font-size-20px">
-            [{{selectedUserstoryIndex + 1}}/{{userstories.length}}] {{selectedUserstory.name}}
-        </div>
+        <div class="game-sub-title margin-v--20px font-size-22px">
+            [{{itemsType}} {{selectedWorkItemIndex + 1}}/{{workitems.length}}] {{selectedWorkItem.id}}: {{selectedWorkItem.name}}
+         </div>
+          <div class="margin-v--20px font-size-18px ellipsis" title="{{selectedWorkItem.description}}" style="width:700px;">
+            {{selectedWorkItem.description}}
+          </div>
         <div class="game-cards-votes-container flex">
             <div class="margin--10px" ng-repeat="card in cards">
                 <card-drtv value="{{card.value}}" is-selected="card.isSelected" is-enable="card.isEnable" add-vote-fn="addVote(voteData)"></card-drtv>
@@ -49,14 +52,23 @@
 
 
         <div class="buttons-container text-align-center margin-v--20px">
-            <button ng-if="isOwner" type="button" class="btn btn-warning margin-r--50px" ng-click="skipUserstory()">Skip US
+            <button ng-if="isOwner" type="button" class="btn btn-warning margin-r--50px" ng-click="skipWorkItem()">Skip {{itemsType}}
                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
             </button>
+            <button class="btn btn-info" ng-click="showSummary()">Show Summary</button>
             <button ng-if="isOwner && isFinishedVoting" type="button" class="btn btn-success" ng-click="finishVoting()">Finish Voting</button>
-        </div>
 
+        </div>
+        <div class="buttons-container margin-v--20px">
+            <button ng-if="isOwner" type="button" class="btn btn-primary" ng-click="backToMain()">Back to my tables</button>
+        </div>
         <div class="game-link-container">
-            <div class="font-size-20px margin-v--5px">Invite a team mate to play</div>
+            <div class="font-size-20px margin-v--5px">Invite a team mate to play
+                <a class="btn btn-primary" href="mailto:name@email.com?subject=You've been invited to an octane poker game
+                &body=Press the following link to join the game: {{linkToGame}}">
+                    <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                </a>
+            </div>
             <div>
                 <input type="text" class="form-control" readonly value="{{linkToGame}}">
             </div>

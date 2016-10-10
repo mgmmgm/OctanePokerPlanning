@@ -12,12 +12,12 @@ body-parser
 
 How to install:
 -------------------
-run 'npm install' where 'package.json' file exist (in 'server' folder)
+run 'npm install' where 'package.json' file exist (in root folder)
 
 
 To start:
 -------------------
-node app.js (to up the node server)
+node app.js (to start the node server)
 
 
 how to run MongoDB:
