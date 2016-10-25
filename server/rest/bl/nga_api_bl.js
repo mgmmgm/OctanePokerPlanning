@@ -18,7 +18,7 @@ var requestor = request.defaults({
 	jar: true,
 	json: true,
 	// if running from within HPE you will need to set a proxy.  Change according to nearest proxy
-	proxy: 'http://web-proxy.il.hpecorp.net:8080'
+	//proxy: 'http://web-proxy.il.hpecorp.net:8080'
 });
 
 var responseRequestor = {};
