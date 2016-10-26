@@ -1,9 +1,65 @@
+.table-properties-container {
+    height: 320px;
+    border: 2px solid #60bb60;
+    margin: 20px 0;
+    opacity: 1;
+    transition: all linear 0.5s;
+}
+
+.table-properties-container.ng-hide {
+    height: 0px;
+    opacity: 0;
+}
+
+.type-container {
+    margin: 30px 0;
+    text-align: center;
+}
+
+.type-option {
+    border: 1px solid black;
+    cursor: pointer;
+    padding: 8px 20px;
+    font-size: 16px;
+}
+
+.type-option.active {
+    background-color: #9be89b;
+    color: black;
+}
+
+
+.pocker-form-control {
+    border: transparent;
+    border-bottom: 1px solid;
+    display: block;
+    width: 85%;
+    padding-top: 20px;
+}
+
 .tables-table {
     display: flex;
     flex-direction: column;
     margin-top: 30px;
 }
-
+.pocker-green-button {
+    border: 1px solid #7ab829;
+    background: transparent;
+    margin-top: 15px;
+}
+.pocker-green-button:focus {
+    outline-style: none;
+}
+.pocker-button {
+    border: transparent;
+    background: transparent;
+    margin-top: 15px;
+    font-size: 18px;
+    padding: 0px;
+}
+.pocker-button:focus {
+    outline-style: none;
+}
 .tables-table-header {
     font-size: large;
     font-style: italic;
@@ -13,19 +69,17 @@
 .table-row {
     display: flex;
     flex-direction: row;
-    border-bottom: 1px solid grey;
+    border: 1px solid grey;
+    margin-bottom: 10px;
 }
 
 .tables-table-content .table-row {
     padding: 15px 0px;
-}
-
-.tables-table-content .table-row:nth-child(odd) {
-    background-color: #f3f3f3;
+    margin-top: -15px;
 }
 
 .tables-table-content .table-row:hover {
-    background-color: lightblue;
+    background-color: #e1f7ff;
 }
 
 .tables-table-content .table-row.table-row-finish {
@@ -37,7 +91,7 @@
 }
 
 .table-row-item {
-    flex: 1 0 0;
+    flex: 2;
     padding: 0px 10px;
 }
 
@@ -59,8 +113,16 @@
     justify-content: space-between;
 }
 
+.scope-cell {
+    flex: 6;
+    border-left: 1px solid;
+}
+.delete-cell {
+    flex: 1;
+}
 .table-name {
     color: #1f92eb;
+    cursor: pointer;
 }
 
 .active {
@@ -74,6 +136,11 @@
 .remove-button {
     color: black;
     cursor: pointer;
+    display: none;
+}
+.table-row:hover
+.remove-button {
+    display: block;
 }
 
 input:required:invalid {

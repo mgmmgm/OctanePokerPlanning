@@ -10,10 +10,10 @@
           PRODUCTION: 'production'
         },
         CARDS_TYPES: {
-          SCRUM: 'Scrum',
-          FIBB: 'Fibonacci',
-          TSHIRT: 'T-shirt',
-          SEQUENTIAL: 'Sequential'
+          SCRUM: 'SCRUM',
+          FIBB: 'FIBB',
+          TSHIRT: 'TSHIRT',
+          SEQUENTIAL: 'SEQUENTIAL'
         },
         CARDS_VALUES: {
           SCRUM: [

@@ -1,35 +1,41 @@
 <div class="game flex">
 
     <div class="game-left-side flex">
-
-        <div class="game-title">
-            <div class="game-table-name font-size-40px">{{gameName}}</div>
-            <div class="game-title-filter flex">
-                <div class="game-release">
-                    <label>Release:</label>
-                    <div class="inline-block">{{releaseName}}</div>
+        <div class="game-upper-line">
+            <div class="game-title">
+                <div class="game-table-name font-size-20px">{{gameName}} / {{ownerName}}</div>
+                <div class="game-title-filter font-size-16px flex ellipsis">
+                    <span>Scope: {{releaseName}} Release, </span>
+                    <span ng-if="sprintName === 'All'">{{sprintName}} Sprints</span>
+                    <span ng-if="sprintName !== 'All'">{{sprintName}}</span>
+                    <span>,</span>
+                    <span ng-if="teamName === 'All'">{{teamName}} Teams</span>
+                    <span ng-if="teamName !== 'All'">{{teamName}}</span>
+    <!--
+                    <span>{{currentUser}}<span ng-if="isOwner"> (Table Owner)</span></span>
+    -->
                 </div>
-                <div class="game-sprint margin-h--20px">
-                    <label>Sprint:</label>
-                    <div class="inline-block">{{sprintName}}</div>
+            </div>
+            <div class="game-link-container">
+                <div class="font-size-20px margin-v--5px">
+                    <a class="" href="mailto:name@email.com?subject=You've been invited to an octane poker game
+                    &body=Press the following link to join the game: {{linkToGame}}">
+                        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> share table
+                    </a>
                 </div>
-                <div class="game-team margin-h--20px">
-                    <label>Team:</label>
-                    <div class="inline-block">{{teamName}}</div>
-                </div>
-                <div class="game-sprint">
-                    <label>User:</label>
-                    <div class="inline-block">{{currentUser}}<span ng-if="isOwner"> (Table Owner)</span></div>
+                <div>
+                    <input type="text" class="form-control" readonly value="{{linkToGame}}">
                 </div>
             </div>
         </div>
-
-        <div class="game-sub-title margin-v--20px font-size-22px">
-            [{{itemsType}} {{selectedWorkItemIndex + 1}}/{{workitems.length}}] {{selectedWorkItem.id}}: {{selectedWorkItem.name}}
+        <div class="game-sub-title">
+        <div class="margin--20px font-size-20px">
+            [{{itemsType === 'Stories' ? 'Story ' : 'Feature'}} {{selectedWorkItemIndex + 1}}/{{workitems.length}}] {{selectedWorkItem.id}}: {{selectedWorkItem.name}}
          </div>
-          <div class="margin-v--20px font-size-18px ellipsis" title="{{selectedWorkItem.description}}" style="width:700px;">
+          <div class="margin--20px font-size-16px ellipsis" title="{{selectedWorkItem.description}}" style="width:700px;">
             {{selectedWorkItem.description}}
           </div>
+    </div>
         <div class="game-cards-votes-container flex">
             <div class="margin--10px" ng-repeat="card in cards">
                 <card-drtv value="{{card.value}}" is-selected="card.isSelected" is-enable="card.isEnable" add-vote-fn="addVote(voteData)"></card-drtv>
@@ -42,7 +48,7 @@
 
     <div class="game-right-side">
         <div class="players-container margin--20px">
-            <div class="players-title text-align-center">Players</div>
+            <div class="players-title">{{players.length}} Players</div>
             <div class="margin--5px">
                 <div ng-repeat="player in players">
                     <player-drtv name="{{player.name}}" vote-value="player.voteValue" is-owner="player.isOwner" comment="player.comment" everyone-finish-vote="player.everyoneFinishVote" need-to-show="player.needToShow"></player-drtv>
@@ -52,27 +58,15 @@
 
 
         <div class="buttons-container text-align-center margin-v--20px">
-            <button ng-if="isOwner" type="button" class="btn btn-warning margin-r--50px" ng-click="skipWorkItem()">Skip {{itemsType}}
+            <button ng-if="isOwner" type="button" class="pocker-green-button margin-r--50px" ng-click="skipWorkItem()">Skip {{itemsType === 'Stories' ? 'Story ' : 'Feature'}}
                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
             </button>
-            <button class="btn btn-info" ng-click="showSummary()">Show Summary</button>
-            <button ng-if="isOwner && isFinishedVoting" type="button" class="btn btn-success" ng-click="finishVoting()">Finish Voting</button>
+            <button class="pocker-green-button" ng-click="showSummary()">Show Summary</button>
+            <button ng-if="isOwner && isFinishedVoting" type="button" class="pocker-green-button" ng-click="finishVoting()">Finish Voting</button>
 
         </div>
         <div class="buttons-container margin-v--20px">
-            <button ng-if="isOwner" type="button" class="btn btn-primary" ng-click="backToMain()">Back to my tables</button>
+            <button ng-if="isOwner" type="button" class="pocker-green-button" ng-click="backToMain()">Back to my tables</button>
         </div>
-        <div class="game-link-container">
-            <div class="font-size-20px margin-v--5px">Invite a team mate to play
-                <a class="btn btn-primary" href="mailto:name@email.com?subject=You've been invited to an octane poker game
-                &body=Press the following link to join the game: {{linkToGame}}">
-                    <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-                </a>
-            </div>
-            <div>
-                <input type="text" class="form-control" readonly value="{{linkToGame}}">
-            </div>
-        </div>
-
     </div>
 </div>

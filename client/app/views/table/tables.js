@@ -3,10 +3,11 @@
 
   var tableModule = angular.module('opp.table', []);
 
-  tableModule.controller('TableCtrl', ['$scope', '$state', '$uibModal', 'tableSvc', 'socketSvc', 'loggedinSvc',  function($scope, $state, $uibModal, tableSvc, socketSvc, loggedinSvc) {
+  tableModule.controller('TableCtrl', ['$scope', '$state', '$uibModal', 'tableSvc', 'socketSvc', 'loggedinSvc', 'releasesSvc', 'CONSTS',  function($scope, $state, $uibModal, tableSvc, socketSvc, loggedinSvc, releasesSvc, CONSTS) {
 
     function init() {
       $scope.connected = false;
+      $scope.showCreateTableDialog = false;
       var currentUser = loggedinSvc.getUser();
       if(currentUser) {
         $scope.hasUser = true;
@@ -33,72 +34,95 @@
       modalInstance.result.then(function (data) {
         $scope.connected = data;
       });
-    }
-    
+    };
 
-    $scope.OpenCreateTableModal = function() {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: 'app/views/table/modals/create-table-modal.html',
-        controller: 'ModalCreateTableCtrl',
-        resolve: {
-          userData: function() {
-            return {
-              username: $scope.connected,
+    $scope.openCreateTableDialog = function() {
+      $scope.showCreateTableDialog = true;
+      $scope.radioModelCardType = 'SCRUM';
+      $scope.radioModelItemType = 'Stories';
+      initReleases();
+      initSprints();
+      initTeams();
+    };
 
-            };
+    function initReleases() {
+      $scope.setRelease = function(data) {
+        $scope.selectedRelease = data;
+        $scope.filterSprints();
+      };
+
+      releasesSvc.getReleases().then(
+        function(result) {
+          $scope.releases = result.data;
+          if ($scope.releases.length > 0) {
+            $scope.setRelease($scope.releases[0]);
           }
-
         }
-      });
+      );
+    }
 
-      modalInstance.result.then(function (data) {
+    function initSprints() {
+      $scope.setSprint = function(data) {
+        $scope.selectedSprint = data;
+      };
 
-        var newTable = {
-          name: data.tableName,
-          numberOfPlayers: 1,
-          status: 'active',
-          ownerName: data.ownerUserName,
-          cardsType: data.cardsType,
-          itemsType: data.itemsType,
-          release: data.release,
-          sprint: data.sprint,
-          team: data.team
-        };
-
-        tableSvc.addTable(newTable).then(
+      $scope.filterSprints = function() {
+        releasesSvc.getSprints($scope.selectedRelease.id).then(
+          //  releasesSvc.getSprints("").then(
           function(result) {
-            console.log(result.data);
-            loggedinSvc.setUser(newTable.ownerName);
-            $state.go('game', {tableId: result.data.id});
+            $scope.sprints = result.data;
+            $scope.sprints.unshift({id: "-1", name: "All"});
+            if ($scope.sprints.length > 0) {
+              $scope.setSprint($scope.sprints[0]);
+            }
           }
-        )
-      });
+        );
+      };
+    }
+
+    function initTeams() {
+
+      $scope.setTeam = function(data) {
+        $scope.selectedTeam = data;
+      };
+      releasesSvc.getTeams().then(
+        function(result) {
+          $scope.teams = result.data;
+          $scope.teams.unshift({id: "-1", name: "All"});
+          if ($scope.teams.length > 0) {
+            $scope.setTeam($scope.teams[0]);
+          }
+        }
+      );
+    }
+
+    $scope.createTable = function() {
+      if (!$scope.tableName || !$scope.connected) {
+        return;
+      }
+      var newTable = {
+        name: $scope.tableName,
+        numberOfPlayers: 1,
+        status: 'active',
+        ownerName: $scope.connected,
+        cardsType: $scope.radioModelCardType,
+        itemsType: $scope.radioModelItemType,
+        release: $scope.selectedRelease,
+        sprint: $scope.selectedSprint,
+        team: $scope.selectedTeam
+      };
+
+      tableSvc.addTable(newTable).then(
+        function(result) {
+          console.log(result.data);
+          loggedinSvc.setUser(newTable.ownerName);
+          $state.go('game', {tableId: result.data.id});
+        }
+      )
     };
 
     $scope.OpenJoinTableModal = function(tableId) {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: 'app/views/table/modals/join-table-modal.html',
-        controller: 'ModalJoinTableCtrl',
-        backdrop: 'static',
-        keyboard: false
-      });
-      modalInstance.result.then(function (displayName) {
-        var joinData = {
-          id: tableId,
-          displayName: displayName.displayName
-        };
-        tableSvc.joinTable(joinData).then(function(data) {
-            $scope.tables[data.id] = data;
-            loggedinSvc.setUser(joinData.displayName);
-            socketSvc.emit("player:newPlayerAdded", {
-              playerName: joinData.displayName
-            });
-            $state.go('game', {tableId: tableId});
-          }
-        );
-      });
+        $state.go('game', {tableId: tableId});
     };
 
     $scope.delete = function(tableId) {

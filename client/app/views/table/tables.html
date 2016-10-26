@@ -1,26 +1,100 @@
 <div>
-    <div class="font-size-40px">All Tables</div>
 
-    <button type="button" class="btn btn-info" ng-click="OpenCreateTableModal()" ng-hide="!connected"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Create table</button>
+    <div ng-hide="!showCreateTableDialog" class="table-properties-container">
+        <form>
+            <div class="margin--10px">
+                <p>
+                    Hello <b>{{connected}}</b> please create a table
+                </p>
+            </div>
+            <div class="text-align-center margin-v--20px">
+                <input type="text" class="width--400px" ng-model="tableName" autofocus placeholder="Table name" required>
+            </div>
+            <div class="text-align-center">
+                <label>Scope:</label>
+                <div class="btn-group" uib-dropdown>
+                    <button type="button"
+                            class="" uib-dropdown-toggle>
+                        {{selectedRelease.name}} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                        <li role="menuitem" ng-repeat="release in releases">
+                            <a ng-click="setRelease(release)">{{release.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="btn-group" uib-dropdown>
+                    <button type="button"
+                            class="" uib-dropdown-toggle>
+                        {{selectedSprint.name}} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                        <li role="menuitem" ng-repeat="sprint in sprints">
+                            <a ng-click="setSprint(sprint)">{{sprint.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="btn-group" uib-dropdown>
+                    <button type="button"
+                            class="" uib-dropdown-toggle>
+                        {{selectedTeam.name}} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                        <li role="menuitem" ng-repeat="team in teams">
+                            <a ng-click="setTeam(team)">{{team.name}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="type-container">
+                <label>Items type:</label>
+                <div class="btn-group">
+                    <span class="type-option" ng-model="radioModelItemType" uib-btn-radio="'Stories'">Stories</span>
+                    <span class="type-option" ng-model="radioModelItemType" uib-btn-radio="'Features'">Features</span>
+                </div>
+            </div>
+            <div class="type-container">
+                <label>Cards type:</label>
+                <div class="btn-group">
+                    <span class="type-option" ng-model="radioModelCardType" uib-btn-radio="'SCRUM'">Scrum</span>
+                    <span class="type-option" ng-model="radioModelCardType" uib-btn-radio="'FIBB'">Fibonacci</span>
+                    <span class="type-option" ng-model="radioModelCardType" uib-btn-radio="'TSHIRT'">T-shirt</span>
+                    <span class="type-option" ng-model="radioModelCardType" uib-btn-radio="'SEQUENTIAL'">Sequential</span>
+                </div>
+            </div>
+            <div class="text-align-center">
+                <button type="button" ng-disabled="!tableName" ng-click="createTable()">Create table</button>
+            </div>
+        </form>
+    </div>
 
-    <button type="button" class="btn btn-success" ng-click="connectToOctane()" ng-hide="connected"><span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>Connect</button>
+    <button type="button" class="pocker-button" ng-click="openCreateTableDialog()" ng-hide="!connected"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add table</button>
+
+    <button type="button" class="pocker-button" ng-click="connectToOctane()" ng-hide="connected"><span class="glyphicon glyphicon-transfer" aria-hidden="true"></span> Connect</button>
+
+
 
     <div ng-if="hasUser" class="tables-table">
-        <div class="table-row tables-table-header">
-            <div class="table-row-item">Name</div>
-            <div class="table-row-item"># of players</div>
-            <div class="table-row-item">Creation Time</div>
-            <div class="table-row-item">Status</div>
-        </div>
         <div class="tables-table-content">
             <div class="table-row" ng-repeat="table in tables">
-                <div class="table-row-item table-name">{{table.name}}</div>
-                <div class="table-row-item">{{table.numberOfPlayers}}</div>
+                <div class="table-row-item table-name" ng-click="OpenJoinTableModal(table.id)">{{table.name}}</div>
+                <div class="table-row-item">{{table.numberOfPlayers}} Players</div>
                 <div class="table-row-item">{{table.creationTime | date}}</div>
                 <div class="table-row-item status-cell" ng-class="{'active': table.status === 'active', 'not-active': table.status === 'not active'}">{{table.status}}
-                    <button ng-if="table.status === 'active'" type="button" class="btn btn bg-primary btn-xs" ng-click="OpenJoinTableModal(table.id)" title="Join to this table">Join</button>
-                    <span class="glyphicon glyphicon-remove remove-button" aria-hidden="true" ng-click="delete(table.id)" title="Delete table"></span>
+                    <!--
+                                        <button ng-if="table.status === 'active'" type="button" class="btn btn bg-primary btn-xs" ng-click="OpenJoinTableModal(table.id)" title="Join to this table">Join</button>
+                    -->
                 </div>
+                <div class="table-row-item">{{table.itemsType}}</div>
+                <div class="table-row-item scope-cell ellipsis">
+                    <span>Scope: {{table.release.name}} Release, </span>
+                    <span ng-if="table.sprint.name === 'All'">{{table.sprint.name}} Sprints</span>
+                    <span ng-if="table.sprint.name !== 'All'">{{table.sprint.name}}</span>
+                    <span>,</span>
+                    <span ng-if="table.team.name === 'All'">{{table.team.name}} Teams</span>
+                    <span ng-if="table.team.name !== 'All'">{{table.team.name}}</span>
+                </div>
+                <div class="table-row-item delete-cell"><span class="glyphicon glyphicon-remove remove-button" aria-hidden="true" ng-click="delete(table.id)" title="Delete table"></span></div>
             </div>
         </div>
     </div>

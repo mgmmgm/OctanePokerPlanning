@@ -69,7 +69,10 @@ function login(requestor, apiKey, apiSecret, serverURL, callback) {
 			 * client_id: '', // put API KEY here
 			 * client_secret: '' // PUT API SECRET HERE
 			 */
-		}
+		}/*,
+		headers: {
+			'HPECLIENTTYPE': 'HPE_MQM_UI'
+		}*/
 	}, function (error, response) {
 
 		if (error) {
@@ -94,7 +97,8 @@ function login(requestor, apiKey, apiSecret, serverURL, callback) {
 			baseUrl: (serverURL + '/api/'),// + SHAREDSPACE_ID + '/workspaces/' + WORKSPACE_ID),
 			headers: {
 				'HPSSO_HEADER_CSRF': HPSSO_COOKIE_CSRF,
-				'HPSSO-HEADER-CSRF': HPSSO_COOKIE_CSRF
+				'HPSSO-HEADER-CSRF': HPSSO_COOKIE_CSRF,
+				'HPECLIENTTYPE': 'HPE_MQM_UI'
 			}
 		});
 		callback(requestor);
@@ -213,9 +217,9 @@ function innerGetWorkItems(itemsType, releaseId, sprintId, teamId) {
 		if (queryString !== '') {
 			queryString = queryString + ';';
 		}
-		if (itemsType === 'Story') {
+		if (itemsType === 'Stories') {
 			queryString = queryString + 'subtype=\'story\'';
-		} else if (itemsType === 'Feature') {
+		} else if (itemsType === 'Features') {
 			queryString = queryString + 'subtype=\'feature\'';
 		}
 
@@ -260,7 +264,16 @@ function getUser(req, res) {
 		var userList = [];
 		if (users.data !== undefined) {
 			users.data.forEach(function (user) {
-				userList.push({'id': user.id, 'name': user.full_name});
+				var user_name;
+				if (user.full_name !== undefined) {
+					user_name = user.full_name;
+				} else if (user.name !== undefined) {
+					user_name = user.name;
+				} else {
+					user_name = user.first_name + ' ' + user.last_name;
+				}
+
+				userList.push({'id': user.id, 'name': user_name});
 			});
 		}
 		res.send(userList);

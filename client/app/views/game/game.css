@@ -8,16 +8,25 @@
 }
 
 .game-title {
-
-
+    margin: 15px 0px 15px 0px;
+    display: inline-block;
+    flex: 1;
 }
 
-.game-table-name {
+.game-sub-title {
+    border: 1px solid lightgray;
 
+}
+.game-upper-line{
+    display: flex;
+}
+.game-link-container{
+    display: inline-block;
+}
+.game-table-name {
 }
 
 .game-title-filter {
-    background-color: #cccccc;
 }
 
 .game-cards-votes-container {
@@ -36,7 +45,15 @@
 }
 
 .players-title {
-    font-size: 25px;
-    background-color: lightblue;
-    margin-bottom: 20px;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.pocker-green-button {
+    border: 1px solid #7ab829;
+    background: transparent;
+    margin-top: 15px;
+    padding: 5px 15px;
+}
+.pocker-green-button:focus {
+    outline-style: none;
 }

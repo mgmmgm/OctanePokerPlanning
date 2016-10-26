@@ -9,7 +9,6 @@
       //connect().then(function() {
         initOwnerUserName();
         initCardsValues();
-        initItemsType();
         initReleases();
         initSprints();
         initTeams();
@@ -36,20 +35,7 @@
         $scope.selectedCardsType = data;
       };
     }
-
-    function initItemsType() {
-      $scope.selectedItemsType = "Story";
-      $scope.selectedItemsTypeMany = "Stories";
-
-      $scope.setItemTypeToStories = function() {
-        $scope.selectedItemsType = "Story";
-        $scope.selectedItemsTypeMany = "Stories";
-      };
-      $scope.setItemTypeToFeatures = function() {
-        $scope.selectedItemsType = "Feature";
-        $scope.selectedItemsTypeMany = "Features";
-      };
-    }
+    
     function connect() {
       return connectSvc.connect();
     }

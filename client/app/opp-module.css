@@ -1,18 +1,22 @@
 .octane-poker-planning {
-	margin: 20px 200px;
+	margin: 0px 200px;
 }
 
 .header {
 	text-align: center;
+	background-color: #eeeeee;
+	padding: 20px;
+	position: relative;
 }
 
-.logo {
-	width: 150px;
+.header-logo {
+	position: absolute;
+	left: 18px;
+	margin-top: 12px;
 }
 
 .header-title {
-	font-size: 30px;
-	vertical-align: middle;
+	font-size: 29px;
 }
 
 .footer {
@@ -26,6 +30,38 @@
 }
 
 /*************************** global style ***************************/
+button {
+	background-color: white;
+	border: 1px solid #86c186;
+	padding: 5px 40px;
+}
+
+button:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+input {
+	border: none;
+	border-bottom: 1px solid black;
+}
+
+input:focus {
+	outline: none;
+}
+
+.dropdown button {
+	background-color: white;
+	border: none;
+	border-bottom: 1px solid black;
+	padding: 0px 10px;
+}
+
+ul.dropdown-menu {
+	height: 300px;
+	overflow-y: auto;
+}
+
 /********** position ***********/
 .absolute {
 	position: absolute;
@@ -65,10 +101,19 @@
 	width: 70px;
 }
 
+.width--400px {
+	width: 400px;
+}
+
 /********** margin ***********/
 .margin-v--5px {
 	margin-top: 5px;
 	margin-bottom: 5px;
+}
+
+.margin-v--10px {
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .margin-h--10px {

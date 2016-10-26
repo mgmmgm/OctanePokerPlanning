@@ -4,18 +4,18 @@
 <div class="modal-body">
   <form name="myForm">
     <div>
-        <input type="text" ng-model="serverURL" style="margin: 5px" class="form-control" required placeholder="Enter Server URL" value="hackathon.almoctane.com">
-        <input type="text" ng-model="apiKey" style="margin: 5px" class="form-control" required placeholder="Enter API key" value="Ido Raz_z2wmdyo6x4vqwbg5595n70lx8">
-        <input type="text" ng-model="apiSecret" style="margin: 5px" class="form-control" required placeholder="Enter API secret" value="+414c89b9d5b2dbb6Y">
-        <button class="btn btn-success" ng-disabled="myForm.$invalid" type="button" ng-click="sendAPI()">Send Key</button>
-      <button class="btn btn-warning" type="button" ng-show="showGenerate" ng-click="generate()">Generate</button>
+        <input type="text" ng-model="serverURL" class="pocker-form-control" required placeholder="Enter Server URL" value="hackathon.almoctane.com">
+        <input type="text" ng-model="apiKey" class="pocker-form-control" required placeholder="Enter API key" value="Ido Raz_z2wmdyo6x4vqwbg5595n70lx8">
+        <input type="text" ng-model="apiSecret" class="pocker-form-control" required placeholder="Enter API secret" value="+414c89b9d5b2dbb6Y">
+        <button class="pocker-green-button" ng-disabled="myForm.$invalid" type="button" ng-click="sendAPI()">Send Key</button>
+        <button class="pocker-green-button" type="button" ng-show="showGenerate" ng-click="generate()">Generate</button>
     </div>
 
-    <div style="margin: 5px">
+    <div class="margin-v--10px">
     <label>Select workspace:</label>
     <div class="btn-group" uib-dropdown>
       <button type="button"
-              class="btn btn-primary" uib-dropdown-toggle>
+              class="" uib-dropdown-toggle>
         {{selectedWorkSpace.name}} <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" uib-dropdown-menu role="menu">
@@ -26,11 +26,11 @@
     </div>
     </div>
 
-    <div style="margin: 5px">
+    <div class="margin-v--10px">
       <label>Select Octane username:</label>
       <div class="btn-group" uib-dropdown>
         <button type="button"
-                class="btn btn-primary" uib-dropdown-toggle>
+                class="" uib-dropdown-toggle>
           {{selectedUser.name}} <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" uib-dropdown-menu role="menu">
@@ -42,7 +42,7 @@
     </div>
 
     <div class="modal-footer">
-      <button class="btn btn-success" type="button" ng-disabled="!selectedWorkSpace || !selectedUser" ng-click="connect()">Connect</button>
+      <button class="pocker-green-button" type="button" ng-disabled="!selectedWorkSpace || !selectedUser" ng-click="connect()">Connect</button>
     </div>
   </form>
 </div>

@@ -45,6 +45,7 @@
 
 .player-name {
     flex: 4 0 0;
+    margin-left: 10px;
 }
 
 .player-vote-value {

@@ -1,7 +1,7 @@
 ﻿(function () {
   'use strict';
 
-  var mainModule = angular.module("opp-module", ['ui.router', 'ui.bootstrap', 'opp.core', 'opp.table', 'opp.game']);
+  var mainModule = angular.module("opp-module", ['ui.router', 'ui.bootstrap', 'ngAnimate', 'opp.core', 'opp.table', 'opp.game']);
 
   mainModule.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $stateProvider
