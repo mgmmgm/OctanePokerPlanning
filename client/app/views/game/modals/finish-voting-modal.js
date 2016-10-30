@@ -37,21 +37,27 @@
     }
 
     function getValueFromEstimation(playerVoteEstimation) {
+      var votingValues;
+      if ($scope.workItemType === 'Features') {
+        votingValues = [0, 3, 5, 10, 15, 30, 50];
+      } else {
+        votingValues = [0, 1, 2, 5, 13, 25, 50];
+      }
       switch (playerVoteEstimation) {
         case '?' :
-          return 0;
+          return votingValues[0];
         case 'XS' :
-          return 1;
+          return votingValues[1];
         case 'S' :
-          return 2;
+          return votingValues[2];
         case 'M' :
-          return 5;
+          return votingValues[3];
         case 'L' :
-          return 13;
+          return votingValues[4];
         case 'XL' :
-          return 40;
+          return votingValues[5];
         case 'XXL' :
-          return 100;
+          return votingValues[6];
         default:
           return parseInt(playerVoteEstimation);
       }
