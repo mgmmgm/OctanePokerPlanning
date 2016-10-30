@@ -224,7 +224,7 @@ function innerGetWorkItems(itemsType, releaseId, sprintId, teamId) {
 		}
 
 		console.log('query string is '+queryString);
-		responseRequestor.get(responseRequestor.workSpaceURL+'/work_items?query="'+queryString+'"&fields=id,name,description', function (error, message, workItems) {
+		responseRequestor.get(responseRequestor.workSpaceURL+'/work_items?query="'+queryString+'"&fields=id,name,description&order_by=rank,id', function (error, message, workItems) {
 			console.log(workItems);
 			if (workItems !== undefined && workItems.data !== undefined) {
 				console.log('WORK_ITEMS: '+workItems.data.length);
@@ -257,7 +257,7 @@ function deleteTableSession(tableId) {
 
 function getUser(req, res) {
 	var workspaceID = req.params.workspaceID;
-	console.log('shared_spaces/' + responseRequestor.sharedSpace + '/workspaces/'+workspaceID+'/workspace_users');
+	console.log('shared_spaces/' + responseRequestor.sharedSpace + '/workspaces/'+workspaceID+'/workspace_users?limit=1000');
 	responseRequestor.get('shared_spaces/' + responseRequestor.sharedSpace + '/workspaces/' + workspaceID + '/workspace_users', function (error, message, users) {
 		console.log(JSON.stringify(users));
 		console.log(message);
