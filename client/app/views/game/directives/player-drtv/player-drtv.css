@@ -3,6 +3,7 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
+    position: relative;
 }
 
 .player-image-container {
@@ -29,10 +30,18 @@
 }
 
 .player-checked-image {
-    width: 25px;
-    height: 25px;
-    margin: -20px -10px 0px 0px;
+    width: 26px;
+    height: 26px;
+    position: absolute;
+    top: -5px;
+    left: -16px;
     z-index: 1;
+    animation: chip-rotation 3s;
+}
+
+@keyframes chip-rotation {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg);}
 }
 
 .player-name {
