@@ -18,7 +18,7 @@ var requestor = request.defaults({
 	jar: true,
 	json: true,
 	// if running from within HPE you will need to set a proxy.  Change according to nearest proxy
-	//proxy: 'http://web-proxy.il.hpecorp.net:8080'
+	proxy: 'http://web-proxy.il.hpecorp.net:8080'
 });
 
 var responseRequestor = {};
@@ -35,9 +35,13 @@ function connect(req, res) {
 
 
 	login(requestor, apiKey, apiSecret, serverURL, function (requestor) {
-
-		responseRequestor = requestor;
-		res.send('ok');
+		if (requestor===null) {
+			console.log('error - 503');
+			res.status(503).send('cannot connect to octane');
+		} else {
+			responseRequestor = requestor;
+			res.send('ok');
+		}
 	});
 }
 
@@ -75,10 +79,10 @@ function login(requestor, apiKey, apiSecret, serverURL, callback) {
 		}*/
 	}, function (error, response) {
 
-		if (error) {
+		if (error || response.statusCode !== 200) {
 			console.log('error - return from post');
 			console.error(error);
-			// do something with error...
+			callback(null);
 			return;
 		}
 		var cookies = response.headers['set-cookie'];

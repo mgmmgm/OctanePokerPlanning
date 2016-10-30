@@ -7,7 +7,7 @@
         <input type="text" ng-model="serverURL" class="pocker-form-control" required placeholder="Enter Server URL" value="hackathon.almoctane.com">
         <input type="text" ng-model="apiKey" class="pocker-form-control" required placeholder="Enter API key" value="Ido Raz_z2wmdyo6x4vqwbg5595n70lx8">
         <input type="text" ng-model="apiSecret" class="pocker-form-control" required placeholder="Enter API secret" value="+414c89b9d5b2dbb6Y">
-        <button class="pocker-green-button" ng-disabled="myForm.$invalid" type="button" ng-click="sendAPI()">Send Key</button>
+        <button class="pocker-green-button" ng-disabled="myForm.$invalid || connecting" type="button" ng-click="sendAPI()">Send Key</button>
         <button class="pocker-green-button" type="button" ng-show="showGenerate" ng-click="generate()">Generate</button>
     </div>
 
@@ -15,11 +15,18 @@
     <label>Select workspace:</label>
     <div class="btn-group" uib-dropdown>
       <button type="button"
-              class="" uib-dropdown-toggle>
+              class="border-bottom" uib-dropdown-toggle>
         {{selectedWorkSpace.name}} <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-        <li role="menuitem" ng-repeat="workSpace in workSpaces">
+      <ul class="dropdown-menu height--300" uib-dropdown-menu role="menu">
+        <li role="presentation">
+          <div class="input-group input-group-sm search-control"> <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-search"></span>
+        </span>
+            <input type="text" class="form-control" ng-click="search($event)" autofocus placeholder="Search" ng-model="queryWorkspace">
+          </div>
+        </li>
+        <li role="menuitem" ng-repeat="workSpace in workSpaces | filter:queryWorkspace">
           <a ng-click="setWorkSpace(workSpace)">{{workSpace.name}}</a>
         </li>
       </ul>
@@ -30,11 +37,18 @@
       <label>Select Octane username:</label>
       <div class="btn-group" uib-dropdown>
         <button type="button"
-                class="" uib-dropdown-toggle>
+                class="border-bottom" uib-dropdown-toggle>
           {{selectedUser.name}} <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-          <li role="menuitem" ng-repeat="user in users">
+        <ul class="dropdown-menu height--300" uib-dropdown-menu role="menu">
+          <li role="presentation">
+            <div class="input-group input-group-sm search-control"> <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-search"></span>
+        </span>
+              <input type="text" class="form-control" ng-click="search($event)" autofocus placeholder="Search" ng-model="queryUser">
+            </div>
+          </li>
+          <li role="menuitem" ng-repeat="user in users | filter:queryUser">
             <a ng-click="setUserName(user)">{{user.name}}</a>
           </li>
         </ul>
@@ -42,6 +56,7 @@
     </div>
 
     <div class="modal-footer">
+      <!-- <div class="progress-bar progress-bar-striped progress-bar-octane active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">Connecting...</div> -->
       <button class="pocker-green-button" type="button" ng-disabled="!selectedWorkSpace || !selectedUser" ng-click="connect()">Connect</button>
     </div>
   </form>

@@ -1,9 +1,14 @@
 <div class="game flex">
-
-    <div class="game-left-side flex">
+    <div class="game-left-side">
         <div class="game-upper-line">
             <div class="game-title">
-                <div class="game-table-name font-size-20px">{{gameName}} / {{ownerName}}</div>
+                <div class="game-table-name-container font-size-20px">
+                    <button ng-if="isOwner" title="Back to my tables" class="back-button" ng-click="backToMain()">
+                        <img class="back-image" src="images/back.png"/>
+                    </button>
+                    <span class="game-table-name">{{gameName}}</span>
+                    <span class="game-table-owner">{{ownerName}}</span>
+                </div>
                 <div class="game-title-filter font-size-16px flex ellipsis">
                     <span>Scope: {{releaseName}} Release, </span>
                     <span ng-if="sprintName === 'All'">{{sprintName}} Sprints</span>
@@ -11,39 +16,49 @@
                     <span>,</span>
                     <span ng-if="teamName === 'All'">{{teamName}} Teams</span>
                     <span ng-if="teamName !== 'All'">{{teamName}}</span>
-    <!--
-                    <span>{{currentUser}}<span ng-if="isOwner"> (Table Owner)</span></span>
-    -->
+                    <!--
+									<span>{{currentUser}}<span ng-if="isOwner"> (Table Owner)</span></span>
+					-->
                 </div>
             </div>
-            <div class="game-link-container">
-                <div class="font-size-20px margin-v--5px">
-                    <a class="" href="mailto:name@email.com?subject=You've been invited to an octane poker game
-                    &body=Press the following link to join the game: {{linkToGame}}">
-                        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> share table
-                    </a>
+            <div class="dropdown share-table">
+                <button class="share-table-button dropdown-toggle" type="button" data-toggle="dropdown">
+                    Share Table
+                    <img class="share-image" src="images/share.png" title="Share table"/>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><button class="share-table-button" ng-click="sendLinkByEmail(linkToGame)">Send by email</button></li>
+                    <li><button class="share-table-button" ng-click="copyLink(linkToGame)">Copy link</button></li>
+                </ul>
+            </div>
+        </div>
+        <div class="item-and-buttons">
+            <div class="item-title-votes">
+            <div class="game-sub-title">
+                <div class="margin-h--20px margin-v--10px font-size-20px inline-block flex">
+                    <div class="work-item-name">{{selectedWorkItem.id}}: {{selectedWorkItem.name}}</div>
+                    <div>{{itemsType === 'Stories' ? 'Story ' : 'Feature'}} {{selectedWorkItemIndex + 1}}/{{workitems.length}}</div>
                 </div>
-                <div>
-                    <input type="text" class="form-control" readonly value="{{linkToGame}}">
+                <div class="margin-h--20px margin-v--10px font-size-16px ellipsis" title="{{selectedWorkItem.description}}" style="width:700px;">
+                    {{selectedWorkItem.description}}
+                </div>
+            </div>
+            <div class="game-cards-votes-container margin-v--10px flex">
+                <div class="margin--10px" ng-repeat="card in cards">
+                    <card-drtv value="{{card.value}}" image-name="{{card.imageName}}" is-selected="card.isSelected" is-enable="card.isEnable" add-vote-fn="addVote(selectedCard)"></card-drtv>
                 </div>
             </div>
         </div>
-        <div class="game-sub-title">
-        <div class="margin--20px font-size-20px">
-            [{{itemsType === 'Stories' ? 'Story ' : 'Feature'}} {{selectedWorkItemIndex + 1}}/{{workitems.length}}] {{selectedWorkItem.id}}: {{selectedWorkItem.name}}
-         </div>
-          <div class="margin--20px font-size-16px ellipsis" title="{{selectedWorkItem.description}}" style="width:700px;">
-            {{selectedWorkItem.description}}
-          </div>
-    </div>
-        <div class="game-cards-votes-container flex">
-            <div class="margin--10px" ng-repeat="card in cards">
-                <card-drtv value="{{card.value}}" is-selected="card.isSelected" is-enable="card.isEnable" add-vote-fn="addVote(voteData)"></card-drtv>
+            <div class="buttons-container text-align-center margin-v--20px">
+                <button ng-if="isOwner" class="poker-button" ng-click="skipWorkItem()">Skip</button>
+                <button class="poker-button" ng-click="showSummary()">Show Summary</button>
+                <button ng-if="isOwner" class="poker-button" ng-click="finishVoting()">Finish Voting</button>
             </div>
         </div>
-        <!--<div class="game-stories-list-container">-->
-            <!--listttttttttt-->
-        <!--</div>-->
+        <div class="game-comment-container">
+            <input type="text" class="form-control game-comment-input" ng-model="voteComment" placeholder="Add comment">
+            <span class="game-comment-send-button" ng-class="{'disabled': !canSendVote}" ng-click="sendVote()">VOTE</span>
+        </div>
     </div>
 
     <div class="game-right-side">
@@ -54,19 +69,6 @@
                     <player-drtv name="{{player.name}}" vote-value="player.voteValue" is-owner="player.isOwner" comment="player.comment" everyone-finish-vote="player.everyoneFinishVote" need-to-show="player.needToShow"></player-drtv>
                 </div>
             </div>
-        </div>
-
-
-        <div class="buttons-container text-align-center margin-v--20px">
-            <button ng-if="isOwner" type="button" class="pocker-green-button margin-r--50px" ng-click="skipWorkItem()">Skip {{itemsType === 'Stories' ? 'Story ' : 'Feature'}}
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-            </button>
-            <button class="pocker-green-button" ng-click="showSummary()">Show Summary</button>
-            <button ng-if="isOwner && isFinishedVoting" type="button" class="pocker-green-button" ng-click="finishVoting()">Finish Voting</button>
-
-        </div>
-        <div class="buttons-container margin-v--20px">
-            <button ng-if="isOwner" type="button" class="pocker-green-button" ng-click="backToMain()">Back to my tables</button>
         </div>
     </div>
 </div>

@@ -58,8 +58,14 @@
     }
 
     function prepareAggregatedData() {
-      var numOfVotes = $scope.vote.length;
-      var min = Number.MAX_SAFE_INTEGER;
+      var numOfVotes = 0, min = 0;
+      if($scope.vote){
+        numOfVotes = $scope.vote.length;
+        min = Number.MAX_SAFE_INTEGER;
+      }
+      else {
+        $scope.vote = {};
+      }
       var max = 0;
       var sum = 0;
       var value;

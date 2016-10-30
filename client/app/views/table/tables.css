@@ -146,3 +146,10 @@
 input:required:invalid {
     border-color: red;
 }
+
+.progress-bar-octane {
+    width: 100px;
+    height: 20px;
+    border: 2px solid black;
+    color: #FFFFFF;
+}

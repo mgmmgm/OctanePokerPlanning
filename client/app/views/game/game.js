@@ -31,6 +31,7 @@
     ];
 
     function init() {
+      $scope.canSendVote = false;
       subscribeToEvents();
       if(!loggedinSvc.getUser())
       {
@@ -89,7 +90,7 @@
           $scope.sprintName = result.data.sprint.name;
           $scope.teamName = result.data.team.name;
           $scope.workitems = result.data.workItems;
-          $scope.selectedWorkItemIndex = result.data.selectedWorkItemIndex;
+          $scope.selectedWorkItemIndex = result.data.selectedWorkItemIndex % $scope.workitems.length;
           $scope.selectedWorkItem = $scope.workitems[$scope.selectedWorkItemIndex];
           $scope.players = result.data.players;
           $scope.workItemVotes = result.data.workItemVotes;
@@ -190,7 +191,7 @@
       angular.forEach($scope.cards, function(card) {
         if (card.value !== selectedCard.value) {
           card.isSelected = false;
-          card.isEnable = false;
+          card.isEnable = true;
         } else {
           card.isSelected = true;
           card.isEnable = false;
@@ -198,19 +199,24 @@
       })
     };
 
-    $scope.addVote = function(voteData) {
+    $scope.addVote = function(selectedCard) {
+      $scope.selectedCard = selectedCard;
+      disableOtherCards($scope.selectedCard);
+      $scope.canSendVote = true;
+    };
 
+    $scope.sendVote = function() {
       var newVote = {
-          tableId: $state.params.tableId,
-          index: $scope.selectedWorkItemIndex,
-          userName: $scope.currentUser,
-          estimation: voteData.selectedCard.value,
-          comment: voteData.voteComment
+        tableId: $state.params.tableId,
+        index: $scope.selectedWorkItemIndex,
+        userName: $scope.currentUser,
+        estimation: $scope.selectedCard.value,
+        comment: $scope.voteComment
 
-        };
+      };
       voteSvc.addVote(newVote).then(
         function(result) {
-          disableOtherCards(voteData.selectedCard);
+          $scope.canSendVote = false;
           var currentPlayer =_.find($scope.players, function(player) {
             return player.name === newVote.userName;
           });
@@ -225,10 +231,11 @@
             }
           }
         })
-
     };
 
     $scope.skipWorkItem = function() {
+      $scope.canSendVote = false;
+      $scope.voteComment = '';
       gameSvc.skipWorkItem({tableId: $scope.tableId, selectedWorkItemIndex: $scope.selectedWorkItemIndex});
       $scope.selectedWorkItemIndex = ($scope.selectedWorkItemIndex + 1) % $scope.workitems.length;
       $scope.selectedWorkItem = $scope.workitems[$scope.selectedWorkItemIndex];
@@ -244,10 +251,10 @@
     }
 
     $scope.finishVoting = function() {
+
       console.log($scope.players);
       tableSvc.getTableById($state.params.tableId).then(
         function(result) {
-
           var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'app/views/game/modals/finish-voting-modal.html',
@@ -268,11 +275,13 @@
 
           modalInstance.result.then(function(data) {
             console.log(data);
-            toastSvc.showSuccessToast($scope.itemsType +' updated successfully');
+            toastSvc.showSuccessToast(($scope.itemsType === 'Stories' ? 'Story ' : 'Feature' ) + ' updated successfully');
             socketSvc.emit('workitem:goToNext', {});
             $scope.skipWorkItem();
           }, function(error) {
-            toastSvc.showErrorToast('Failed to update the ' + $scope.itemsType);
+            if (error !== 'backdrop click') {
+              toastSvc.showErrorToast('Failed to update the ' + $scope.itemsType === 'Stories' ? 'Story ' : 'Feature');
+            }
           });
         }
       )
@@ -293,7 +302,13 @@
         player.everyoneFinishVote = false;
       });
     }
-
+    $scope.sendLinkByEmail = function(linkToGame) {
+      var mail = 'mailto:name@email.com?subject=You have been invited to an octane poker game&body=Press the following link to join the game:' + linkToGame;
+      window.open(mail);
+    };
+    $scope.copyLink = function(linkToGame) {
+      window.prompt('Copy to clipboard: Ctrl+C, Enter', linkToGame);
+    };
     $scope.showSummary = function() {
       tableSvc.getTableById($state.params.tableId).then(
         function(result) {

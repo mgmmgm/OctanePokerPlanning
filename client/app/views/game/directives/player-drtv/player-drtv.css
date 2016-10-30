@@ -29,18 +29,10 @@
 }
 
 .player-checked-image {
-    width: 20px;
-    height: 20px;
-}
-
-.player-not-checked-image {
-    width: 16px;
-    height: 16px;
-}
-
-.player-checked-image-container {
-    flex: 1 0 0;
-    margin-left: 10px;
+    width: 25px;
+    height: 25px;
+    margin: -20px -10px 0px 0px;
+    z-index: 1;
 }
 
 .player-name {
@@ -49,7 +41,6 @@
 }
 
 .player-vote-value {
-    flex: 1 0 0;
 }
 
 .player-comment {

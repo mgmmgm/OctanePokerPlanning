@@ -1,5 +1,9 @@
 .game {
     flex-direction: row;
+    position: absolute;
+    top: 82px;
+    bottom: 0px;
+    margin-right: 10%;
 }
 
 .game-left-side {
@@ -14,19 +18,50 @@
 }
 
 .game-sub-title {
-    border: 1px solid lightgray;
 
 }
+.work-item-name{
+    flex: 1;
+}
+.share-image {
+    width: 40px;
+    height: 40px;
+    padding: 4px;
+}
+
 .game-upper-line{
     display: flex;
 }
-.game-link-container{
+.share-table{
     display: inline-block;
+    height: 45px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
+.share-table-button{
+    border: none;
+ }
+
+.game-table-name-container {
+    background-color: #fa4652;
+    display: inline-block;
+    border-radius: 100px;
+    padding: 12px 30px;
+    color: #ffffff;
+}
+
 .game-table-name {
+    padding-right: 20px;
+}
+
+.game-table-owner {
+    border-left: 2px solid #b51717;
+    padding-left: 20px;
 }
 
 .game-title-filter {
+    margin-top: 5px;
+    margin-left: 30px;
 }
 
 .game-cards-votes-container {
@@ -35,25 +70,69 @@
     justify-content: center;
 }
 
+.game-comment-container {
+    margin: 20px;
+}
+
+.game-comment-input {
+    width: 60%;
+    display: inline-block;
+}
+
+.game-comment-send-button {
+    cursor: pointer;
+    color: #6bc7ef;
+    font-size: 20px;
+    margin: 0px 15px;
+}
+
+.game-comment-send-button.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
 .game-right-side {
     flex: 1 0 0;
+    background-color: #efefef;
 }
 
 .players-container {
-    margin-top: 100px;
-    margin-bottom: 40px;
 }
 
 .players-title {
     font-size: 18px;
     margin-bottom: 10px;
 }
-.pocker-green-button {
-    border: 1px solid #7ab829;
-    background: transparent;
-    margin-top: 15px;
+.item-and-buttons{
+    display: inline-flex;
+}
+.item-title-votes{
+    flex: 0;
+}
+.buttons-container{
+    flex: 1;
+}
+.back-image {
+    width: 25px;
+    height: 25px;
+}
+
+.back-button{
+    background-color: transparent;
+    border: none;
+    padding: 0px 10px 0px 0px;
+    color: black;
+}
+.poker-button {
+    border: none;
+    background: #6BC7CF;
+    height: 64px;
+    width: 155px;
+    font-size: 20px;
+    color: white;
+    margin:16px 34px;
     padding: 5px 15px;
 }
-.pocker-green-button:focus {
+.poker-button:focus {
     outline-style: none;
 }
