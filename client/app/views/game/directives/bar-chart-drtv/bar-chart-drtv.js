@@ -16,7 +16,7 @@
 
         var margin = {top: 20, right: 20, bottom: 20, left: 20},
           width = 500 - margin.left - margin.right,
-          height = 300 - margin.top - margin.bottom;
+          height = 400 - margin.top - margin.bottom;
 
         var colors = d3.scale.category20();
 
@@ -26,7 +26,7 @@
 
         var y = d3.scale.linear()
           .domain([0, d3.max(data, function(d) { return d.value; })])
-          .range([height - margin.top, 0]);
+          .range([height - (margin.top * 2) - (margin.bottom * 2), 0]);
 
         var xAxis = d3.svg.axis()
           .scale(x)
@@ -49,8 +49,13 @@
         // x axis
         svg.append("g")
           .attr("class", "x axis")
-          .attr("transform", "translate(0," + (height - margin.top) + ")")
+          .attr("transform", "translate(0," + (height - (margin.top * 2) - (margin.bottom * 2)) + ")")
           .call(xAxis)
+          .selectAll('text')
+          .attr('transform', 'rotate(45)')
+          .attr("dx", "0.5em")
+          .attr("dy", "0.5em")
+          .style("text-anchor", "start")
           .append("text")
           .attr("x", width / 2)
           .attr("y", margin.bottom + 5)
@@ -65,7 +70,7 @@
           .append("text")
           .attr("transform", "rotate(-90)")
           .attr("x", -height/2)
-          .attr("y", -(margin.bottom + margin.top))
+          .attr("y", -(margin.bottom + margin.top + margin.bottom))
           .attr("dy", ".71em")
           .style("text-anchor", "end")
           .text("Values");
@@ -80,7 +85,7 @@
           .attr("class", "bar")
           .attr("x", function(d) { return x(d.name); })
           .attr("y", function(d) { return y(d.value); })
-          .attr("height", function(d) { return (height - margin.top) - y(d.value); })
+          .attr("height", function(d) { return (height - (margin.top * 2) - (margin.bottom * 2)) - y(d.value); })
           .attr("width", x.rangeBand())
           .attr('fill', function() { return '#'+Math.floor(Math.random()*16777215).toString(16); }); // generate random color
 

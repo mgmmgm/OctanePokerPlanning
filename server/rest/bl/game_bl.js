@@ -12,12 +12,20 @@ function voteWorkItem(req,res) {
 	var workItemVotes = tableData.workItemVotes[index];
 	if (workItemVotes === undefined)
 		workItemVotes = [];
-	var vote = {
-		userName: userName,
-		estimation: estimation,
-		comment: comment
-	};
-	workItemVotes.push(vote);
+
+	vote = getUserVote(workItemVotes, userName);
+	if (vote) {
+		vote.estimation = estimation;
+		vote.comment = comment;
+	} else {
+		var vote = {
+			userName: userName,
+			estimation: estimation,
+			comment: comment
+		};
+		workItemVotes.push(vote);
+	}
+
 	tableData.workItemVotes[index] = workItemVotes;
 	tableBl.tablesMap[tableId] = tableData;
 	res.send(tableData);
@@ -46,6 +54,15 @@ function updateWorkItem(req, res) {
 	};
 
 	return api.updateWorkItem(req, res);
+}
+
+function getUserVote(workItemVotes, userName) {
+	for (var i = 0 ; i < workItemVotes.length ; i++) {
+		var vote = workItemVotes[i];
+		if (userName === vote.userName) {
+			return vote;
+		}
+	}
 }
 
 

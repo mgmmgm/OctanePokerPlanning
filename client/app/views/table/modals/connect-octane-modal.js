@@ -29,7 +29,9 @@
      connectSvc.connectOctane($scope.apiKey, $scope.apiSecret, $scope.serverURL).then(function(status){
        $scope.connecting = false;
        saveToStorage($scope.serverURL);
+       $scope.selectedWorkSpace = {'name' : 'loading..'};
        connectSvc.getWorkspaces().then(function(result) {
+         $scope.selectedWorkSpace = undefined;
          toastSvc.showSuccessToast("connected successfully to Octane Server");
          $scope.workSpaces = result.data;
          $scope.selectedWorkSpace = result.data[0];
@@ -40,6 +42,14 @@
        toastSvc.showErrorToast("failed to connect to octane server");
      });
     };
+
+    $scope.isLoading = function() {
+      return ($scope.selectedWorkSpace !== undefined && $scope.selectedWorkSpace.name === 'loading..');
+    }
+
+    $scope.isUserLoading = function() {
+      return ($scope.selectedUser !== undefined && $scope.selectedUser.name === 'loading..');
+    }
 
     $scope.generate = function() {
       $scope.serverURL = 'https://hackathon.almoctane.com';
@@ -64,7 +74,9 @@
     }
 
     function selectUsers(workSpaceId) {
+      $scope.selectedUser = {'name' : 'loading..'};
       connectSvc.getUsers($scope.selectedWorkSpace.id).then(function(result) {
+        $scope.selectedUser = undefined;
         $scope.users = result.data;
         if ($scope.users.length > 0) {
           $scope.selectedUser = $scope.users[0];

@@ -14,9 +14,9 @@
     <div class="margin-v--10px">
     <label>Select workspace:</label>
     <div class="btn-group" uib-dropdown>
-      <button type="button"
-              class="border-bottom" uib-dropdown-toggle>
-        {{selectedWorkSpace.name}} <span class="caret"></span>
+      <button type="button" ng-disabled="isLoading()"
+              class="border-bottom" uib-dropdown-toggle >
+        {{selectedWorkSpace.name}} <span ng-hide="isLoading()" class="caret"></span>
       </button>
       <ul class="dropdown-menu height--300" uib-dropdown-menu role="menu">
         <li role="presentation">
@@ -36,9 +36,9 @@
     <div class="margin-v--10px">
       <label>Select Octane username:</label>
       <div class="btn-group" uib-dropdown>
-        <button type="button"
+        <button type="button" ng-disabled="isUserLoading()"
                 class="border-bottom" uib-dropdown-toggle>
-          {{selectedUser.name}} <span class="caret"></span>
+          {{selectedUser.name}} <span ng-hide="isUserLoading()" class="caret"></span>
         </button>
         <ul class="dropdown-menu height--300" uib-dropdown-menu role="menu">
           <li role="presentation">

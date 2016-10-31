@@ -158,7 +158,7 @@
         });
       });
       socketSvc.on('workitem:goToNextWorkitem', function (data) {
-        $scope.skipWorkItem();
+        $scope.skipWorkItem(1);
       });
     }
 
@@ -233,11 +233,11 @@
         })
     };
 
-    $scope.skipWorkItem = function() {
+    $scope.skipWorkItem = function(step) {
       $scope.canSendVote = false;
       $scope.voteComment = '';
       gameSvc.skipWorkItem({tableId: $scope.tableId, selectedWorkItemIndex: $scope.selectedWorkItemIndex});
-      $scope.selectedWorkItemIndex = ($scope.selectedWorkItemIndex + 1) % $scope.workitems.length;
+      $scope.selectedWorkItemIndex = ($scope.selectedWorkItemIndex + step) % $scope.workitems.length;
       $scope.selectedWorkItem = $scope.workitems[$scope.selectedWorkItemIndex];
       resetVotes();
       tableSvc.getTableById($state.params.tableId).then( function(result) {
@@ -277,17 +277,15 @@
             console.log(data);
             toastSvc.showSuccessToast(($scope.itemsType === 'Stories' ? 'Story ' : 'Feature' ) + ' updated successfully');
             socketSvc.emit('workitem:goToNext', {});
-            $scope.skipWorkItem();
+            $scope.skipWorkItem(1);
           }, function(error) {
-            if (error !== 'backdrop click') {
+            if (error !== 'backdrop click' && error !== 'escape key press') {
               toastSvc.showErrorToast('Failed to update the ' + $scope.itemsType === 'Stories' ? 'Story ' : 'Feature');
             }
           });
         }
       )
-
-
-
+      
     };
 
     function resetVotes() {

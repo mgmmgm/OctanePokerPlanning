@@ -22,19 +22,26 @@
                 </div>
             </div>
             <div class="dropdown share-table">
-                <button class="share-table-button dropdown-toggle" type="button" data-toggle="dropdown">
-                    Share Table
-                    <img class="share-image" src="images/share.png" title="Share table"/>
-                </button>
+                <div class="dropdown-toggle share-table-button" data-toggle="dropdown">
+                    <div class="share-table-text">Share Table</div>
+                    <svg class="share-image" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="16px" height="16px" viewBox="-169 117.4 16 16" style="enable-background:new -169 117.4 16 16;" xml:space="preserve">
+                        <path d="M-157.1,128.9c-0.3,0.1-0.6,0.2-0.8,0.4l-5.3-3c0-0.2,0-0.5,0-0.7l5.3-3c0.2,0.2,0.5,0.3,0.8,0.4c1.2,0.4,2.6-0.3,3-1.5
+                            c0.4-1.2-0.3-2.6-1.5-3c-1.2-0.4-2.6,0.3-3,1.5c-0.1,0.4-0.1,0.7-0.1,1.1l-5.3,3c-0.2-0.2-0.5-0.3-0.8-0.4c-1.2-0.4-2.6,0.3-3,1.5
+                            s0.3,2.6,1.5,3c0.8,0.3,1.6,0.1,2.2-0.4l5.3,3c-0.1,0.4,0,0.7,0.1,1.1c0.4,1.2,1.7,1.9,3,1.5c1.2-0.4,1.9-1.7,1.5-3
+                            S-155.9,128.4-157.1,128.9z"/>
+                    </svg>
+                </div>
                 <ul class="dropdown-menu">
                     <li><button class="share-table-button" ng-click="sendLinkByEmail(linkToGame)">Send by email</button></li>
                     <li><button class="share-table-button" ng-click="copyLink(linkToGame)">Copy link</button></li>
                 </ul>
             </div>
+
         </div>
         <div class="item-and-buttons">
             <div class="item-title-votes">
-            <div class="game-sub-title">
+                <div class="game-sub-title">
                 <div class="margin-h--20px margin-v--10px font-size-20px inline-block flex">
                     <div class="work-item-name">{{selectedWorkItem.id}}: {{selectedWorkItem.name}}</div>
                     <div>{{itemsType === 'Stories' ? 'Story ' : 'Feature'}} {{selectedWorkItemIndex + 1}}/{{workitems.length}}</div>
@@ -43,21 +50,22 @@
                     {{selectedWorkItem.description}}
                 </div>
             </div>
-            <div class="game-cards-votes-container margin-v--10px flex">
+                <div class="game-cards-votes-container margin-v--10px flex">
                 <div class="margin--10px" ng-repeat="card in cards">
                     <card-drtv value="{{card.value}}" image-name="{{card.imageName}}" is-selected="card.isSelected" is-enable="card.isEnable" add-vote-fn="addVote(selectedCard)"></card-drtv>
                 </div>
             </div>
+                <div class="game-comment-container">
+                    <input type="text" class="form-control game-comment-input" ng-model="voteComment" placeholder="Add comment">
+                    <span class="game-comment-send-button" ng-class="{'disabled': !canSendVote}" ng-click="sendVote()">VOTE</span>
+                </div>
         </div>
             <div class="buttons-container text-align-center margin-v--20px">
-                <button ng-if="isOwner" class="poker-button" ng-click="skipWorkItem()">Skip</button>
+                <button ng-if="isOwner" class="poker-button" ng-click="skipWorkItem(1)">Skip</button>
+                <button ng-if="isOwner" class="poker-button" ng-click="skipWorkItem(-1)">Previous</button>
                 <button class="poker-button" ng-click="showSummary()">Show Summary</button>
                 <button ng-if="isOwner" class="poker-button" ng-click="finishVoting()">Finish Voting</button>
             </div>
-        </div>
-        <div class="game-comment-container">
-            <input type="text" class="form-control game-comment-input" ng-model="voteComment" placeholder="Add comment">
-            <span class="game-comment-send-button" ng-class="{'disabled': !canSendVote}" ng-click="sendVote()">VOTE</span>
         </div>
     </div>
 

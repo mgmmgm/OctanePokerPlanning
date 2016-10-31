@@ -261,8 +261,8 @@ function deleteTableSession(tableId) {
 
 function getUser(req, res) {
 	var workspaceID = req.params.workspaceID;
-	console.log('shared_spaces/' + responseRequestor.sharedSpace + '/workspaces/'+workspaceID+'/workspace_users?limit=1000');
-	responseRequestor.get('shared_spaces/' + responseRequestor.sharedSpace + '/workspaces/' + workspaceID + '/workspace_users', function (error, message, users) {
+	console.log('shared_spaces/' + responseRequestor.sharedSpace + '/workspaces/'+workspaceID+'/workspace_users');
+	responseRequestor.get('shared_spaces/' + responseRequestor.sharedSpace + '/workspaces/' + workspaceID + '/workspace_users?limit=1000', function (error, message, users) {
 		console.log(JSON.stringify(users));
 		console.log(message);
 		var userList = [];

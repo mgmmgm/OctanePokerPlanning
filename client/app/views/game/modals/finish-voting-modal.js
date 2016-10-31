@@ -94,7 +94,7 @@
       if(numOfVotes === 0) {
         $scope.vote.averageValue = 0;
       } else {
-        $scope.vote.averageValue = sum / numOfVotes;
+        $scope.vote.averageValue = (sum / numOfVotes).toFixed(2);
       }
     }
 
